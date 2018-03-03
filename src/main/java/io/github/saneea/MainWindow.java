@@ -7,6 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import io.github.saneea.textfunction.UnixPathNormalizer;
+import io.github.saneea.textfunction.WindowsPathNormalizer;
+
 public class MainWindow extends JFrame {
 
 	/**
@@ -31,10 +34,12 @@ public class MainWindow extends JFrame {
 		contentPane.add(new JButton("<-- Paste from clipboard"));
 
 		contentPane.add(new JLabel("Windows path: "));
+		outputTextFieldWindowsPath.setTextConverter(new WindowsPathNormalizer());
 		contentPane.add(outputTextFieldWindowsPath);
 		contentPane.add(new JButton("--> Copy to clipboard"));
 
 		contentPane.add(new JLabel("Unix path: "));
+		outputTextFieldUnixPath.setTextConverter(new UnixPathNormalizer());
 		contentPane.add(outputTextFieldUnixPath);
 		contentPane.add(new JButton("--> Copy to clipboard"));
 
@@ -42,7 +47,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private void onInputTextChanged(String input) {
-		outputTextFieldWindowsPath.setText(input.replaceAll("(\\\\|\\/)+", "\\\\"));
-		outputTextFieldUnixPath.setText(input.replaceAll("(\\\\|\\/)+", "\\/"));
+		outputTextFieldWindowsPath.setText(input);
+		outputTextFieldUnixPath.setText(input);
 	}
 }

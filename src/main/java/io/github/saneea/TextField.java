@@ -6,12 +6,16 @@ import java.util.function.Consumer;
 
 import javax.swing.JTextField;
 
+import io.github.saneea.textfunction.TextFunction;
+
 public class TextField extends JTextField {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private TextFunction textConverter;
 
 	public TextField(int columns) {
 		super(columns);
@@ -46,6 +50,19 @@ public class TextField extends JTextField {
 				onKey();
 			}
 		});
+	}
+
+	@Override
+	public void setText(String text) {
+		super.setText(prepareText(text));
+	}
+
+	private String prepareText(String text) {
+		return textConverter != null ? textConverter.apply(text) : text;
+	}
+
+	public void setTextConverter(TextFunction textConverter) {
+		this.textConverter = textConverter;
 	}
 
 }
