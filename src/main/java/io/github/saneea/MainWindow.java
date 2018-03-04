@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		Container contentPane = getContentPane();
 
-		contentPane.setLayout(new GridLayout(3, 3));
+		contentPane.setLayout(new GridLayout(5, 3));
 
 		contentPane.add(new JLabel("Orig: "));
 		inputTextField.addTextChangeListener(this::onInputTextChanged);
@@ -49,6 +49,8 @@ public class MainWindow extends JFrame {
 
 		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
 		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
+		addConverter(contentPane, "lower case", String::toLowerCase);
+		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
 
 		pack();
 	}
