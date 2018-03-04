@@ -2,6 +2,9 @@ package io.github.saneea;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,8 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static final Clipboard CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 	private final TextField inputTextField = new TextField(5);
 
@@ -45,8 +50,15 @@ public class MainWindow extends JFrame {
 		TextField outputTextField = new TextField(5);
 		outputTextField.setTextConverter(textConverter);
 		contentPane.add(outputTextField);
-		contentPane.add(new JButton("--> Copy to clipboard"));
+		JButton copyToClipboardButton = new JButton("--> Copy to clipboard");
+		copyToClipboardButton.addActionListener((actionEvent) -> copyToClipboard(outputTextField.getText()));
+		contentPane.add(copyToClipboardButton);
 		outputTextFields.add(outputTextField);
+	}
+
+	private void copyToClipboard(String text) {
+		StringSelection selection = new StringSelection(text);
+		CLIPBOARD.setContents(selection, selection);
 	}
 
 	private void onInputTextChanged(String input) {
