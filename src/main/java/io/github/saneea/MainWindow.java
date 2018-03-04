@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,14 @@ public class MainWindow extends JFrame {
 		contentPane.add(new JLabel("Orig: "));
 		inputTextField.addTextChangeListener(this::onInputTextChanged);
 		contentPane.add(inputTextField);
-		contentPane.add(new JButton("<-- Paste from clipboard"));
+		JButton pasteFromClipboardButton = new JButton("<-- Paste from clipboard");
+		pasteFromClipboardButton.addActionListener((actionEvent) -> {
+			String text = readFromClipboard();
+			if (text != null && !text.isEmpty()) {
+				inputTextField.setText(text);
+			}
+		});
+		contentPane.add(pasteFromClipboardButton);
 
 		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
 		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
@@ -59,6 +67,14 @@ public class MainWindow extends JFrame {
 	private void copyToClipboard(String text) {
 		StringSelection selection = new StringSelection(text);
 		CLIPBOARD.setContents(selection, selection);
+	}
+
+	private String readFromClipboard() {
+		try {
+			return (String) CLIPBOARD.getData(DataFlavor.stringFlavor);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	private void onInputTextChanged(String input) {
