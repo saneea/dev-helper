@@ -2,11 +2,14 @@ package io.github.saneea;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import io.github.saneea.textfunction.TextFunction;
 import io.github.saneea.textfunction.UnixPathNormalizer;
 import io.github.saneea.textfunction.WindowsPathNormalizer;
 
@@ -17,11 +20,9 @@ public class MainWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	TextField inputTextField = new TextField(5);
+	private final TextField inputTextField = new TextField(5);
 
-	TextField outputTextFieldWindowsPath = new TextField(5);
-
-	TextField outputTextFieldUnixPath = new TextField(5);
+	private final List<TextField> outputTextFields = new ArrayList<>();
 
 	public MainWindow() {
 		Container contentPane = getContentPane();
@@ -33,21 +34,24 @@ public class MainWindow extends JFrame {
 		contentPane.add(inputTextField);
 		contentPane.add(new JButton("<-- Paste from clipboard"));
 
-		contentPane.add(new JLabel("Windows path: "));
-		outputTextFieldWindowsPath.setTextConverter(new WindowsPathNormalizer());
-		contentPane.add(outputTextFieldWindowsPath);
-		contentPane.add(new JButton("--> Copy to clipboard"));
-
-		contentPane.add(new JLabel("Unix path: "));
-		outputTextFieldUnixPath.setTextConverter(new UnixPathNormalizer());
-		contentPane.add(outputTextFieldUnixPath);
-		contentPane.add(new JButton("--> Copy to clipboard"));
+		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
+		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
 
 		pack();
 	}
 
+	private void addConverter(Container contentPane, String name, TextFunction textConverter) {
+		contentPane.add(new JLabel(name + ": "));
+		TextField outputTextField = new TextField(5);
+		outputTextField.setTextConverter(textConverter);
+		contentPane.add(outputTextField);
+		contentPane.add(new JButton("--> Copy to clipboard"));
+		outputTextFields.add(outputTextField);
+	}
+
 	private void onInputTextChanged(String input) {
-		outputTextFieldWindowsPath.setText(input);
-		outputTextFieldUnixPath.setText(input);
+		for (TextField outputTextField : outputTextFields) {
+			outputTextField.setText(input);
+		}
 	}
 }
