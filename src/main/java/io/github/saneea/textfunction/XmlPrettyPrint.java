@@ -170,6 +170,13 @@ public class XmlPrettyPrint {
 	}
 
 	public static void main(String[] args) throws Exception {
+
+		if (args.length != 2) {
+			throw new Exception(//
+					XmlPrettyPrint.class.getSimpleName() + " usage: " + //
+							XmlPrettyPrint.class.getSimpleName() + " <input/file.name> <out/put.filename>");
+		}
+
 		String inputFileName = args[0];
 		String outputFileName = args[1];
 
