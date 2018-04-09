@@ -1,6 +1,7 @@
 package io.github.saneea.textfunction;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -17,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(value = Parameterized.class)
 public class XmlPrettyPrintTest {
@@ -43,7 +42,7 @@ public class XmlPrettyPrintTest {
 		String actual = prettyPrint(testRootDir.resolve("input.xml").toString());
 
 		String expected = readFile(testRootDir.resolve("expected.xml"));
-		
+
 		assertEquals(expected, actual);
 	}
 
