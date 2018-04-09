@@ -1,6 +1,7 @@
 package io.github.saneea.textfunction;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -171,11 +173,18 @@ public class XmlPrettyPrint {
 		String inputFileName = args[0];
 		String outputFileName = args[1];
 
+		File tmpOutFile = File.createTempFile("XmlPrettyPrint", "xml");
+		tmpOutFile.deleteOnExit();
+
 		try (Writer outputWriter = new OutputStreamWriter(//
 				new BufferedOutputStream(//
-						new FileOutputStream(outputFileName))//
+						new FileOutputStream(tmpOutFile))//
 				, StandardCharsets.UTF_8)) {
 			execute(inputFileName, outputWriter);
+		}
+
+		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFileName))) {
+			Files.copy(tmpOutFile.toPath(), outputStream);
 		}
 	}
 }
