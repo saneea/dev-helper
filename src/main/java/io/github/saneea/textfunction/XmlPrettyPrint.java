@@ -69,7 +69,10 @@ public class XmlPrettyPrint {
 			contentStack.addLast(new ElementFrame());
 
 			try {
-				xWriter.writeCharacters(withdrawContentBefore().trim());
+				String contentBefore = withdrawContentBefore();
+				if (!contentBefore.trim().isEmpty()) {
+					xWriter.writeCharacters(contentBefore);
+				}
 				xWriter.writeStartElement(qName);// TODO use method writeStartElement with nameSpace and other
 				for (int i = 0, count = attributes.getLength(); i < count; ++i) {
 					xWriter.writeAttribute(attributes.getLocalName(i), attributes.getValue(i));
