@@ -8,12 +8,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -53,7 +54,7 @@ public class XmlPrettyPrint {
 
 		private final StringBuilder currentContent = new StringBuilder();
 
-		public XmlHandler(OutputStream outputStream) throws XMLStreamException, FactoryConfigurationError {
+		public XmlHandler(OutputStream outputStream) throws XMLStreamException {
 			xWriter = XMLOutputFactory//
 					.newFactory()//
 					.createXMLStreamWriter(outputStream);
@@ -105,20 +106,27 @@ public class XmlPrettyPrint {
 
 	}
 
-	private static void transformInBackground(PipedOutputStream in, String fileName) {
-		new Thread(() -> {
+	private static class BackgroundTransformerThread extends Thread {
 
-			try (InputStream inputStream = new PipedInputStream(in); //
-					OutputStreamWriter outputStream = new OutputStreamWriter(//
-							new BufferedOutputStream(//
-									new FileOutputStream(fileName))//
-			, StandardCharsets.UTF_8)) {
-				transform(new StreamSource(inputStream), new StreamResult(outputStream));
-			} catch (IOException | TransformerException e) {
-				throw new RuntimeException(e);
+		private final InputStream inputStream;
+		private final Writer outputWriter;
+
+		private TransformerException exception;
+
+		public BackgroundTransformerThread(InputStream inputStream, Writer outputWriter) throws IOException {
+			this.inputStream = inputStream;
+			this.outputWriter = outputWriter;
+		}
+
+		@Override
+		public void run() {
+			try {
+				transform(new StreamSource(inputStream), new StreamResult(outputWriter));
+			} catch (TransformerException e) {
+				exception = e;
 			}
+		}
 
-		}).start();
 	}
 
 	private static void transform(Source source, Result result) throws TransformerException {
@@ -132,17 +140,39 @@ public class XmlPrettyPrint {
 		transformer.transform(source, result);
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void execute(String inputFileName, Writer outputWriter) throws IOException, SAXException,
+			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
+		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
+			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(pipedInputStream,
+					outputWriter);
+			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream)) {
+
+				backgroundTransformerThread.start();
+
+				SAXParserFactory//
+						.newInstance()//
+						.newSAXParser()//
+						.parse(inputFileName, new XmlHandler(pipedOutputStream));
+			}
+
+			backgroundTransformerThread.join();
+
+			if (backgroundTransformerThread.exception != null) {
+				throw backgroundTransformerThread.exception;
+			}
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
 		String inputFileName = args[0];
 		String outputFileName = args[1];
 
-		try (PipedOutputStream pipedOutputStream = new PipedOutputStream()) {
-			transformInBackground(pipedOutputStream, outputFileName);
-			SAXParserFactory//
-					.newInstance()//
-					.newSAXParser()//
-					.parse(inputFileName, new XmlHandler(pipedOutputStream));
+		try (Writer outputWriter = new OutputStreamWriter(//
+				new BufferedOutputStream(//
+						new FileOutputStream(outputFileName))//
+				, StandardCharsets.UTF_8)) {
+			execute(inputFileName, outputWriter);
 		}
 	}
 }

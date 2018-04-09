@@ -1,0 +1,6 @@
+<project>
+    <spacesBefore>0x20</spacesBefore>
+    <tabsBefore>0x9</tabsBefore>
+    <newLinesBefore>e.g. 0x13+0x10</newLinesBefore>
+    <noSymbolsBefore>no</noSymbolsBefore>
+</project>
