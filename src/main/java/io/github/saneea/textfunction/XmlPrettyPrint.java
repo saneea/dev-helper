@@ -35,7 +35,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlPrettyPrint {
 
-	private static class XmlHandler extends DefaultHandler {
+	private static class XmlHandler extends DefaultHandler implements AutoCloseable {
 
 		private static class ElementFrame {
 			boolean hasChildrenElements;
@@ -109,6 +109,11 @@ public class XmlPrettyPrint {
 			return contentBefore;
 		}
 
+		@Override
+		public void close() throws XMLStreamException {
+			xWriter.close();
+		}
+
 	}
 
 	private static class BackgroundTransformerThread extends Thread {
@@ -151,14 +156,15 @@ public class XmlPrettyPrint {
 		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
 			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(pipedInputStream,
 					outputWriter);
-			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream)) {
+			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream); //
+					XmlHandler xmlHandler = new XmlHandler(pipedOutputStream)) {
 
 				backgroundTransformerThread.start();
 
 				SAXParserFactory//
 						.newInstance()//
 						.newSAXParser()//
-						.parse(inputFileName, new XmlHandler(pipedOutputStream));
+						.parse(inputFileName, xmlHandler);
 			}
 
 			backgroundTransformerThread.join();
