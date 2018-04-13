@@ -20,10 +20,13 @@ public class String2CppArray implements TextFunction {
 
 	private String wrapIfEscaped(char c) {
 		switch (c) {
-		case '\'':
-			return "\\'";
 		case '\0':
 			return "\\0";
+
+		case '\'':
+		case '\\':
+			return "\\" + c;
+
 		default:
 			return "" + c;
 		}
