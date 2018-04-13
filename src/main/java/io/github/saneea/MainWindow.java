@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import io.github.saneea.textfunction.String2CppArray;
 import io.github.saneea.textfunction.TextFunction;
 import io.github.saneea.textfunction.UnixPathNormalizer;
 import io.github.saneea.textfunction.WindowsPathNormalizer;
@@ -33,7 +34,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		Container contentPane = getContentPane();
 
-		contentPane.setLayout(new GridLayout(5, 3));
+		contentPane.setLayout(new GridLayout(6, 3));
 
 		contentPane.add(new JLabel("Orig: "));
 		inputTextField.addTextChangeListener(this::onInputTextChanged);
@@ -51,6 +52,7 @@ public class MainWindow extends JFrame {
 		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
 		addConverter(contentPane, "lower case", String::toLowerCase);
 		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
+		addConverter(contentPane, "C++ char array", new String2CppArray());
 
 		pack();
 	}
