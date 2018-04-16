@@ -1,7 +1,9 @@
 package io.github.saneea.textfunction;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,7 +152,7 @@ public class XmlPrettyPrint {
 		transformer.transform(source, result);
 	}
 
-	public static void execute(String inputFileName, Writer outputWriter) throws IOException, SAXException,
+	public static void execute(InputStream inputStream, Writer outputWriter) throws IOException, SAXException,
 			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
 		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
@@ -164,7 +166,7 @@ public class XmlPrettyPrint {
 				SAXParserFactory//
 						.newInstance()//
 						.newSAXParser()//
-						.parse(inputFileName, xmlHandler);
+						.parse(inputStream, xmlHandler);
 			}
 
 			backgroundTransformerThread.join();
@@ -189,11 +191,11 @@ public class XmlPrettyPrint {
 		File tmpOutFile = File.createTempFile("XmlPrettyPrint", "xml");
 		tmpOutFile.deleteOnExit();
 
-		try (Writer outputWriter = new OutputStreamWriter(//
-				new BufferedOutputStream(//
+		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFileName)); //
+				Writer outputWriter = new OutputStreamWriter(new BufferedOutputStream(//
 						new FileOutputStream(tmpOutFile))//
-				, StandardCharsets.UTF_8)) {
-			execute(inputFileName, outputWriter);
+						, StandardCharsets.UTF_8)) {
+			execute(inputStream, outputWriter);
 		}
 
 		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFileName))) {

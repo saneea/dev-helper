@@ -2,7 +2,10 @@ package io.github.saneea.textfunction;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +55,9 @@ public class XmlPrettyPrintTest {
 	}
 
 	private String prettyPrint(String inputFilePath) throws Exception {
-		try (Writer outputWriter = new StringWriter()) {
-			XmlPrettyPrint.execute(inputFilePath, outputWriter);
+		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFilePath)); //
+				Writer outputWriter = new StringWriter()) {
+			XmlPrettyPrint.execute(inputStream, outputWriter);
 			return outputWriter.toString();
 		}
 	}
