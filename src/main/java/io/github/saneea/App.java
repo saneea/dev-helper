@@ -1,5 +1,10 @@
 package io.github.saneea;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -10,13 +15,15 @@ import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.feature.Gui;
 import io.github.saneea.feature.UpperCase;
+import io.github.saneea.feature.XmlPrettyPrint;
+import io.github.saneea.feature.XmlToLine;
 
 public class App {
 
 	enum FeatureAlias {
 		GUI("gui", Gui.class), //
-		XML_TO_LINE("xmlToLine", null), //
-		XML_PRETTY_PRINT("xmlPrettyPrint", null), //
+		XML_TO_LINE("xmlToLine", XmlToLine.class), //
+		XML_PRETTY_PRINT("xmlPrettyPrint", XmlPrettyPrint.class), //
 		UPPER_CASE("upperCase", UpperCase.class);
 
 		public final String asString;
@@ -53,7 +60,11 @@ public class App {
 
 		Feature feature = featureClass.newInstance();
 
-		feature.run(System.in, System.out, args);
+		try (InputStream input = new BufferedInputStream(System.in); //
+				OutputStream output = new BufferedOutputStream(System.out)) {
+			feature.run(input, output, args);
+		}
+
 	}
 
 	private static Class<? extends Feature> getFeatureClass(String featureName) {
