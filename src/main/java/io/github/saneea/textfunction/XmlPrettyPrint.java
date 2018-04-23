@@ -58,10 +58,10 @@ public class XmlPrettyPrint {
 
 		private final StringBuilder currentContent = new StringBuilder();
 
-		public XmlHandler(OutputStream outputStream) throws XMLStreamException {
+		public XmlHandler(Writer writer) throws XMLStreamException {
 			xWriter = XMLOutputFactory//
 					.newFactory()//
-					.createXMLStreamWriter(outputStream);
+					.createXMLStreamWriter(writer);
 
 			contentStack.push(new ElementFrame());// root
 		}
@@ -156,10 +156,11 @@ public class XmlPrettyPrint {
 			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
 		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
-			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(pipedInputStream,
-					outputWriter);
-			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream); //
-					XmlHandler xmlHandler = new XmlHandler(pipedOutputStream)) {
+			BackgroundTransformerThread backgroundTransformerThread = //
+					new BackgroundTransformerThread(pipedInputStream, outputWriter);
+			try (Writer pipedOutputStreamWriter = new OutputStreamWriter(//
+					new PipedOutputStream(pipedInputStream), StandardCharsets.UTF_8); //
+					XmlHandler xmlHandler = new XmlHandler(pipedOutputStreamWriter)) {
 
 				backgroundTransformerThread.start();
 
