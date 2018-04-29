@@ -1,4 +1,4 @@
-package io.github.saneea.textfunction;
+package io.github.saneea.feature;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,11 +31,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XmlPrettyPrint {
+import io.github.saneea.Feature;
+
+public class XmlReform implements Feature {
 
 	private static class XmlHandler extends DefaultHandler implements AutoCloseable {
 
@@ -58,10 +65,10 @@ public class XmlPrettyPrint {
 
 		private final StringBuilder currentContent = new StringBuilder();
 
-		public XmlHandler(OutputStream outputStream) throws XMLStreamException {
+		public XmlHandler(OutputStream outputStream, String outputEncoding) throws XMLStreamException {
 			xWriter = XMLOutputFactory//
 					.newFactory()//
-					.createXMLStreamWriter(outputStream);
+					.createXMLStreamWriter(outputStream, outputEncoding);
 
 			contentStack.push(new ElementFrame());// root
 		}
@@ -152,14 +159,14 @@ public class XmlPrettyPrint {
 		transformer.transform(source, result);
 	}
 
-	public static void execute(InputStream inputStream, Writer outputWriter) throws IOException, SAXException,
-			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
+	public static void execute(InputStream inputStream, Writer outputWriter, String outputEncoding) throws IOException,
+			SAXException, ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
 		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
-			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(pipedInputStream,
-					outputWriter);
+			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(//
+					pipedInputStream, outputWriter);
 			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream); //
-					XmlHandler xmlHandler = new XmlHandler(pipedOutputStream)) {
+					XmlHandler xmlHandler = new XmlHandler(pipedOutputStream, outputEncoding)) {
 
 				backgroundTransformerThread.start();
 
@@ -177,29 +184,82 @@ public class XmlPrettyPrint {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		if (args.length != 2) {
-			throw new Exception(//
-					XmlPrettyPrint.class.getSimpleName() + " usage: " + //
-							XmlPrettyPrint.class.getSimpleName() + " <input/file.name> <out/put.filename>");
-		}
-
-		String inputFileName = args[0];
-		String outputFileName = args[1];
-
+	public static void execute(String inputFileName, String outputFileName, String outputEncoding) throws IOException,
+			SAXException, ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 		File tmpOutFile = File.createTempFile("XmlPrettyPrint", "xml");
 		tmpOutFile.deleteOnExit();
 
 		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFileName)); //
 				Writer outputWriter = new OutputStreamWriter(new BufferedOutputStream(//
 						new FileOutputStream(tmpOutFile))//
-						, StandardCharsets.UTF_8)) {
-			execute(inputStream, outputWriter);
+						, outputEncoding)) {
+			execute(inputStream, outputWriter, outputEncoding);
 		}
 
 		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFileName))) {
 			Files.copy(tmpOutFile.toPath(), outputStream);
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		if (args.length != 2) {
+			throw new Exception(//
+					XmlReform.class.getSimpleName() + " usage: " + //
+							XmlReform.class.getSimpleName() + " <input/file.name> <out/put.filename>");
+		}
+
+		execute(args[0], args[1], StandardCharsets.UTF_8.name());
+	}
+
+	@Override
+	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+		Options options = Params.createOptions();
+
+		CommandLineParser commandLineParser = new DefaultParser();
+		CommandLine commandLine = commandLineParser.parse(options, args);
+
+		String inputFileName = commandLine.getOptionValue(Params.INPUT);
+		String outputFileName = commandLine.getOptionValue(Params.OUTPUT);
+		String outputEncoding = commandLine.getOptionValue(Params.OUTPUT_ENCODING, StandardCharsets.UTF_8.name());
+
+		execute(inputFileName, outputFileName, outputEncoding);
+	}
+
+	public static class Params {
+
+		public static String INPUT = "input";
+		public static String OUTPUT = "output";
+		public static String OUTPUT_ENCODING = "outputEncoding";
+
+		private static Options createOptions() {
+			Options options = new Options()//
+					.addOption(Option//
+							.builder("i")//
+							.longOpt(INPUT)//
+							.hasArg(true)//
+							.argName("file path")//
+							.required(true)//
+							.desc("input file path")//
+							.build())//
+					.addOption(Option//
+							.builder("o")//
+							.longOpt(OUTPUT)//
+							.hasArg(true)//
+							.argName("file path")//
+							.required(true)//
+							.desc("output file path")//
+							.build())//
+					.addOption(Option//
+							.builder("oe")//
+							.longOpt(OUTPUT_ENCODING)//
+							.hasArg(true)//
+							.argName("encoding")//
+							.required(false)//
+							.desc("output encoding")//
+							.build());
+
+			return options;
 		}
 	}
 }

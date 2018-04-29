@@ -1,4 +1,4 @@
-package io.github.saneea.textfunction;
+package io.github.saneea.feature;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +23,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(value = Parameterized.class)
-public class XmlPrettyPrintTest {
+public class XmlReformTest {
 
 	@Parameter
 	public String testId;
@@ -57,7 +57,7 @@ public class XmlPrettyPrintTest {
 	private String prettyPrint(String inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFilePath)); //
 				Writer outputWriter = new StringWriter()) {
-			XmlPrettyPrint.execute(inputStream, outputWriter);
+			XmlReform.execute(inputStream, outputWriter, StandardCharsets.UTF_8.name());
 			return outputWriter.toString();
 		}
 	}
