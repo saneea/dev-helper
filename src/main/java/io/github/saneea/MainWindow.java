@@ -50,7 +50,7 @@ public class MainWindow extends JFrame {
 		TextField inputTextField = new TextField(5);
 		inputTextField.addTextChangeListener(this::onInputTextChanged);
 
-		JButton pasteFromClipboardButton = new JButton("<-- Paste from clipboard");
+		JButton pasteFromClipboardButton = new JButton("Paste -->");
 		pasteFromClipboardButton.addActionListener((actionEvent) -> {
 			String text = readFromClipboard();
 			if (text != null && !text.isEmpty()) {
@@ -58,9 +58,9 @@ public class MainWindow extends JFrame {
 			}
 		});
 
+		contentPane.add(pasteFromClipboardButton);
 		contentPane.add(label);
 		contentPane.add(inputTextField);
-		contentPane.add(pasteFromClipboardButton);
 	}
 
 	private void addConverter(Container contentPane, String name, TextFunction textConverter) {
@@ -69,12 +69,12 @@ public class MainWindow extends JFrame {
 		TextField outputTextField = new TextField(5);
 		outputTextField.setTextConverter(textConverter);
 
-		JButton copyToClipboardButton = new JButton("--> Copy to clipboard");
+		JButton copyToClipboardButton = new JButton("<-- Copy");
 		copyToClipboardButton.addActionListener((actionEvent) -> copyToClipboard(outputTextField.getText()));
 
+		contentPane.add(copyToClipboardButton);
 		contentPane.add(label);
 		contentPane.add(outputTextField);
-		contentPane.add(copyToClipboardButton);
 
 		outputTextFields.add(outputTextField);
 	}
