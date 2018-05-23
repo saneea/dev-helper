@@ -27,18 +27,29 @@ public class MainWindow extends JFrame {
 
 	private static final Clipboard CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-	private final TextField inputTextField = new TextField(5);
-
 	private final List<TextField> outputTextFields = new ArrayList<>();
 
 	public MainWindow() {
 		Container contentPane = getContentPane();
 
-		contentPane.setLayout(new GridLayout(6, 3));
+		addInput(contentPane);
+		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
+		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
+		addConverter(contentPane, "lower case", String::toLowerCase);
+		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
+		addConverter(contentPane, "Char array", new String2CharArray());
 
-		contentPane.add(new JLabel("Orig: "));
+		contentPane.setLayout(new GridLayout(outputTextFields.size() + 1, 3));
+
+		pack();
+	}
+
+	private void addInput(Container contentPane) {
+		JLabel label = new JLabel("Orig: ");
+
+		TextField inputTextField = new TextField(5);
 		inputTextField.addTextChangeListener(this::onInputTextChanged);
-		contentPane.add(inputTextField);
+
 		JButton pasteFromClipboardButton = new JButton("<-- Paste from clipboard");
 		pasteFromClipboardButton.addActionListener((actionEvent) -> {
 			String text = readFromClipboard();
@@ -46,25 +57,25 @@ public class MainWindow extends JFrame {
 				inputTextField.setText(text);
 			}
 		});
+
+		contentPane.add(label);
+		contentPane.add(inputTextField);
 		contentPane.add(pasteFromClipboardButton);
-
-		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
-		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
-		addConverter(contentPane, "lower case", String::toLowerCase);
-		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
-		addConverter(contentPane, "Char array", new String2CharArray());
-
-		pack();
 	}
 
 	private void addConverter(Container contentPane, String name, TextFunction textConverter) {
-		contentPane.add(new JLabel(name + ": "));
+		JLabel label = new JLabel(name + ": ");
+
 		TextField outputTextField = new TextField(5);
 		outputTextField.setTextConverter(textConverter);
-		contentPane.add(outputTextField);
+
 		JButton copyToClipboardButton = new JButton("--> Copy to clipboard");
 		copyToClipboardButton.addActionListener((actionEvent) -> copyToClipboard(outputTextField.getText()));
+
+		contentPane.add(label);
+		contentPane.add(outputTextField);
 		contentPane.add(copyToClipboardButton);
+
 		outputTextFields.add(outputTextField);
 	}
 
