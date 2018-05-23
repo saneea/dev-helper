@@ -1,14 +1,13 @@
 package io.github.saneea.textfunction;
 
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-public class String2CppArray implements TextFunction {
+public class String2CharArray implements TextFunction {
 
 	@Override
 	public String apply(String s) {
 
-		return IntStream.concat(s.chars(), IntStream.of(0))//
+		return s.chars()//
 				.mapToObj(charCode -> wrapIfEscaped((char) charCode))//
 				.map(this::wrapInQuotes)//
 				.collect(Collectors.joining(","));

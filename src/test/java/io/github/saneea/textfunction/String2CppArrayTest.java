@@ -22,7 +22,7 @@ public class String2CppArrayTest {
 	}
 
 	private void test(String input, String expected) {
-		String actual = new String2CppArray().apply(input);
+		String actual = new String2CharArray().apply(input);
 		assertEquals(expected, actual);
 	}
 

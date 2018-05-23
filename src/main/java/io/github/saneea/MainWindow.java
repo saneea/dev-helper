@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import io.github.saneea.textfunction.String2CppArray;
+import io.github.saneea.textfunction.String2CharArray;
 import io.github.saneea.textfunction.TextFunction;
 import io.github.saneea.textfunction.UnixPathNormalizer;
 import io.github.saneea.textfunction.WindowsPathNormalizer;
@@ -52,7 +52,7 @@ public class MainWindow extends JFrame {
 		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
 		addConverter(contentPane, "lower case", String::toLowerCase);
 		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
-		addConverter(contentPane, "C++ char array", new String2CppArray());
+		addConverter(contentPane, "Char array", new String2CharArray());
 
 		pack();
 	}
