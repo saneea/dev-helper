@@ -8,17 +8,17 @@ public class String2CppArrayTest {
 
 	@Test
 	public void testSimple() {
-		test("abc", "'a','b','c','\\0'");
+		test("abc", "'a','b','c'");
 	}
 
 	@Test
 	public void testEscapingQuote() {
-		test("a'bc", "'a','\\'','b','c','\\0'");
+		test("a'bc", "'a','\\'','b','c'");
 	}
 
 	@Test
 	public void testEscapingBackslash() {
-		test("a\\bc", "'a','\\\\','b','c','\\0'");
+		test("a\\bc", "'a','\\\\','b','c'");
 	}
 
 	private void test(String input, String expected) {
