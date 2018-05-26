@@ -10,7 +10,7 @@
 		<format>tar.gz</format>
 	</formats>
 
-	<includeBaseDirectory>false</includeBaseDirectory>
+	<baseDirectory>dev-helper</baseDirectory>
 
 	<fileSets>
 		<fileSet>
