@@ -6,11 +6,14 @@ import java.io.OutputStream;
 
 public class Utils {
 
-	public static void transferData(InputStream in, OutputStream out) throws IOException {
+	public static long transferData(InputStream in, OutputStream out) throws IOException {
+		long transfered = 0;
 		int wasRead;
 		byte[] buff = new byte[4096];
 		while ((wasRead = in.read(buff)) != -1) {
 			out.write(buff, 0, wasRead);
+			transfered += wasRead;
 		}
+		return transfered;
 	}
 }

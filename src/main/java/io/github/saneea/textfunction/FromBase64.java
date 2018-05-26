@@ -10,9 +10,12 @@ import java.util.Base64;
 public class FromBase64 {
 
 	public static void main(String[] args) throws IOException {
-		try (InputStream in = Base64.getDecoder().wrap(new BufferedInputStream(System.in)); //
+		try (InputStream in = new BufferedInputStream(System.in); //
 				OutputStream out = new BufferedOutputStream(System.out)) {
-			Utils.transferData(in, out);
+			long transfer;
+			do {
+				transfer = Utils.transferData(Base64.getDecoder().wrap(new InputStreamUncloseable(in)), out);
+			} while (transfer != 0);
 		}
 	}
 
