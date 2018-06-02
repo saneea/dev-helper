@@ -57,7 +57,7 @@ public class XmlReformTest {
 	private String prettyPrint(String inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFilePath)); //
 				Writer outputWriter = new StringWriter()) {
-			XmlReform.execute(inputStream, outputWriter, StandardCharsets.UTF_8.name());
+			XmlReform.execute(inputStream, outputWriter);
 			return outputWriter.toString();
 		}
 	}

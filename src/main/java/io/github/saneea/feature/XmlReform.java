@@ -65,11 +65,10 @@ public class XmlReform implements Feature {
 
 		private final StringBuilder currentContent = new StringBuilder();
 
-		public XmlHandler(OutputStream outputStream, String outputEncoding) throws XMLStreamException {
+		public XmlHandler(Writer writer) throws XMLStreamException {
 			xWriter = XMLOutputFactory//
 					.newFactory()//
-					.createXMLStreamWriter(outputStream, outputEncoding);
-
+					.createXMLStreamWriter(writer);
 			contentStack.push(new ElementFrame());// root
 		}
 
@@ -159,14 +158,15 @@ public class XmlReform implements Feature {
 		transformer.transform(source, result);
 	}
 
-	public static void execute(InputStream inputStream, Writer outputWriter, String outputEncoding) throws IOException,
-			SAXException, ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
+	public static void execute(InputStream inputStream, Writer outputWriter) throws IOException, SAXException,
+			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
 		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
-			BackgroundTransformerThread backgroundTransformerThread = new BackgroundTransformerThread(//
-					pipedInputStream, outputWriter);
-			try (OutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream); //
-					XmlHandler xmlHandler = new XmlHandler(pipedOutputStream, outputEncoding)) {
+			BackgroundTransformerThread backgroundTransformerThread = //
+					new BackgroundTransformerThread(pipedInputStream, outputWriter);
+			try (Writer pipedOutputStreamWriter = new OutputStreamWriter(//
+					new PipedOutputStream(pipedInputStream), StandardCharsets.UTF_8.name()); //
+					XmlHandler xmlHandler = new XmlHandler(pipedOutputStreamWriter)) {
 
 				backgroundTransformerThread.start();
 
@@ -193,7 +193,7 @@ public class XmlReform implements Feature {
 				Writer outputWriter = new OutputStreamWriter(new BufferedOutputStream(//
 						new FileOutputStream(tmpOutFile))//
 						, outputEncoding)) {
-			execute(inputStream, outputWriter, outputEncoding);
+			execute(inputStream, outputWriter);
 		}
 
 		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFileName))) {
