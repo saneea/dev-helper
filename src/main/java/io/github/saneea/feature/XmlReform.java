@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -126,20 +127,20 @@ public class XmlReform implements Feature {
 
 	private static class BackgroundTransformerThread extends Thread {
 
-		private final InputStream inputStream;
+		private final Reader inputReader;
 		private final Writer outputWriter;
 
 		private TransformerException exception;
 
-		public BackgroundTransformerThread(InputStream inputStream, Writer outputWriter) throws IOException {
-			this.inputStream = inputStream;
+		public BackgroundTransformerThread(Reader inputReader, Writer outputWriter) throws IOException {
+			this.inputReader = inputReader;
 			this.outputWriter = outputWriter;
 		}
 
 		@Override
 		public void run() {
 			try {
-				transform(new StreamSource(inputStream), new StreamResult(outputWriter));
+				transform(new StreamSource(inputReader), new StreamResult(outputWriter));
 			} catch (TransformerException e) {
 				exception = e;
 			}
@@ -161,12 +162,11 @@ public class XmlReform implements Feature {
 	public static void execute(InputStream inputStream, Writer outputWriter) throws IOException, SAXException,
 			ParserConfigurationException, XMLStreamException, InterruptedException, TransformerException {
 
-		try (PipedInputStream pipedInputStream = new PipedInputStream()) {
+		try (PipedReader pipedReader = new PipedReader()) {
 			BackgroundTransformerThread backgroundTransformerThread = //
-					new BackgroundTransformerThread(pipedInputStream, outputWriter);
-			try (Writer pipedOutputStreamWriter = new OutputStreamWriter(//
-					new PipedOutputStream(pipedInputStream), StandardCharsets.UTF_8.name()); //
-					XmlHandler xmlHandler = new XmlHandler(pipedOutputStreamWriter)) {
+					new BackgroundTransformerThread(pipedReader, outputWriter);
+			try (Writer pipedWriter = new PipedWriter(pipedReader); //
+					XmlHandler xmlHandler = new XmlHandler(pipedWriter)) {
 
 				backgroundTransformerThread.start();
 
