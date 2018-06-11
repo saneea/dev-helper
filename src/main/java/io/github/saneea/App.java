@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import io.github.saneea.feature.FilteredComparison;
 import io.github.saneea.feature.Gui;
 import io.github.saneea.feature.PrintArgsFeature;
 import io.github.saneea.feature.SystemProcessFeature;
@@ -24,7 +25,8 @@ public class App {
 		TO_FILE("toFile", ToFile.class), //
 		SYSTEM_PROCESS_FEATURE("systemProcess", SystemProcessFeature.class), //
 		PRINT_ARGS_FEATURE("printArgs", PrintArgsFeature.class), //
-		XML_REFORM("xmlReform", XmlReform.class);
+		XML_REFORM("xmlReform", XmlReform.class), //
+		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
 
@@ -37,7 +39,6 @@ public class App {
 	}
 
 	public static void main(String[] args) throws Exception {
-
 		String featureName = args.length != 0 ? args[0] : "gui";
 
 		Class<? extends Feature> featureClass = getFeatureClass(featureName);
