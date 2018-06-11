@@ -46,9 +46,20 @@ public class App {
 
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			feature.run(input, output, args);
+			feature.run(input, output, withoutFeatureName(args));
 		}
 
+	}
+
+	private static String[] withoutFeatureName(String[] args) {
+		String[] newArgs;
+		if (args.length == 0) {
+			newArgs = args;
+		} else {
+			newArgs = new String[args.length - 1];
+			System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+		}
+		return newArgs;
 	}
 
 	private static Class<? extends Feature> getFeatureClass(String featureName) {
