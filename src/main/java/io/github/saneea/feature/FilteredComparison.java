@@ -44,7 +44,7 @@ public class FilteredComparison implements Feature {
 	private static String getFilteredFile(String inputFileName) throws Exception {
 		File outputFile = File.createTempFile("filtered", null);
 		outputFile.deleteOnExit();
-		String outputFileName = outputFile.getName();
+		String outputFileName = outputFile.getPath();
 		XmlReform.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString());
 		return outputFileName;
 	}
