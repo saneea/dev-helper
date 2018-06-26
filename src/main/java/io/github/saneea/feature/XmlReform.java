@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -85,12 +88,24 @@ public class XmlReform implements Feature {
 					xWriter.writeCharacters(contentBefore);
 				}
 				xWriter.writeStartElement(qName);// TODO use method writeStartElement with nameSpace and other
-				for (int i = 0, count = attributes.getLength(); i < count; ++i) {
-					xWriter.writeAttribute(attributes.getLocalName(i), attributes.getValue(i));
-				}
+				onAttributes(attributes);
 			} catch (XMLStreamException e) {
 				throw new SAXException(e);
 			}
+		}
+
+		private void onAttributes(Attributes attributes) throws XMLStreamException {
+			for (Entry<String, String> entry : asMap(attributes).entrySet()) {
+				xWriter.writeAttribute(entry.getKey(), entry.getValue());
+			}
+		}
+
+		private static Map<String, String> asMap(Attributes attributes) {
+			Map<String, String> ret = new TreeMap<>();
+			for (int i = 0, count = attributes.getLength(); i < count; ++i) {
+				ret.put(attributes.getLocalName(i), attributes.getValue(i));
+			}
+			return ret;
 		}
 
 		@Override
