@@ -34,8 +34,9 @@ public class FSStructer {
 		}
 
 	}
-	
-	private static class Movement
+
+	private static class Movement {
+	}
 
 	public FSStructer(Path pathToBadStructure, Path pathToGoodStructure) {
 		this.pathToBadStructure = pathToBadStructure;
