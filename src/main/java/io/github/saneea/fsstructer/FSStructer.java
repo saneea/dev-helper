@@ -3,6 +3,7 @@ package io.github.saneea.fsstructer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -17,6 +18,10 @@ public class FSStructer {
 	private final Path pathToBadStructure;
 	private final Path pathToGoodStructure;
 	private final Scanner input = new Scanner(System.in);
+
+	public static void main(String[] args) throws IOException {
+		new FSStructer(Paths.get(args[0]), Paths.get(args[1])).execute();
+	}
 
 	private static class MovementProposition {
 
@@ -72,22 +77,32 @@ public class FSStructer {
 		}
 	}
 
-	private static class Movement {
-	}
-
 	public FSStructer(Path pathToBadStructure, Path pathToGoodStructure) {
 		this.pathToBadStructure = pathToBadStructure;
 		this.pathToGoodStructure = pathToGoodStructure;
 	}
 
 	private List<Path> getInputPaths() throws IOException {
-		return Files.walk(pathToBadStructure).collect(Collectors.toList());
+		return Files.walk(pathToBadStructure)//
+				.filter(path -> path.toFile().isFile())//
+				.collect(Collectors.toList());
 	}
 
 	public void execute() throws IOException {
 		List<Path> inputPaths = getInputPaths();
 		List<MovementProposition> propositions = getMovementPropositions(inputPaths);
 		List<MovementDecision> decisions = propositionsToDecisions(propositions);
+
+		for (MovementDecision decision : decisions) {
+			Path fileToMove = decision.getOrig();
+			Path fileInGoodStructure = decision.getDecision();
+			Path relativeTargetPath = (fileInGoodStructure == null)//
+					? Paths.get(SKIPPED_FOLDER).resolve(fileToMove.getFileName())//
+					: pathToGoodStructure.relativize(fileInGoodStructure);
+			Path absoluteTargetPath = pathToBadStructure.resolve(relativeTargetPath);
+			absoluteTargetPath.getParent().toFile().mkdirs();
+			Files.move(fileToMove, absoluteTargetPath);
+		}
 	}
 
 	private List<MovementDecision> propositionsToDecisions(List<MovementProposition> propositions) {
@@ -119,24 +134,40 @@ public class FSStructer {
 		int targetPathsCount = targetPaths.size();
 		Path orig = proposition.getOrig();
 
+		long origFileSize = orig.toFile().length();
+
 		while (true) {
 			System.out.println(//
-					"File \"" + orig + "\" (" + orig.toFile().length() + " bytes)" + //
+					"File [" + origFileSize + " bytes] \"" + orig + "\"" + //
 							" was found in " + targetPathsCount + " locations:");
+
+			int matchSizeCount = 0;
+
 			for (int i = 0; i < targetPathsCount; ++i) {
 				Path targetPath = targetPaths.get(i);
-				System.out.println(i + ". " + targetPath + "(" + targetPath.toFile().length() + " bytes)");
+				long targetFileSize = targetPath.toFile().length();
+				boolean matchSize = targetFileSize == origFileSize;
+				if (matchSize) {
+					++matchSizeCount;
+				}
+				System.out.println(//
+						i + ". [" + (matchSize ? " * " : "")//
+								+ targetFileSize + " bytes] " + targetPath);
 			}
 
+			if (matchSizeCount != 0) {
+				System.out.println("Note: file" + (matchSizeCount > 1 ? "s" : "") + " marked with star ha"
+						+ (matchSizeCount == 1 ? "s" : "ve") + " the same size");
+			}
 			System.out.println("Please enter command:");
 			System.out.println("r(reject): file will be skipped (will moved to folder \"" + SKIPPED_FOLDER + "\")");
 			System.out.println("s(select): select target index");
 
 			String command = input.nextLine();
 			switch (command.toLowerCase().trim()) {
-			case "s":
+			case "r":
 				return new MovementDecision(orig, null);
-			case "c": {
+			case "s": {
 				do {
 					System.out.println(//
 							"Enter target index from " + 0 + " to " + (targetPathsCount - 1) + " (inclusive)");
@@ -149,10 +180,12 @@ public class FSStructer {
 							System.out.println("Index " + targetIndex + " is out of range");
 						}
 					} catch (Exception e) {
-						System.out.println(e.getMessage());
+						System.out.println(e);
 					}
 				} while (true);
 			}
+			default:
+				System.out.println("\"" + command + "\" is invalid command");
 			}
 		}
 	}
@@ -178,70 +211,15 @@ public class FSStructer {
 		for (Path inputPath : inputPaths) {
 			propositions.add(new MovementProposition(//
 					inputPath, //
-					findFilesByName(inputPath.getFileName().toString())));
+					findFilesByName(inputPath.getFileName())));
 		}
 		return propositions;
 	}
 
-	private List<Path> findFilesByName(String fileName) throws IOException {
+	private List<Path> findFilesByName(Path fileName) throws IOException {
 		return Files.find(pathToGoodStructure, Integer.MAX_VALUE, //
-				(path, attributes) -> path.getFileName().toString().equals(fileName))//
+				(path, attributes) -> path.getFileName().equals(fileName))//
 				.collect(Collectors.toList());
 	}
 
-	private void processPath(MovementProposition proposition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void execute2() throws IOException {
-		Files.walk(pathToBadStructure)//
-				.map(filePath -> {
-
-					String fileName = filePath.getFileName().toString();
-
-					List<Path> filesInGood;
-
-					try {
-						filesInGood = Files.find(pathToGoodStructure, Integer.MAX_VALUE, //
-								(p, atr) -> p.getFileName().toString().equals(fileName))//
-								.collect(Collectors.toList());
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-
-					if (filesInGood.isEmpty()) {
-						return null;
-					}
-
-					if (filesInGood.size() == 1) {
-						return new FileMovement(filePath, filesInGood.get(0));
-					}
-
-					return null;
-
-				}).forEach(FileMovement::move);
-
-		// pathToBadStructure.
-	}
-
-	static class FileMovement {
-		private final Path origPath;
-		private final Path newPath;
-
-		public FileMovement(Path origPath, Path newPath) {
-			this.origPath = origPath;
-			this.newPath = newPath;
-		}
-
-		public void move() {
-			try {
-				Files.move(origPath, newPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
 }
