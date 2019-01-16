@@ -29,11 +29,16 @@ public class FilteredComparison implements Feature {
 		String leftFilteredFileName;
 		String rightFilteredFileName;
 		try {
-			leftFilteredFileName = getFilteredFile(leftFileName);
-			rightFilteredFileName = getFilteredFile(rightFileName);
+			leftFilteredFileName = getFilteredXmlFile(leftFileName);
+			rightFilteredFileName = getFilteredXmlFile(rightFileName);
 		} catch (Exception e) {
-			leftFilteredFileName = leftFileName;
-			rightFilteredFileName = rightFileName;
+			try {
+				leftFilteredFileName = getFilteredXlsFile(leftFileName);
+				rightFilteredFileName = getFilteredXlsFile(rightFileName);
+			} catch (Exception e2) {
+				leftFilteredFileName = leftFileName;
+				rightFilteredFileName = rightFileName;
+			}
 		}
 
 		ProcessBuilder processBuilder = new ProcessBuilder(comparisonTool, leftFilteredFileName, rightFilteredFileName);
@@ -41,11 +46,19 @@ public class FilteredComparison implements Feature {
 		process.waitFor();
 	}
 
-	private static String getFilteredFile(String inputFileName) throws Exception {
-		File outputFile = File.createTempFile("filtered", null);
+	private static String getFilteredXmlFile(String inputFileName) throws Exception {
+		File outputFile = File.createTempFile("filteredXml", null);
 		outputFile.deleteOnExit();
 		String outputFileName = outputFile.getPath();
 		XmlReform.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString());
+		return outputFileName;
+	}
+
+	private static String getFilteredXlsFile(String inputFileName) throws Exception {
+		File outputFile = File.createTempFile("filteredXls", null);
+		outputFile.deleteOnExit();
+		String outputFileName = outputFile.getPath();
+		XlsToCsv.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString());
 		return outputFileName;
 	}
 
