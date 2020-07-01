@@ -58,7 +58,7 @@ public class FilteredComparison implements Feature {
 		File outputFile = File.createTempFile("filteredXls", null);
 		outputFile.deleteOnExit();
 		String outputFileName = outputFile.getPath();
-		XlsToCsv.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString());
+		XlsToCsv.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString(), "Common");
 		return outputFileName;
 	}
 
