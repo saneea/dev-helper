@@ -24,7 +24,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import com.opencsv.CSVWriter;
+import com.opencsv.CSVWriterBuilder;
+import com.opencsv.ICSVWriter;
 
 import io.github.saneea.Feature;
 
@@ -36,9 +37,8 @@ public class XlsToCsv implements Feature {
 				HSSFWorkbook workbook = new HSSFWorkbook(inputStream); //
 				Writer outputWriter = new OutputStreamWriter(new BufferedOutputStream(//
 						new FileOutputStream(outputFileName)), outputEncoding); //
-				CSVWriter csvWriter = new CSVWriter(outputWriter)
 
-		) {
+				ICSVWriter csvWriter = new CSVWriterBuilder(outputWriter).withEscapeChar('\\').build()) {
 			HSSFSheet sheet = workbook.getSheet(sheetName);
 			for (Row row : sheet) {
 				csvWriter.writeNext(rowToStringArray(row));
