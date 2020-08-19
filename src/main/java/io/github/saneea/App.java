@@ -7,6 +7,7 @@ import java.io.OutputStream;
 
 import io.github.saneea.feature.FilteredComparison;
 import io.github.saneea.feature.Gui;
+import io.github.saneea.feature.JsonPrettyPrint;
 import io.github.saneea.feature.PrintArgsFeature;
 import io.github.saneea.feature.SystemProcessFeature;
 import io.github.saneea.feature.ToFile;
@@ -21,6 +22,7 @@ public class App {
 		GUI("gui", Gui.class), //
 		XML_TO_LINE("xmlToLine", XmlToLine.class), //
 		XML_PRETTY_PRINT("xmlPrettyPrint", XmlPrettyPrint.class), //
+		JSON_PRETTY_PRINT("jsonPrettyPrint", JsonPrettyPrint.class), //
 		UPPER_CASE("upperCase", UpperCase.class), //
 		TO_FILE("toFile", ToFile.class), //
 		SYSTEM_PROCESS_FEATURE("systemProcess", SystemProcessFeature.class), //
