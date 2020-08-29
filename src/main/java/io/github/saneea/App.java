@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import io.github.saneea.feature.FilteredComparison;
+import io.github.saneea.feature.FromHex;
 import io.github.saneea.feature.Gui;
 import io.github.saneea.feature.JsonPrettyPrint;
 import io.github.saneea.feature.PrintArgsFeature;
@@ -13,6 +14,7 @@ import io.github.saneea.feature.SystemProcessFeature;
 import io.github.saneea.feature.TextFromClipboard;
 import io.github.saneea.feature.TextToClipboard;
 import io.github.saneea.feature.ToFile;
+import io.github.saneea.feature.ToHex;
 import io.github.saneea.feature.UpperCase;
 import io.github.saneea.feature.XmlPrettyPrint;
 import io.github.saneea.feature.XmlReform;
@@ -32,6 +34,8 @@ public class App {
 		XML_REFORM("xmlReform", XmlReform.class), //
 		FROM_CLIPBOARD("fromCB", TextFromClipboard.class), //
 		TO_CLIPBOARD("toCB", TextToClipboard.class), //
+		TO_HEX("toHex", ToHex.class), //
+		FROM_HEX("fromHex", FromHex.class), //
 		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
