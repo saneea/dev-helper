@@ -10,6 +10,8 @@ import io.github.saneea.feature.Gui;
 import io.github.saneea.feature.JsonPrettyPrint;
 import io.github.saneea.feature.PrintArgsFeature;
 import io.github.saneea.feature.SystemProcessFeature;
+import io.github.saneea.feature.TextFromClipboard;
+import io.github.saneea.feature.TextToClipboard;
 import io.github.saneea.feature.ToFile;
 import io.github.saneea.feature.UpperCase;
 import io.github.saneea.feature.XmlPrettyPrint;
@@ -28,6 +30,8 @@ public class App {
 		SYSTEM_PROCESS_FEATURE("systemProcess", SystemProcessFeature.class), //
 		PRINT_ARGS_FEATURE("printArgs", PrintArgsFeature.class), //
 		XML_REFORM("xmlReform", XmlReform.class), //
+		FROM_CLIPBOARD("fromCB", TextFromClipboard.class), //
+		TO_CLIPBOARD("toCB", TextToClipboard.class), //
 		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
