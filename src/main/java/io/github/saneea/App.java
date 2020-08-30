@@ -19,6 +19,8 @@ import io.github.saneea.feature.UpperCase;
 import io.github.saneea.feature.XmlPrettyPrint;
 import io.github.saneea.feature.XmlReform;
 import io.github.saneea.feature.XmlToLine;
+import io.github.saneea.textfunction.FromBase64;
+import io.github.saneea.textfunction.ToBase64;
 
 public class App {
 
@@ -36,6 +38,8 @@ public class App {
 		TO_CLIPBOARD("toCB", TextToClipboard.class), //
 		TO_HEX("toHex", ToHex.class), //
 		FROM_HEX("fromHex", FromHex.class), //
+		TO_BASE64("toBase64", ToBase64.class), //
+		FROM_BASE64("fromBase64", FromBase64.class), //
 		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
