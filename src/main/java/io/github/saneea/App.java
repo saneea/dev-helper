@@ -16,6 +16,7 @@ import io.github.saneea.feature.TextFromClipboard;
 import io.github.saneea.feature.TextToClipboard;
 import io.github.saneea.feature.ToFile;
 import io.github.saneea.feature.ToHex;
+import io.github.saneea.feature.UUID;
 import io.github.saneea.feature.UpperCase;
 import io.github.saneea.feature.XmlPrettyPrint;
 import io.github.saneea.feature.XmlReform;
@@ -42,6 +43,7 @@ public class App {
 		TO_BASE64("toBase64", ToBase64.class), //
 		FROM_BASE64("fromBase64", FromBase64.class), //
 		HASH("hash", Hash.class), //
+		UUID_FEATURE("uuid", UUID.class), //
 		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
