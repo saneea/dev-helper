@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import io.github.saneea.feature.FilteredComparison;
 import io.github.saneea.feature.FromHex;
 import io.github.saneea.feature.Gui;
+import io.github.saneea.feature.Hash;
 import io.github.saneea.feature.JsonPrettyPrint;
 import io.github.saneea.feature.PrintArgsFeature;
 import io.github.saneea.feature.SystemProcessFeature;
@@ -40,6 +41,7 @@ public class App {
 		FROM_HEX("fromHex", FromHex.class), //
 		TO_BASE64("toBase64", ToBase64.class), //
 		FROM_BASE64("fromBase64", FromBase64.class), //
+		HASH("hash", Hash.class), //
 		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
 
 		public final String asString;
