@@ -36,6 +36,7 @@
 								</program>
 							</programs>
 							<showConsoleWindow>true</showConsoleWindow>
+							<copyConfigurationDirectory>true</copyConfigurationDirectory>
 						</configuration>
 					</execution>
 					<execution>

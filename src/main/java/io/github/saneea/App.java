@@ -2,72 +2,63 @@ package io.github.saneea;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-
-import io.github.saneea.feature.FilteredComparison;
-import io.github.saneea.feature.FromHex;
-import io.github.saneea.feature.Gui;
-import io.github.saneea.feature.Hash;
-import io.github.saneea.feature.JsonPrettyPrint;
-import io.github.saneea.feature.PrintArgsFeature;
-import io.github.saneea.feature.SystemProcessFeature;
-import io.github.saneea.feature.TextFromClipboard;
-import io.github.saneea.feature.TextToClipboard;
-import io.github.saneea.feature.ToFile;
-import io.github.saneea.feature.ToHex;
-import io.github.saneea.feature.UUID;
-import io.github.saneea.feature.UpperCase;
-import io.github.saneea.feature.XmlPrettyPrint;
-import io.github.saneea.feature.XmlReform;
-import io.github.saneea.feature.XmlToLine;
-import io.github.saneea.textfunction.FromBase64;
-import io.github.saneea.textfunction.ToBase64;
+import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 public class App {
 
-	enum FeatureAlias {
-		GUI("gui", Gui.class), //
-		XML_TO_LINE("xmlToLine", XmlToLine.class), //
-		XML_PRETTY_PRINT("xmlPrettyPrint", XmlPrettyPrint.class), //
-		JSON_PRETTY_PRINT("jsonPrettyPrint", JsonPrettyPrint.class), //
-		UPPER_CASE("upperCase", UpperCase.class), //
-		TO_FILE("toFile", ToFile.class), //
-		SYSTEM_PROCESS_FEATURE("systemProcess", SystemProcessFeature.class), //
-		PRINT_ARGS_FEATURE("printArgs", PrintArgsFeature.class), //
-		XML_REFORM("xmlReform", XmlReform.class), //
-		FROM_CLIPBOARD("fromCB", TextFromClipboard.class), //
-		TO_CLIPBOARD("toCB", TextToClipboard.class), //
-		TO_HEX("toHex", ToHex.class), //
-		FROM_HEX("fromHex", FromHex.class), //
-		TO_BASE64("toBase64", ToBase64.class), //
-		FROM_BASE64("fromBase64", FromBase64.class), //
-		HASH("hash", Hash.class), //
-		UUID_FEATURE("uuid", UUID.class), //
-		FILTERED_COMPARISON("filteredComparison", FilteredComparison.class);
+	private final Properties featureAlias;
 
-		public final String asString;
-
-		public final Class<? extends Feature> featureClass;
-
-		FeatureAlias(String asString, Class<? extends Feature> featureClass) {
-			this.asString = asString;
-			this.featureClass = featureClass;
+	private App() throws IOException {
+		featureAlias = new Properties();
+		InputStream resourceAsStream = App.class.getResourceAsStream("/feature-alias.properties");
+		try (Reader reader = new InputStreamReader(//
+				new BufferedInputStream(//
+						resourceAsStream), //
+				StandardCharsets.UTF_8)) {
+			featureAlias.load(reader);
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
 		String featureName = args.length != 0 ? args[0] : "gui";
 
-		Class<? extends Feature> featureClass = getFeatureClass(featureName);
+		App app = new App();
+		app.run(featureName, withoutFeatureName(args));
+	}
 
-		Feature feature = featureClass.newInstance();
+	private void run(String featureName, String[] args) throws Exception {
+		Class<?> featureClass = getFeatureClass(featureName);
 
+		Feature feature = createFeatureInstance(featureClass);
+
+		runFeature(feature, args);
+	}
+
+	private void runFeature(Feature feature, String[] args) throws Exception {
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			feature.run(input, output, withoutFeatureName(args));
+			feature.run(input, output, args);
+		}
+	}
+
+	private Feature createFeatureInstance(Class<?> featureClass)
+			throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Object featureObj = featureClass.getDeclaredConstructor().newInstance();
+
+		if (!(featureObj instanceof Feature)) {
+			throw new IllegalArgumentException(
+					"Class " + featureObj.getClass() + " does not implement " + Feature.class);
 		}
 
+		Feature feature = (Feature) featureObj;
+		return feature;
 	}
 
 	private static String[] withoutFeatureName(String[] args) {
@@ -81,13 +72,14 @@ public class App {
 		return newArgs;
 	}
 
-	private static Class<? extends Feature> getFeatureClass(String featureName) {
-		for (FeatureAlias feature : FeatureAlias.values()) {
-			if (feature.asString.equals(featureName)) {
-				return feature.featureClass;
-			}
+	private Class<?> getFeatureClass(String featureName) throws ClassNotFoundException {
+		String featureClassName = featureAlias.getProperty(featureName);
+
+		if (featureClassName == null) {
+			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
 		}
-		throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
+
+		return Class.forName(featureClassName);
 	}
 
 }
