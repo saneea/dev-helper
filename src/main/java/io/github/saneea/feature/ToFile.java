@@ -2,48 +2,47 @@ package io.github.saneea.feature;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 import io.github.saneea.Feature;
 
 public class ToFile implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
-		try {
-			runInternal(input, output, args);
-		} catch (Exception e) {
-			try (PrintWriter printWriter = new PrintWriter("I am exception.txt")) {
-				e.printStackTrace(printWriter);
+	public void run(InputStream input, OutputStream output, OutputStream err, String[] args) throws Exception {
+
+		String outFileName = args[0];
+		String commandLine = args[1];
+
+		Process forkProc = Runtime.getRuntime().exec(commandLine);
+
+		try (ByteArrayOutputStream buffer = new ByteArrayOutputStream(); //
+				InputStream forkProcOut = new BufferedInputStream(forkProc.getInputStream())) {
+
+			forkProcOut.transferTo(buffer);
+
+			int exitCode = forkProc.waitFor();
+
+			if (exitCode == 0) {
+				try (OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(outFileName))) {
+					buffer.writeTo(outFileStream);
+				}
+			} else {
+				try (InputStream forkProcErr = new BufferedInputStream(forkProc.getErrorStream())) {
+					forkProcErr.transferTo(err);
+				}
+				System.exit(exitCode);
 			}
 		}
 	}
 
-	public void runInternal(InputStream input, OutputStream output, String[] args) throws Exception {
-		File tmpOutFile = File.createTempFile("XmlPrettyPrint", "xml", new File("."));
-		// tmpOutFile.deleteOnExit();
-
-		try (OutputStream tmpFileStream = new BufferedOutputStream(new FileOutputStream(tmpOutFile))) {
-			transfer(input, tmpFileStream);
-		}
-
-		try (InputStream tmpFileStream = new BufferedInputStream(new FileInputStream(tmpOutFile))) {
-			transfer(tmpFileStream, output);
-		}
-	}
-
-	private void transfer(InputStream input, OutputStream output) throws IOException {
-		byte[] buf = new byte[4096];
-		int wasRead;
-		while ((wasRead = input.read(buf)) != -1) {
-			output.write(buf, 0, wasRead);
-		}
+	@Override
+	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+		throw new IllegalStateException(
+				"This method should not be used. Use run(InputStream, OutputStream, OutputStream, String[])");
 	}
 
 }
