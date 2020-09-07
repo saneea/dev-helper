@@ -44,7 +44,7 @@ public class App {
 	private void runFeature(Feature feature, String[] args) throws Exception {
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			feature.run(input, output, args);
+			feature.run(input, output, System.err, args);
 		}
 	}
 
