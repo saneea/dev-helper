@@ -1,0 +1,1 @@
+dvh toFile %2 "dvh.bat jsonPrettyPrint < %1"
