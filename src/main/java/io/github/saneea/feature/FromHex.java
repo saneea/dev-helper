@@ -15,6 +15,11 @@ public class FromHex implements Feature {
 	private static final int HEX_DIGITS_IN_BYTE = 2;
 
 	@Override
+	public String getShortDescription() {
+		return "convert input hex sequence to binary";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws IOException {
 		try (Reader reader = new InputStreamReader(context.getIn())) {
 

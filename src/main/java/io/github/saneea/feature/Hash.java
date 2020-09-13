@@ -20,6 +20,11 @@ public class Hash implements Feature {
 
 	private static int BUFFER_SIZE = 4096;
 
+	@Override
+	public String getShortDescription() {
+		return "calc hash (md5, sha-* etc.)";
+	}
+
 	public static void execute(InputStream input, OutputStream output, String alg)
 			throws NoSuchAlgorithmException, IOException {
 

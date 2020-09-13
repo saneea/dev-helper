@@ -19,6 +19,11 @@ import io.github.saneea.FeatureContext;
 public class XmlToLine implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "remove whitespaces from XML";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		try (XmlHandler xmlHandler = new XmlHandler(context.getOut())) {
 			SAXParserFactory//

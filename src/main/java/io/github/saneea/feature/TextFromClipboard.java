@@ -11,6 +11,11 @@ import io.github.saneea.FeatureContext;
 public class TextFromClipboard implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "read text from clipboard";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

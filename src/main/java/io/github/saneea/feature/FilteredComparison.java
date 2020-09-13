@@ -15,6 +15,11 @@ import io.github.saneea.FeatureContext;
 public class FilteredComparison implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "run external comparison tool for 'pretty printed' xml files";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		Options options = Params.createOptions();
 

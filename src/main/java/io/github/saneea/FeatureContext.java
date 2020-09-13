@@ -8,13 +8,14 @@ public class FeatureContext {
 	final InputStream in;
 	final OutputStream out;
 	final OutputStream err;
+	final AppContext appContext;
 
-	public FeatureContext(String[] args, InputStream in, OutputStream out, OutputStream err) {
-		super();
+	public FeatureContext(String[] args, InputStream in, OutputStream out, OutputStream err, AppContext appContext) {
 		this.args = args;
 		this.in = in;
 		this.out = out;
 		this.err = err;
+		this.appContext = appContext;
 	}
 
 	public String[] getArgs() {
@@ -31,6 +32,10 @@ public class FeatureContext {
 
 	public OutputStream getErr() {
 		return err;
+	}
+
+	public AppContext getAppContext() {
+		return appContext;
 	}
 
 }

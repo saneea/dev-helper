@@ -9,6 +9,11 @@ import io.github.saneea.FeatureContext;
 public class UUID implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "generate new UUID";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		try (Writer writer = new OutputStreamWriter(context.getOut())) {
 			writer.write(java.util.UUID.randomUUID().toString());

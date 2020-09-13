@@ -12,6 +12,11 @@ import io.github.saneea.FeatureContext;
 public class ToHex implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "convert input binary sequence to hex";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws IOException {
 		run(context.getIn(), context.getOut());
 	}

@@ -13,6 +13,11 @@ import io.github.saneea.FeatureContext;
 public class TextToClipboard implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "write text to clipboard";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

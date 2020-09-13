@@ -49,6 +49,11 @@ import io.github.saneea.FeatureContext;
 
 public class XmlReform implements Feature {
 
+	@Override
+	public String getShortDescription() {
+		return "remove whitespaces from XML and then format XML with indents";
+	}
+
 	private static class XmlHandler extends DefaultHandler implements AutoCloseable {
 
 		private static class ElementFrame {

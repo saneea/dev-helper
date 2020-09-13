@@ -11,6 +11,11 @@ import io.github.saneea.FeatureContext;
 public class UpperCase implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "convert text to UPPER CASE";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		try (Reader reader = new InputStreamReader(context.getIn()); //
 				Writer writer = new OutputStreamWriter(context.getOut())) {

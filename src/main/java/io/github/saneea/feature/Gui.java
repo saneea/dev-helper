@@ -10,6 +10,11 @@ import io.github.saneea.MainWindow;
 public class Gui implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "gui window for some text conversions";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		SwingUtilities.invokeLater(() -> {
 			MainWindow mainWindow = new MainWindow();

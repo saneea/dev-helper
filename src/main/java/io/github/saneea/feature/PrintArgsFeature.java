@@ -8,6 +8,11 @@ import io.github.saneea.FeatureContext;
 public class PrintArgsFeature implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "print CLI args";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		try (PrintWriter writer = new PrintWriter(context.getOut())) {
 			for (String arg : context.getArgs()) {

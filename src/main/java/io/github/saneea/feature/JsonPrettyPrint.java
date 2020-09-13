@@ -13,6 +13,11 @@ import io.github.saneea.FeatureContext;
 public class JsonPrettyPrint implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "format JSON with indents";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		Gson gson = new GsonBuilder()//
 				.setPrettyPrinting()//

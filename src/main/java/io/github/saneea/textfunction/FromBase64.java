@@ -10,6 +10,11 @@ import io.github.saneea.FeatureContext;
 public class FromBase64 implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "convert input Base64 sequence to binary";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws IOException {
 		try (InputStream base64stream = Base64.getDecoder().wrap(context.getIn())) {
 			base64stream.transferTo(context.getOut());

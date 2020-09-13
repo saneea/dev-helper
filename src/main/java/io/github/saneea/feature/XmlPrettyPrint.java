@@ -17,6 +17,11 @@ import io.github.saneea.FeatureContext;
 public class XmlPrettyPrint implements Feature {
 
 	@Override
+	public String getShortDescription() {
+		return "format XML with indents";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		transformerFactory.setAttribute("indent-number", 4);// pretty-print gap

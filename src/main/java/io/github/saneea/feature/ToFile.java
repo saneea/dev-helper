@@ -29,6 +29,11 @@ public class ToFile implements Feature {
 	}
 
 	@Override
+	public String getShortDescription() {
+		return "save output of external process to file";
+	}
+
+	@Override
 	public void run(FeatureContext context) throws Exception {
 
 		String[] args = context.getArgs();
