@@ -12,6 +12,7 @@ import java.nio.file.Path;
 
 import org.junit.Test;
 
+import io.github.saneea.FeatureContext;
 import io.github.saneea.TestUtils;
 import io.github.saneea.textfunction.FromBase64;
 import io.github.saneea.textfunction.ToBase64;
@@ -43,7 +44,7 @@ public class Base64Test {
 	private byte[] fromBase64(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new FromBase64().run(inputStream, output, new String[] {});
+			new FromBase64().run(new FeatureContext(new String[] {}, inputStream, output, null));
 			return output.toByteArray();
 		}
 	}
@@ -51,7 +52,7 @@ public class Base64Test {
 	private String toBase64(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new ToBase64().run(inputStream, output, new String[] {});
+			new ToBase64().run(new FeatureContext(new String[] {}, inputStream, output, null));
 			return new String(output.toByteArray(), StandardCharsets.UTF_8);
 		}
 	}

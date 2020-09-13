@@ -1,20 +1,19 @@
 package io.github.saneea.feature;
 
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class UpperCase implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
-		try (Reader reader = new InputStreamReader(input); //
-				Writer writer = new OutputStreamWriter(output)) {
+	public void run(FeatureContext context) throws Exception {
+		try (Reader reader = new InputStreamReader(context.getIn()); //
+				Writer writer = new OutputStreamWriter(context.getOut())) {
 			char[] buf = new char[4096];
 			int wasRead;
 			while ((wasRead = reader.read(buf)) != -1) {

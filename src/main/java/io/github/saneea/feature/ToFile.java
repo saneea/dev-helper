@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class ToFile implements Feature {
 
@@ -28,14 +29,15 @@ public class ToFile implements Feature {
 	}
 
 	@Override
-	public void run(InputStream input, OutputStream output, OutputStream err, String[] args) throws Exception {
+	public void run(FeatureContext context) throws Exception {
 
+		String[] args = context.getArgs();
 		String outFileName = args[Arg.FILE_NAME];
 		String commandLine = args[Arg.COMMAND_LINE];
 
 		Process forkProc = Runtime.getRuntime().exec(commandLine);
 
-		try (ByteArrayBuffer stdOutBuffer = getStdOutFromProc(forkProc, err)) {
+		try (ByteArrayBuffer stdOutBuffer = getStdOutFromProc(forkProc, context.getErr())) {
 			int exitCode = forkProc.waitFor();
 
 			if (exitCode == ExitCode.OK) {
@@ -86,12 +88,6 @@ public class ToFile implements Feature {
 			in.transferTo(out);
 			return out;
 		};
-	}
-
-	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
-		throw new IllegalStateException(
-				"This method should not be used. Use run(InputStream, OutputStream, OutputStream, String[])");
 	}
 
 	private interface ByteArrayBuffer extends Closeable {

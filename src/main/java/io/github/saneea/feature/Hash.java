@@ -14,6 +14,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class Hash implements Feature {
 
@@ -31,19 +32,19 @@ public class Hash implements Feature {
 			md.update(buf, 0, len);
 		}
 
-		new ToHex().run(new ByteArrayInputStream(md.digest()), output, new String[] {});
+		new ToHex().run(new ByteArrayInputStream(md.digest()), output);
 	}
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+	public void run(FeatureContext context) throws Exception {
 		Options options = Params.createOptions();
 
 		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
+		CommandLine commandLine = commandLineParser.parse(options, context.getArgs());
 
 		String alg = commandLine.getOptionValue(Params.ALGORITHM);
 
-		execute(input, output, alg);
+		execute(context.getIn(), context.getOut(), alg);
 	}
 
 	public static class Params {

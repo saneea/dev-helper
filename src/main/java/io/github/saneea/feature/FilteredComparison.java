@@ -1,8 +1,6 @@
 package io.github.saneea.feature;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.cli.CommandLine;
@@ -12,15 +10,16 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class FilteredComparison implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+	public void run(FeatureContext context) throws Exception {
 		Options options = Params.createOptions();
 
 		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
+		CommandLine commandLine = commandLineParser.parse(options, context.getArgs());
 
 		String comparisonTool = commandLine.getOptionValue(Params.COMPARISON_TOOL);
 		String leftFileName = commandLine.getOptionValue(Params.LEFT);

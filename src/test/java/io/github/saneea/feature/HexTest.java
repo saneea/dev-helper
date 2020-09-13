@@ -12,6 +12,7 @@ import java.nio.file.Path;
 
 import org.junit.Test;
 
+import io.github.saneea.FeatureContext;
 import io.github.saneea.TestUtils;
 
 public class HexTest {
@@ -42,7 +43,7 @@ public class HexTest {
 	private byte[] fromHex(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new FromHex().run(inputStream, output, new String[] {});
+			new FromHex().run(new FeatureContext(new String[] {}, inputStream, output, null));
 			return output.toByteArray();
 		}
 	}
@@ -50,7 +51,7 @@ public class HexTest {
 	private String toHex(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new ToHex().run(inputStream, output, new String[] {});
+			new ToHex().run(new FeatureContext(new String[] {}, inputStream, output, null));
 			return new String(output.toByteArray(), StandardCharsets.UTF_8);
 		}
 	}

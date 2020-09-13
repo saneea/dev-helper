@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,16 +14,17 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class XmlToLine implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
-		try (XmlHandler xmlHandler = new XmlHandler(output)) {
+	public void run(FeatureContext context) throws Exception {
+		try (XmlHandler xmlHandler = new XmlHandler(context.getOut())) {
 			SAXParserFactory//
 					.newInstance()//
 					.newSAXParser()//
-					.parse(input, xmlHandler);
+					.parse(context.getIn(), xmlHandler);
 		}
 	}
 

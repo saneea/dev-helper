@@ -1,7 +1,5 @@
 package io.github.saneea.feature;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -14,11 +12,12 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class XmlPrettyPrint implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+	public void run(FeatureContext context) throws Exception {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		transformerFactory.setAttribute("indent-number", 4);// pretty-print gap
 		Transformer transformer = transformerFactory.newTransformer();
@@ -26,8 +25,8 @@ public class XmlPrettyPrint implements Feature {
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");// pretty-print
 
-		Source source = new StreamSource(input);
-		try (Writer writer = new OutputStreamWriter(output)) {
+		Source source = new StreamSource(context.getIn());
+		try (Writer writer = new OutputStreamWriter(context.getOut())) {
 			Result result = new StreamResult(writer);
 			transformer.transform(source, result);
 		}

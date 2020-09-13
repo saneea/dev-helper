@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class XmlReform implements Feature {
 
@@ -228,11 +229,11 @@ public class XmlReform implements Feature {
 	}
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws Exception {
+	public void run(FeatureContext context) throws Exception {
 		Options options = Params.createOptions();
 
 		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
+		CommandLine commandLine = commandLineParser.parse(options, context.getArgs());
 
 		String inputFileName = commandLine.getOptionValue(Params.INPUT);
 		String outputFileName = commandLine.getOptionValue(Params.OUTPUT);

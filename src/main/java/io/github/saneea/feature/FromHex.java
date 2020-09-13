@@ -1,7 +1,6 @@
 package io.github.saneea.feature;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -9,14 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class FromHex implements Feature {
 
 	private static final int HEX_DIGITS_IN_BYTE = 2;
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws IOException {
-		try (Reader reader = new InputStreamReader(input)) {
+	public void run(FeatureContext context) throws IOException {
+		try (Reader reader = new InputStreamReader(context.getIn())) {
+
+			OutputStream output = context.getOut();
 
 			while (true) {
 

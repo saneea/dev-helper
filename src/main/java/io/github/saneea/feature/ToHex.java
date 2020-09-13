@@ -7,11 +7,16 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 
 public class ToHex implements Feature {
 
 	@Override
-	public void run(InputStream input, OutputStream output, String[] args) throws IOException {
+	public void run(FeatureContext context) throws IOException {
+		run(context.getIn(), context.getOut());
+	}
+
+	public void run(InputStream input, OutputStream output) throws IOException {
 		try (Writer writer = new OutputStreamWriter(output)) {
 
 			int charCode;
