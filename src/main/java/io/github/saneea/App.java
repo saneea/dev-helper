@@ -23,13 +23,13 @@ public class App {
 
 	private void run(String featureName, String[] args) throws Exception {
 		Feature feature = appContext.createFeature(featureName);
-		runFeature(feature, args);
+		runFeature(feature, featureName, args);
 	}
 
-	private void runFeature(Feature feature, String[] args) throws Exception {
+	private void runFeature(Feature feature, String featureName, String[] args) throws Exception {
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			feature.run(new FeatureContext(args, input, output, System.err, appContext));
+			feature.run(new FeatureContext(args, input, output, System.err, appContext, featureName));
 		}
 	}
 

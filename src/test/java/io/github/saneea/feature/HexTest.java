@@ -43,7 +43,7 @@ public class HexTest {
 	private byte[] fromHex(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new FromHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null));
+			new FromHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
 			return output.toByteArray();
 		}
 	}
@@ -51,7 +51,7 @@ public class HexTest {
 	private String toHex(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new ToHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null));
+			new ToHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
 			return new String(output.toByteArray(), StandardCharsets.UTF_8);
 		}
 	}

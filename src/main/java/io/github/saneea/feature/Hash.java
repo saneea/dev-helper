@@ -6,12 +6,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
@@ -41,15 +44,27 @@ public class Hash implements Feature {
 	}
 
 	@Override
-	public void run(FeatureContext context) throws Exception {
+	public void run(FeatureContext context) throws ParseException, NoSuchAlgorithmException, IOException {
+		Optional<CommandLine> commandLine = parseArgs(context);
+
+		if (commandLine.isPresent()) {
+			String alg = commandLine.get().getOptionValue(Params.ALGORITHM);
+			execute(context.getIn(), context.getOut(), alg);
+		}
+	}
+
+	private Optional<CommandLine> parseArgs(FeatureContext context) {
 		Options options = Params.createOptions();
-
 		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, context.getArgs());
 
-		String alg = commandLine.getOptionValue(Params.ALGORITHM);
+		try {
+			return Optional.of(commandLineParser.parse(options, context.getArgs()));
+		} catch (ParseException e) {
+			context.getErr().println(e.getLocalizedMessage());
+			new HelpFormatter().printHelp(context.getFeatureAlias(), options);
 
-		execute(context.getIn(), context.getOut(), alg);
+			return Optional.empty();
+		}
 	}
 
 	public static class Params {
@@ -57,14 +72,15 @@ public class Hash implements Feature {
 		public static String ALGORITHM = "algorithm";
 
 		private static Options createOptions() {
+
 			Options options = new Options()//
 					.addOption(Option//
 							.builder("a")//
 							.longOpt(ALGORITHM)//
 							.hasArg(true)//
-							.argName("algorithm")//
+							.argName("algorithm name")//
 							.required(true)//
-							.desc("hash algorithm")//
+							.desc("hash algorithm (e.g. md5)")//
 							.build());
 
 			return options;
