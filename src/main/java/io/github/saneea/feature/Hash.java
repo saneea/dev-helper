@@ -6,22 +6,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.api.CLIParameterized;
 
-public class Hash implements Feature {
+public class Hash implements Feature, CLIParameterized {
 
 	private static int BUFFER_SIZE = 4096;
+
+	private CommandLine commandLine;
 
 	@Override
 	public String getShortDescription() {
@@ -44,27 +42,19 @@ public class Hash implements Feature {
 	}
 
 	@Override
-	public void run(FeatureContext context) throws ParseException, NoSuchAlgorithmException, IOException {
-		Optional<CommandLine> commandLine = parseArgs(context);
-
-		if (commandLine.isPresent()) {
-			String alg = commandLine.get().getOptionValue(Params.ALGORITHM);
-			execute(context.getIn(), context.getOut(), alg);
-		}
+	public void run(FeatureContext context) throws NoSuchAlgorithmException, IOException {
+		String alg = commandLine.getOptionValue(Params.ALGORITHM);
+		execute(context.getIn(), context.getOut(), alg);
 	}
 
-	private Optional<CommandLine> parseArgs(FeatureContext context) {
-		Options options = Params.createOptions();
-		CommandLineParser commandLineParser = new DefaultParser();
+	@Override
+	public Options createOptions() {
+		return Params.createOptions();
+	}
 
-		try {
-			return Optional.of(commandLineParser.parse(options, context.getArgs()));
-		} catch (ParseException e) {
-			context.getErr().println(e.getLocalizedMessage());
-			new HelpFormatter().printHelp(context.getFeatureAlias(), options);
-
-			return Optional.empty();
-		}
+	@Override
+	public void setCommandLine(CommandLine commandLine) {
+		this.commandLine = commandLine;
 	}
 
 	public static class Params {
