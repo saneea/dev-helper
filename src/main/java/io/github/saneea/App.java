@@ -14,6 +14,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -85,7 +86,10 @@ public class App {
 
 		List<AutoCloseable> closeables = new ArrayList<>();
 
-		Options cliOptions = feature.createOptions();
+		Options cliOptions = new Options();
+		for (Option option : feature.getOptions()) {
+			cliOptions.addOption(option);
+		}
 
 		PrintStreamOutputable printStreamOutputable = null;
 		if (feature instanceof PrintStreamOutputable) {

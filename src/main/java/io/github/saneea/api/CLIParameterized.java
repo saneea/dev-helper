@@ -2,13 +2,17 @@ package io.github.saneea.api;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
 
 public interface CLIParameterized {
 
-	Options createOptions();
+	Option[] EMPTY_OPTIONS_ARRAY = {};
 
-	void setCommandLine(CommandLine commandLine);
+	default Option[] getOptions() {
+		return EMPTY_OPTIONS_ARRAY;
+	}
+
+	default void setCommandLine(CommandLine commandLine) {
+	}
 
 	interface CommonOptions {
 

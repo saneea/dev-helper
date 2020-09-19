@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
@@ -48,7 +47,7 @@ public class Hash implements Feature, CLIParameterized {
 	}
 
 	@Override
-	public Options createOptions() {
+	public Option[] getOptions() {
 		return Params.createOptions();
 	}
 
@@ -61,17 +60,17 @@ public class Hash implements Feature, CLIParameterized {
 
 		public static String ALGORITHM = "algorithm";
 
-		private static Options createOptions() {
+		private static Option[] createOptions() {
 
-			Options options = new Options()//
-					.addOption(Option//
+			Option[] options = { //
+					Option//
 							.builder("a")//
 							.longOpt(ALGORITHM)//
 							.hasArg(true)//
 							.argName("algorithm name")//
 							.required(true)//
 							.desc("hash algorithm (e.g. md5)")//
-							.build());
+							.build() };
 
 			return options;
 		}
