@@ -1,7 +1,6 @@
 package io.github.saneea.feature;
 
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.PrintStream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -22,10 +21,10 @@ public class UUID implements Feature, CLIParameterized {
 	@Override
 	public void run(FeatureContext context) throws Exception {
 		String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
-		try (Writer writer = outputEncoding == null//
-				? new OutputStreamWriter(context.getOut())//
-				: new OutputStreamWriter(context.getOut(), outputEncoding)) {
-			writer.write(java.util.UUID.randomUUID().toString());
+		try (PrintStream writer = outputEncoding == null//
+				? new PrintStream(context.getOut(), false)//
+				: new PrintStream(context.getOut(), false, outputEncoding)) {
+			writer.print(java.util.UUID.randomUUID().toString());
 		}
 	}
 
