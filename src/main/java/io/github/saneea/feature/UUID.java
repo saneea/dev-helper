@@ -8,10 +8,11 @@ import org.apache.commons.cli.Options;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.api.CLIParameterized;
+import io.github.saneea.api.PrintStreamOutputable;
 
-public class UUID implements Feature, CLIParameterized {
+public class UUID implements Feature, CLIParameterized, PrintStreamOutputable {
 
-	private CommandLine commandLine;
+	private PrintStream out;
 
 	@Override
 	public String getShortDescription() {
@@ -20,23 +21,21 @@ public class UUID implements Feature, CLIParameterized {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
-		try (PrintStream writer = outputEncoding == null//
-				? new PrintStream(context.getOut(), false)//
-				: new PrintStream(context.getOut(), false, outputEncoding)) {
-			writer.print(java.util.UUID.randomUUID().toString());
-		}
+		out.print(java.util.UUID.randomUUID().toString());
 	}
 
 	@Override
 	public Options createOptions() {
-		return new Options()//
-				.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
+		return new Options();
 	}
 
 	@Override
 	public void setCommandLine(CommandLine commandLine) {
-		this.commandLine = commandLine;
+	}
+
+	@Override
+	public void setPrintStreamOut(PrintStream out) {
+		this.out = out;
 	}
 
 }
