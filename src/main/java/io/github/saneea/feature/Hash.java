@@ -3,7 +3,7 @@ package io.github.saneea.feature;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -13,19 +13,22 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.api.CLIParameterized;
+import io.github.saneea.api.PrintStreamOutputable;
 
-public class Hash implements Feature, CLIParameterized {
+public class Hash implements Feature, CLIParameterized, PrintStreamOutputable {
 
 	private static int BUFFER_SIZE = 4096;
 
 	private CommandLine commandLine;
+
+	private PrintStream out;
 
 	@Override
 	public String getShortDescription() {
 		return "calc hash (md5, sha-* etc.)";
 	}
 
-	public static void execute(InputStream input, OutputStream output, String alg)
+	private static void execute(InputStream input, PrintStream out, String alg)
 			throws NoSuchAlgorithmException, IOException {
 
 		MessageDigest md = MessageDigest.getInstance(alg);
@@ -37,13 +40,13 @@ public class Hash implements Feature, CLIParameterized {
 			md.update(buf, 0, len);
 		}
 
-		new ToHex().run(new ByteArrayInputStream(md.digest()), output);
+		ToHex.run(new ByteArrayInputStream(md.digest()), out);
 	}
 
 	@Override
 	public void run(FeatureContext context) throws NoSuchAlgorithmException, IOException {
 		String alg = commandLine.getOptionValue(Params.ALGORITHM);
-		execute(context.getIn(), context.getOut(), alg);
+		execute(context.getIn(), out, alg);
 	}
 
 	@Override
@@ -74,5 +77,10 @@ public class Hash implements Feature, CLIParameterized {
 
 			return options;
 		}
+	}
+
+	@Override
+	public void setPrintStreamOut(PrintStream out) {
+		this.out = out;
 	}
 }

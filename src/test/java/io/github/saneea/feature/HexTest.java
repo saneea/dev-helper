@@ -6,6 +6,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +18,8 @@ import io.github.saneea.FeatureContext;
 import io.github.saneea.TestUtils;
 
 public class HexTest {
+
+	private static final Charset TEST_CHARSET = StandardCharsets.UTF_8;
 
 	private static final Path TEST_CASES_ROOT = TestUtils.TESTS_RESOURCES.resolve("hex");
 
@@ -51,8 +55,15 @@ public class HexTest {
 	private String toHex(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new ToHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
-			return new String(output.toByteArray(), StandardCharsets.UTF_8);
+
+			ToHex feature = new ToHex();
+
+			try (PrintStream printStreamOut = new PrintStream(output, false, TEST_CHARSET)) {
+				feature.setPrintStreamOut(printStreamOut);
+				feature.run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
+			}
+
+			return new String(output.toByteArray(), TEST_CHARSET);
 		}
 	}
 
