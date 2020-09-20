@@ -1,5 +1,5 @@
 # dev-helper
-[![Build Status](https://travis-ci.org/saneea/dev-helper.svg?branch=master)](https://travis-ci.org/saneea/dev-helper)
+[![Build Status](https://api.travis-ci.com/saneea/dev-helper.svg?branch=master)](https://travis-ci.org/saneea/dev-helper)
 
 It is just simple tool for helping developer with every daily routines.
 dev-helper can do for you tasks like that:
