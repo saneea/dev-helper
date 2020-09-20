@@ -17,6 +17,7 @@ public interface CLIParameterized {
 	interface CommonOptions {
 
 		String OUTPUT_ENCODING = "outputEncoding";
+		String INPUT_ENCODING = "inputEncoding";
 
 		Option OUTPUT_ENCODING_OPTION = Option//
 				.builder("oe")//
@@ -25,6 +26,15 @@ public interface CLIParameterized {
 				.argName("encoding")//
 				.required(false)//
 				.desc("output encoding")//
+				.build();
+
+		Option INPUT_ENCODING_OPTION = Option//
+				.builder("ie")//
+				.longOpt(INPUT_ENCODING)//
+				.hasArg(true)//
+				.argName("encoding")//
+				.required(false)//
+				.desc("input encoding")//
 				.build();
 	}
 }

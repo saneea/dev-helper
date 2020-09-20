@@ -6,7 +6,9 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -45,9 +47,12 @@ public class HexTest {
 	}
 
 	private byte[] fromHex(Path inputFilePath) throws Exception {
-		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
+		try (Reader reader = new InputStreamReader(//
+				new BufferedInputStream(Files.newInputStream(inputFilePath))); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new FromHex().run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
+			FromHex feature = new FromHex();
+			feature.setReader(reader);
+			feature.run(new FeatureContext(new String[] {}, null, output, null, null, "featureName"));
 			return output.toByteArray();
 		}
 	}

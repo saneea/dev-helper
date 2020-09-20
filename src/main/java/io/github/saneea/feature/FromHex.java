@@ -1,7 +1,6 @@
 package io.github.saneea.feature;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -9,10 +8,14 @@ import java.util.List;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.api.CLIParameterized;
+import io.github.saneea.api.ReaderInputtable;
 
-public class FromHex implements Feature {
+public class FromHex implements Feature, CLIParameterized, ReaderInputtable {
 
 	private static final int HEX_DIGITS_IN_BYTE = 2;
+
+	private Reader reader;
 
 	@Override
 	public String getShortDescription() {
@@ -21,27 +24,23 @@ public class FromHex implements Feature {
 
 	@Override
 	public void run(FeatureContext context) throws IOException {
-		try (Reader reader = new InputStreamReader(context.getIn())) {
+		OutputStream output = context.getOut();
 
-			OutputStream output = context.getOut();
+		while (true) {
 
-			while (true) {
+			List<Character> buf = readCharsFromStream(reader);
 
-				List<Character> buf = readCharsFromStream(reader);
-
-				if (buf == null || buf.size() < HEX_DIGITS_IN_BYTE) {
-					break;
-				}
-
-				int digit0 = Character.digit(buf.get(0), 16);
-				int digit1 = Character.digit(buf.get(1), 16);
-
-				int byteCode = ((digit0 << 4) + digit1);
-
-				output.write(byteCode);
+			if (buf == null || buf.size() < HEX_DIGITS_IN_BYTE) {
+				break;
 			}
-		}
 
+			int digit0 = Character.digit(buf.get(0), 16);
+			int digit1 = Character.digit(buf.get(1), 16);
+
+			int byteCode = ((digit0 << 4) + digit1);
+
+			output.write(byteCode);
+		}
 	}
 
 	private List<Character> readCharsFromStream(Reader reader) throws IOException {
@@ -62,6 +61,11 @@ public class FromHex implements Feature {
 		}
 
 		return outChars;
+	}
+
+	@Override
+	public void setReader(Reader reader) {
+		this.reader = reader;
 	}
 
 }

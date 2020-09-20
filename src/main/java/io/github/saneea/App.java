@@ -4,8 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import org.apache.commons.cli.ParseException;
 import io.github.saneea.api.CLIParameterized;
 import io.github.saneea.api.CLIParameterized.CommonOptions;
 import io.github.saneea.api.PrintStreamOutputable;
+import io.github.saneea.api.ReaderInputtable;
 
 public class App {
 
@@ -48,19 +51,20 @@ public class App {
 
 	private void runFeature(Feature feature, String featureName, String[] args) throws Exception {
 
-		List<AutoCloseable> closeables = new ArrayList<>();
+		try (InputStream input = new BufferedInputStream(System.in); //
+				OutputStream output = new BufferedOutputStream(System.out)) {
+			List<AutoCloseable> closeables = new ArrayList<>();
 
-		try {
-			if (feature instanceof CLIParameterized) {
-				closeables.addAll(handleCLIParameterizedFeature((CLIParameterized) feature, featureName, args));
-			}
+			try {
+				if (feature instanceof CLIParameterized) {
+					closeables.addAll(handleCLIParameterizedFeature((CLIParameterized) feature, featureName, args));
+				}
 
-			try (InputStream input = new BufferedInputStream(System.in); //
-					OutputStream output = new BufferedOutputStream(System.out)) {
 				feature.run(new FeatureContext(args, input, output, System.err, appContext, featureName));
+
+			} finally {
+				closeAll(closeables);
 			}
-		} finally {
-			closeAll(closeables);
 		}
 	}
 
@@ -97,6 +101,12 @@ public class App {
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
+		ReaderInputtable readerInputtable = null;
+		if (feature instanceof ReaderInputtable) {
+			readerInputtable = (ReaderInputtable) feature;
+			cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
+		}
+
 		CommandLineParser commandLineParser = new DefaultParser();
 
 		CommandLine commandLine;
@@ -113,13 +123,27 @@ public class App {
 		if (printStreamOutputable != null) {
 			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
 
+			OutputStream out = new BufferedOutputStream(System.out);
+
 			PrintStream printStreamOut = outputEncoding == null//
-					? System.out//
-					: new PrintStream(System.out, false, outputEncoding);
+					? new PrintStream(out)//
+					: new PrintStream(out, false, outputEncoding);
 
 			printStreamOutputable.setPrintStreamOut(printStreamOut);
 
 			closeables.add(printStreamOut);
+		}
+
+		if (readerInputtable != null) {
+			String inputEncoding = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING);
+
+			Reader readerIn = inputEncoding == null//
+					? new InputStreamReader(System.in)//
+					: new InputStreamReader(System.in, inputEncoding);
+
+			readerInputtable.setReader(readerIn);
+
+			closeables.add(readerIn);
 		}
 
 		return closeables;
