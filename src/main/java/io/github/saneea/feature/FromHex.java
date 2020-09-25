@@ -9,13 +9,16 @@ import java.util.List;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.api.CLIParameterized;
+import io.github.saneea.api.OutputStreamOutputable;
 import io.github.saneea.api.ReaderInputtable;
 
-public class FromHex implements Feature, CLIParameterized, ReaderInputtable {
+public class FromHex implements Feature, CLIParameterized, ReaderInputtable, OutputStreamOutputable {
 
 	private static final int HEX_DIGITS_IN_BYTE = 2;
 
 	private Reader reader;
+
+	private OutputStream output;
 
 	@Override
 	public String getShortDescription() {
@@ -24,8 +27,6 @@ public class FromHex implements Feature, CLIParameterized, ReaderInputtable {
 
 	@Override
 	public void run(FeatureContext context) throws IOException {
-		OutputStream output = context.getOut();
-
 		while (true) {
 
 			List<Character> buf = readCharsFromStream(reader);
@@ -66,6 +67,11 @@ public class FromHex implements Feature, CLIParameterized, ReaderInputtable {
 	@Override
 	public void setReader(Reader reader) {
 		this.reader = reader;
+	}
+
+	@Override
+	public void setOutputStreamOut(OutputStream output) {
+		this.output = output;
 	}
 
 }

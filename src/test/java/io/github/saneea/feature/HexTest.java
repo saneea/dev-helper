@@ -52,7 +52,8 @@ public class HexTest {
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
 			FromHex feature = new FromHex();
 			feature.setReader(reader);
-			feature.run(new FeatureContext(new String[] {}, null, output, null, null, "featureName"));
+			feature.setOutputStreamOut(output);
+			feature.run(new FeatureContext(new String[] {}, null, null, null, null, "featureName"));
 			return output.toByteArray();
 		}
 	}
