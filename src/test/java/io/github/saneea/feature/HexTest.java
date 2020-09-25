@@ -65,8 +65,9 @@ public class HexTest {
 			ToHex feature = new ToHex();
 
 			try (PrintStream printStreamOut = new PrintStream(output, false, TEST_CHARSET)) {
+				feature.setInputStream(inputStream);
 				feature.setPrintStreamOut(printStreamOut);
-				feature.run(new FeatureContext(new String[] {}, inputStream, output, null, null, "featureName"));
+				feature.run(new FeatureContext(new String[] {}, null, output, null, null, "featureName"));
 			}
 
 			return new String(output.toByteArray(), TEST_CHARSET);

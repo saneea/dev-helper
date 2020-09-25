@@ -22,6 +22,7 @@ import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.api.CLIParameterized;
 import io.github.saneea.api.CLIParameterized.CommonOptions;
+import io.github.saneea.api.InputStreamInputtable;
 import io.github.saneea.api.OutputStreamOutputable;
 import io.github.saneea.api.PrintStreamOutputable;
 import io.github.saneea.api.ReaderInputtable;
@@ -152,6 +153,13 @@ public class App {
 			readerInputtable.setReader(readerIn);
 
 			closeables.add(readerIn);
+		}
+
+		if (feature instanceof InputStreamInputtable) {
+			InputStreamInputtable inputStreamInputtable = (InputStreamInputtable) feature;
+			InputStream in = System.in;
+			inputStreamInputtable.setInputStream(in);
+			closeables.add(in);
 		}
 
 		return closeables;

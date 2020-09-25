@@ -7,10 +7,12 @@ import java.io.PrintStream;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.api.CLIParameterized;
+import io.github.saneea.api.InputStreamInputtable;
 import io.github.saneea.api.PrintStreamOutputable;
 
-public class ToHex implements Feature, CLIParameterized, PrintStreamOutputable {
+public class ToHex implements Feature, CLIParameterized, InputStreamInputtable, PrintStreamOutputable {
 
+	private InputStream in;
 	private PrintStream out;
 
 	@Override
@@ -20,7 +22,7 @@ public class ToHex implements Feature, CLIParameterized, PrintStreamOutputable {
 
 	@Override
 	public void run(FeatureContext context) throws IOException {
-		run(context.getIn(), out);
+		run(in, out);
 	}
 
 	public static void run(InputStream input, PrintStream out) throws IOException {
@@ -33,6 +35,11 @@ public class ToHex implements Feature, CLIParameterized, PrintStreamOutputable {
 			}
 			out.print(hexString);
 		}
+	}
+
+	@Override
+	public void setInputStream(InputStream in) {
+		this.in = in;
 	}
 
 	@Override
