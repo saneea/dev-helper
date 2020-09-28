@@ -57,7 +57,7 @@ public class App {
 					closeables.addAll(handleCLIParameterizedFeature((Feature.CLI) feature, featureName, args));
 				}
 
-				feature.run(new FeatureContext(args, input, output, System.err, appContext, featureName));
+				feature.run(new FeatureContext(args, input, output, System.err, appContext));
 
 			} finally {
 				closeAll(closeables);

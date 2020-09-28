@@ -10,16 +10,13 @@ public class FeatureContext {
 	final OutputStream out;
 	final PrintStream err;
 	final AppContext appContext;
-	final String featureAlias;
 
-	public FeatureContext(String[] args, InputStream in, OutputStream out, PrintStream err, AppContext appContext,
-			String featureAlias) {
+	public FeatureContext(String[] args, InputStream in, OutputStream out, PrintStream err, AppContext appContext) {
 		this.args = args;
 		this.in = in;
 		this.out = out;
 		this.err = err;
 		this.appContext = appContext;
-		this.featureAlias = featureAlias;
 	}
 
 	public String[] getArgs() {
@@ -40,10 +37,6 @@ public class FeatureContext {
 
 	public AppContext getAppContext() {
 		return appContext;
-	}
-
-	public String getFeatureAlias() {
-		return featureAlias;
 	}
 
 }
