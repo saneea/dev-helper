@@ -6,11 +6,8 @@ import java.io.PrintStream;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.api.CLIParameterized;
-import io.github.saneea.api.InputStreamInputtable;
-import io.github.saneea.api.PrintStreamOutputable;
 
-public class ToHex implements Feature, CLIParameterized, InputStreamInputtable, PrintStreamOutputable {
+public class ToHex implements Feature, Feature.CLI, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
 
 	private InputStream in;
 	private PrintStream out;

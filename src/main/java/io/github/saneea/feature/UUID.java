@@ -4,10 +4,8 @@ import java.io.PrintStream;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.api.CLIParameterized;
-import io.github.saneea.api.PrintStreamOutputable;
 
-public class UUID implements Feature, CLIParameterized, PrintStreamOutputable {
+public class UUID implements Feature, Feature.CLI, Feature.Out.Text.PrintStream {
 
 	private PrintStream out;
 

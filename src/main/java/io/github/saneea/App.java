@@ -20,12 +20,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import io.github.saneea.api.CLIParameterized;
-import io.github.saneea.api.CLIParameterized.CommonOptions;
-import io.github.saneea.api.InputStreamInputtable;
-import io.github.saneea.api.OutputStreamOutputable;
-import io.github.saneea.api.PrintStreamOutputable;
-import io.github.saneea.api.ReaderInputtable;
+import io.github.saneea.Feature.CLI.CommonOptions;
 
 public class App {
 
@@ -58,8 +53,8 @@ public class App {
 			List<AutoCloseable> closeables = new ArrayList<>();
 
 			try {
-				if (feature instanceof CLIParameterized) {
-					closeables.addAll(handleCLIParameterizedFeature((CLIParameterized) feature, featureName, args));
+				if (feature instanceof Feature.CLI) {
+					closeables.addAll(handleCLIParameterizedFeature((Feature.CLI) feature, featureName, args));
 				}
 
 				feature.run(new FeatureContext(args, input, output, System.err, appContext, featureName));
@@ -87,8 +82,8 @@ public class App {
 		}
 	}
 
-	private List<AutoCloseable> handleCLIParameterizedFeature(CLIParameterized feature, String featureName,
-			String[] args) throws UnsupportedEncodingException {
+	private List<AutoCloseable> handleCLIParameterizedFeature(Feature.CLI feature, String featureName, String[] args)
+			throws UnsupportedEncodingException {
 
 		List<AutoCloseable> closeables = new ArrayList<>();
 
@@ -97,15 +92,15 @@ public class App {
 			cliOptions.addOption(option);
 		}
 
-		PrintStreamOutputable printStreamOutputable = null;
-		if (feature instanceof PrintStreamOutputable) {
-			printStreamOutputable = (PrintStreamOutputable) feature;
+		Feature.Out.Text.PrintStream printStreamOutputable = null;
+		if (feature instanceof Feature.Out.Text.PrintStream) {
+			printStreamOutputable = (Feature.Out.Text.PrintStream) feature;
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
-		ReaderInputtable readerInputtable = null;
-		if (feature instanceof ReaderInputtable) {
-			readerInputtable = (ReaderInputtable) feature;
+		Feature.In.Text.Reader readerInputtable = null;
+		if (feature instanceof Feature.In.Text.Reader) {
+			readerInputtable = (Feature.In.Text.Reader) feature;
 			cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
 		}
 
@@ -136,8 +131,8 @@ public class App {
 			closeables.add(printStreamOut);
 		}
 
-		if (feature instanceof OutputStreamOutputable) {
-			OutputStreamOutputable outputStreamOutputable = (OutputStreamOutputable) feature;
+		if (feature instanceof Feature.Out.Bin.Stream) {
+			Feature.Out.Bin.Stream outputStreamOutputable = (Feature.Out.Bin.Stream) feature;
 			OutputStream out = new BufferedOutputStream(System.out);
 			outputStreamOutputable.setOutputStreamOut(out);
 			closeables.add(out);
@@ -155,8 +150,8 @@ public class App {
 			closeables.add(readerIn);
 		}
 
-		if (feature instanceof InputStreamInputtable) {
-			InputStreamInputtable inputStreamInputtable = (InputStreamInputtable) feature;
+		if (feature instanceof Feature.In.Bin.Stream) {
+			Feature.In.Bin.Stream inputStreamInputtable = (Feature.In.Bin.Stream) feature;
 			InputStream in = System.in;
 			inputStreamInputtable.setInputStream(in);
 			closeables.add(in);

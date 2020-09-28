@@ -8,11 +8,8 @@ import java.util.List;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.api.CLIParameterized;
-import io.github.saneea.api.OutputStreamOutputable;
-import io.github.saneea.api.ReaderInputtable;
 
-public class FromHex implements Feature, CLIParameterized, ReaderInputtable, OutputStreamOutputable {
+public class FromHex implements Feature, Feature.CLI, Feature.In.Text.Reader, Feature.Out.Bin.Stream {
 
 	private static final int HEX_DIGITS_IN_BYTE = 2;
 

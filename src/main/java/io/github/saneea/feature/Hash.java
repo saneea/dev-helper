@@ -12,10 +12,8 @@ import org.apache.commons.cli.Option;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.api.CLIParameterized;
-import io.github.saneea.api.PrintStreamOutputable;
 
-public class Hash implements Feature, CLIParameterized, PrintStreamOutputable {
+public class Hash implements Feature, Feature.CLI, Feature.Out.Text.PrintStream {
 
 	private static int BUFFER_SIZE = 4096;
 
