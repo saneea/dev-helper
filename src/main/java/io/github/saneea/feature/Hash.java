@@ -13,12 +13,13 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class Hash implements Feature, Feature.CLI, Feature.Out.Text.PrintStream {
+public class Hash implements Feature, Feature.CLI, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
 
 	private static int BUFFER_SIZE = 4096;
 
 	private CommandLine commandLine;
 
+	private InputStream in;
 	private PrintStream out;
 
 	@Override
@@ -44,7 +45,7 @@ public class Hash implements Feature, Feature.CLI, Feature.Out.Text.PrintStream 
 	@Override
 	public void run(FeatureContext context) throws NoSuchAlgorithmException, IOException {
 		String alg = commandLine.getOptionValue(Params.ALGORITHM);
-		execute(context.getIn(), out, alg);
+		execute(in, out, alg);
 	}
 
 	@Override
@@ -80,5 +81,10 @@ public class Hash implements Feature, Feature.CLI, Feature.Out.Text.PrintStream 
 	@Override
 	public void setPrintStreamOut(PrintStream out) {
 		this.out = out;
+	}
+
+	@Override
+	public void setInputStream(InputStream in) {
+		this.in = in;
 	}
 }
