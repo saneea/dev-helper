@@ -28,6 +28,10 @@ public interface Feature {
 				void setPrintStreamOut(java.io.PrintStream printStreamOut);
 			}
 
+			interface Writer extends CLI {
+				void setWriter(java.io.Writer out);
+			}
+
 		}
 
 	}

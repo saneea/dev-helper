@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +94,8 @@ public class App {
 			cliOptions.addOption(option);
 		}
 
-		if (feature instanceof Feature.Out.Text.PrintStream) {
+		if (feature instanceof Feature.Out.Text.PrintStream//
+				|| feature instanceof Feature.Out.Text.Writer) {
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
@@ -127,6 +130,22 @@ public class App {
 			printStreamOutputable.setPrintStreamOut(printStreamOut);
 
 			closeables.add(printStreamOut);
+		}
+
+		if (feature instanceof Feature.Out.Text.Writer) {
+			Feature.Out.Text.Writer writerOutputable = (Feature.Out.Text.Writer) feature;
+
+			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
+
+			OutputStream out = new BufferedOutputStream(System.out);
+
+			Writer writerOut = outputEncoding == null//
+					? new OutputStreamWriter(out)//
+					: new OutputStreamWriter(out, outputEncoding);
+
+			writerOutputable.setWriter(writerOut);
+
+			closeables.add(writerOut);
 		}
 
 		if (feature instanceof Feature.Out.Bin.Stream) {
