@@ -92,15 +92,11 @@ public class App {
 			cliOptions.addOption(option);
 		}
 
-		Feature.Out.Text.PrintStream printStreamOutputable = null;
 		if (feature instanceof Feature.Out.Text.PrintStream) {
-			printStreamOutputable = (Feature.Out.Text.PrintStream) feature;
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
-		Feature.In.Text.Reader readerInputtable = null;
 		if (feature instanceof Feature.In.Text.Reader) {
-			readerInputtable = (Feature.In.Text.Reader) feature;
 			cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
 		}
 
@@ -117,7 +113,9 @@ public class App {
 
 		feature.setCommandLine(commandLine);
 
-		if (printStreamOutputable != null) {
+		if (feature instanceof Feature.Out.Text.PrintStream) {
+			Feature.Out.Text.PrintStream printStreamOutputable = (Feature.Out.Text.PrintStream) feature;
+
 			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
 
 			OutputStream out = new BufferedOutputStream(System.out);
@@ -138,7 +136,9 @@ public class App {
 			closeables.add(out);
 		}
 
-		if (readerInputtable != null) {
+		if (feature instanceof Feature.In.Text.Reader) {
+			Feature.In.Text.Reader readerInputtable = (Feature.In.Text.Reader) feature;
+
 			String inputEncoding = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING);
 
 			Reader readerIn = inputEncoding == null//
