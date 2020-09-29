@@ -1,15 +1,15 @@
 package io.github.saneea.feature;
 
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class UpperCase implements Feature, Feature.In.Text.Reader {
+public class UpperCase implements Feature, Feature.In.Text.Reader, Feature.Out.Text.Writer {
 
 	private Reader in;
+	private Writer out;
 
 	@Override
 	public String getShortDescription() {
@@ -18,15 +18,12 @@ public class UpperCase implements Feature, Feature.In.Text.Reader {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		try (Writer writer = new OutputStreamWriter(context.getOut())) {
-			char[] buf = new char[4096];
-			int wasRead;
-			while ((wasRead = in.read(buf)) != -1) {
-				convertChars(buf, wasRead);
-				writer.write(buf, 0, wasRead);
-			}
+		char[] buf = new char[4096];
+		int wasRead;
+		while ((wasRead = in.read(buf)) != -1) {
+			convertChars(buf, wasRead);
+			out.write(buf, 0, wasRead);
 		}
-
 	}
 
 	private void convertChars(char[] buf, int size) {
@@ -42,6 +39,11 @@ public class UpperCase implements Feature, Feature.In.Text.Reader {
 	@Override
 	public void setReader(Reader in) {
 		this.in = in;
+	}
+
+	@Override
+	public void setWriter(Writer out) {
+		this.out = out;
 	}
 
 }
