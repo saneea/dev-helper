@@ -26,7 +26,7 @@ public class TextToClipboard implements Feature, Feature.In.Text.String {
 	}
 
 	@Override
-	public void setString(String in) {
+	public void setIn(String in) {
 		this.in = in;
 	}
 

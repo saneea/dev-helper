@@ -62,12 +62,12 @@ public class FromHex implements Feature, Feature.CLI, Feature.In.Text.Reader, Fe
 	}
 
 	@Override
-	public void setReader(Reader reader) {
+	public void setIn(Reader reader) {
 		this.reader = reader;
 	}
 
 	@Override
-	public void setOutputStreamOut(OutputStream output) {
+	public void setOut(OutputStream output) {
 		this.output = output;
 	}
 

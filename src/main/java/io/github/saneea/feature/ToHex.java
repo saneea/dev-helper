@@ -35,12 +35,12 @@ public class ToHex implements Feature, Feature.CLI, Feature.In.Bin.Stream, Featu
 	}
 
 	@Override
-	public void setInputStream(InputStream in) {
+	public void setIn(InputStream in) {
 		this.in = in;
 	}
 
 	@Override
-	public void setPrintStreamOut(PrintStream out) {
+	public void setOut(PrintStream out) {
 		this.out = out;
 	}
 

@@ -79,12 +79,12 @@ public class Hash implements Feature, Feature.CLI, Feature.In.Bin.Stream, Featur
 	}
 
 	@Override
-	public void setPrintStreamOut(PrintStream out) {
+	public void setOut(PrintStream out) {
 		this.out = out;
 	}
 
 	@Override
-	public void setInputStream(InputStream in) {
+	public void setIn(InputStream in) {
 		this.in = in;
 	}
 }

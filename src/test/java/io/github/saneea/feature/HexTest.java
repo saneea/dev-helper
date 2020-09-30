@@ -51,8 +51,8 @@ public class HexTest {
 				new BufferedInputStream(Files.newInputStream(inputFilePath))); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
 			FromHex feature = new FromHex();
-			feature.setReader(reader);
-			feature.setOutputStreamOut(output);
+			feature.setIn(reader);
+			feature.setOut(output);
 			feature.run(new FeatureContext(new String[] {}, null, null, null, null));
 			return output.toByteArray();
 		}
@@ -65,8 +65,8 @@ public class HexTest {
 			ToHex feature = new ToHex();
 
 			try (PrintStream printStreamOut = new PrintStream(output, false, TEST_CHARSET)) {
-				feature.setInputStream(inputStream);
-				feature.setPrintStreamOut(printStreamOut);
+				feature.setIn(inputStream);
+				feature.setOut(printStreamOut);
 				feature.run(new FeatureContext(new String[] {}, null, output, null, null));
 			}
 

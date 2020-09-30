@@ -128,7 +128,7 @@ public class App {
 					? new PrintStream(out)//
 					: new PrintStream(out, false, outputEncoding);
 
-			printStreamOutputable.setPrintStreamOut(printStreamOut);
+			printStreamOutputable.setOut(printStreamOut);
 
 			closeables.add(printStreamOut);
 		}
@@ -144,7 +144,7 @@ public class App {
 					? new OutputStreamWriter(out)//
 					: new OutputStreamWriter(out, outputEncoding);
 
-			writerOutputable.setWriter(writerOut);
+			writerOutputable.setOut(writerOut);
 
 			closeables.add(writerOut);
 		}
@@ -152,7 +152,7 @@ public class App {
 		if (feature instanceof Feature.Out.Bin.Stream) {
 			Feature.Out.Bin.Stream outputStreamOutputable = (Feature.Out.Bin.Stream) feature;
 			OutputStream out = new BufferedOutputStream(System.out);
-			outputStreamOutputable.setOutputStreamOut(out);
+			outputStreamOutputable.setOut(out);
 			closeables.add(out);
 		}
 
@@ -165,7 +165,7 @@ public class App {
 					? new InputStreamReader(System.in)//
 					: new InputStreamReader(System.in, inputEncoding);
 
-			readerInputtable.setReader(readerIn);
+			readerInputtable.setIn(readerIn);
 
 			closeables.add(readerIn);
 		}
@@ -183,14 +183,14 @@ public class App {
 
 				readerIn.transferTo(sw);
 
-				stringInputtable.setString(sw.toString());
+				stringInputtable.setIn(sw.toString());
 			}
 		}
 
 		if (feature instanceof Feature.In.Bin.Stream) {
 			Feature.In.Bin.Stream inputStreamInputtable = (Feature.In.Bin.Stream) feature;
 			InputStream in = System.in;
-			inputStreamInputtable.setInputStream(in);
+			inputStreamInputtable.setIn(in);
 			closeables.add(in);
 		}
 

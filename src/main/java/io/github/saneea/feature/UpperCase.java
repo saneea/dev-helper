@@ -37,12 +37,12 @@ public class UpperCase implements Feature, Feature.In.Text.Reader, Feature.Out.T
 	}
 
 	@Override
-	public void setReader(Reader in) {
+	public void setIn(Reader in) {
 		this.in = in;
 	}
 
 	@Override
-	public void setWriter(Writer out) {
+	public void setOut(Writer out) {
 		this.out = out;
 	}
 

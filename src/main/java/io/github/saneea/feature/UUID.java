@@ -20,7 +20,7 @@ public class UUID implements Feature, Feature.CLI, Feature.Out.Text.PrintStream 
 	}
 
 	@Override
-	public void setPrintStreamOut(PrintStream out) {
+	public void setOut(PrintStream out) {
 		this.out = out;
 	}
 

@@ -17,7 +17,7 @@ public interface Feature {
 		interface Bin {
 
 			interface Stream {
-				void setOutputStreamOut(OutputStream outputStreamOut);
+				void setOut(OutputStream outputStreamOut);
 			}
 
 		}
@@ -25,11 +25,11 @@ public interface Feature {
 		interface Text {
 
 			interface PrintStream extends CLI {
-				void setPrintStreamOut(java.io.PrintStream printStreamOut);
+				void setOut(java.io.PrintStream printStreamOut);
 			}
 
 			interface Writer extends CLI {
-				void setWriter(java.io.Writer out);
+				void setOut(java.io.Writer out);
 			}
 
 		}
@@ -41,7 +41,7 @@ public interface Feature {
 		interface Bin {
 
 			interface Stream {
-				void setInputStream(InputStream inputStream);
+				void setIn(InputStream inputStream);
 			}
 
 		}
@@ -49,11 +49,11 @@ public interface Feature {
 		interface Text {
 
 			interface Reader extends CLI {
-				void setReader(java.io.Reader reader);
+				void setIn(java.io.Reader reader);
 			}
 
 			interface String extends CLI {
-				void setString(java.lang.String in);
+				void setIn(java.lang.String in);
 			}
 
 		}
