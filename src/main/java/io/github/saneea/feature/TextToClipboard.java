@@ -3,15 +3,13 @@ package io.github.saneea.feature;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.Reader;
-import java.io.StringWriter;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class TextToClipboard implements Feature, Feature.In.Text.Reader {
+public class TextToClipboard implements Feature, Feature.In.Text.String {
 
-	private Reader in;
+	private String in;
 
 	@Override
 	public String getShortDescription() {
@@ -23,16 +21,12 @@ public class TextToClipboard implements Feature, Feature.In.Text.Reader {
 
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-		StringWriter sw = new StringWriter();
-
-		in.transferTo(sw);
-
-		StringSelection selection = new StringSelection(sw.toString());
+		StringSelection selection = new StringSelection(in);
 		clipboard.setContents(selection, selection);
 	}
 
 	@Override
-	public void setReader(Reader in) {
+	public void setString(String in) {
 		this.in = in;
 	}
 
