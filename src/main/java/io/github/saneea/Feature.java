@@ -52,6 +52,10 @@ public interface Feature {
 				void setReader(java.io.Reader reader);
 			}
 
+			interface String extends CLI {
+				void setString(java.lang.String in);
+			}
+
 		}
 
 	}

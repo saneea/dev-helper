@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class App {
 	}
 
 	private List<AutoCloseable> handleCLIParameterizedFeature(Feature.CLI feature, String featureName, String[] args)
-			throws UnsupportedEncodingException {
+			throws IOException {
 
 		List<AutoCloseable> closeables = new ArrayList<>();
 
@@ -99,7 +99,8 @@ public class App {
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
-		if (feature instanceof Feature.In.Text.Reader) {
+		if (feature instanceof Feature.In.Text.Reader//
+				|| feature instanceof Feature.In.Text.String) {
 			cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
 		}
 
@@ -167,6 +168,23 @@ public class App {
 			readerInputtable.setReader(readerIn);
 
 			closeables.add(readerIn);
+		}
+
+		if (feature instanceof Feature.In.Text.String) {
+			Feature.In.Text.String stringInputtable = (Feature.In.Text.String) feature;
+
+			String inputEncoding = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING);
+
+			try (Reader readerIn = inputEncoding == null//
+					? new InputStreamReader(System.in)//
+					: new InputStreamReader(System.in, inputEncoding)) {
+
+				StringWriter sw = new StringWriter();
+
+				readerIn.transferTo(sw);
+
+				stringInputtable.setString(sw.toString());
+			}
 		}
 
 		if (feature instanceof Feature.In.Bin.Stream) {
