@@ -3,12 +3,14 @@ package io.github.saneea.feature;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.io.OutputStreamWriter;
 
 import io.github.saneea.Feature;
+import io.github.saneea.Feature.Util.IOConsumer;
 import io.github.saneea.FeatureContext;
 
-public class TextFromClipboard implements Feature {
+public class TextFromClipboard implements Feature, Feature.Out.Text.String {
+
+	private IOConsumer<String> out;
 
 	@Override
 	public String getShortDescription() {
@@ -22,10 +24,12 @@ public class TextFromClipboard implements Feature {
 
 		String clipboardText = (String) clipboard.getData(DataFlavor.stringFlavor);
 
-		try (OutputStreamWriter writer = new OutputStreamWriter(context.getOut())) {
-			writer.write(clipboardText);
-		}
+		out.accept(clipboardText);
+	}
 
+	@Override
+	public void setOut(IOConsumer<String> out) {
+		this.out = out;
 	}
 
 }
