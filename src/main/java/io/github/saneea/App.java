@@ -95,7 +95,8 @@ public class App {
 		}
 
 		if (feature instanceof Feature.Out.Text.PrintStream//
-				|| feature instanceof Feature.Out.Text.Writer) {
+				|| feature instanceof Feature.Out.Text.Writer//
+				|| feature instanceof Feature.Out.Text.String) {
 			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
 		}
 
@@ -145,6 +146,22 @@ public class App {
 					: new OutputStreamWriter(out, outputEncoding);
 
 			writerOutputable.setOut(writerOut);
+
+			closeables.add(writerOut);
+		}
+
+		if (feature instanceof Feature.Out.Text.String) {
+			Feature.Out.Text.String writerOutputable = (Feature.Out.Text.String) feature;
+
+			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
+
+			OutputStream out = new BufferedOutputStream(System.out);
+
+			Writer writerOut = outputEncoding == null//
+					? new OutputStreamWriter(out)//
+					: new OutputStreamWriter(out, outputEncoding);
+
+			writerOutputable.setOut(writerOut::write);
 
 			closeables.add(writerOut);
 		}

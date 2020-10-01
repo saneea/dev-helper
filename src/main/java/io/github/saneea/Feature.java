@@ -1,10 +1,13 @@
 package io.github.saneea;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
+
+import io.github.saneea.Feature.Util.IOConsumer;
 
 public interface Feature {
 
@@ -32,8 +35,19 @@ public interface Feature {
 				void setOut(java.io.Writer out);
 			}
 
+			interface String extends CLI {
+				void setOut(IOConsumer<java.lang.String> out);
+			}
+
 		}
 
+	}
+
+	interface Util {
+
+		interface IOConsumer<T> {
+			void accept(T obj) throws IOException;
+		}
 	}
 
 	interface In {
