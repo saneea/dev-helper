@@ -1,6 +1,7 @@
 package io.github.saneea.feature;
 
-import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -10,13 +11,17 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class XmlToLine implements Feature {
+public class XmlToLine implements Feature, Feature.In.Text.Reader, Feature.Out.Text.Writer {
+
+	private Reader in;
+	private Writer out;
 
 	@Override
 	public String getShortDescription() {
@@ -25,12 +30,22 @@ public class XmlToLine implements Feature {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		try (XmlHandler xmlHandler = new XmlHandler(context.getOut())) {
+		try (XmlHandler xmlHandler = new XmlHandler(out)) {
 			SAXParserFactory//
 					.newInstance()//
 					.newSAXParser()//
-					.parse(context.getIn(), xmlHandler);
+					.parse(new InputSource(in), xmlHandler);
 		}
+	}
+
+	@Override
+	public void setIn(Reader in) {
+		this.in = in;
+	}
+
+	@Override
+	public void setOut(Writer out) {
+		this.out = out;
 	}
 
 	private static class XmlHandler extends DefaultHandler implements AutoCloseable {
@@ -54,10 +69,10 @@ public class XmlToLine implements Feature {
 
 		private final StringBuilder currentContent = new StringBuilder();
 
-		public XmlHandler(OutputStream outputStream) throws XMLStreamException {
+		public XmlHandler(Writer writer) throws XMLStreamException {
 			xWriter = XMLOutputFactory//
 					.newFactory()//
-					.createXMLStreamWriter(outputStream);
+					.createXMLStreamWriter(writer);
 
 			contentStack.push(new ElementFrame());// root
 		}
@@ -113,4 +128,5 @@ public class XmlToLine implements Feature {
 		}
 
 	}
+
 }
