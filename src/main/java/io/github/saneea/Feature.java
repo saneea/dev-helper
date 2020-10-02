@@ -11,9 +11,15 @@ import io.github.saneea.Feature.Util.IOConsumer;
 
 public interface Feature {
 
+	Option[] EMPTY_OPTIONS_ARRAY = {};
+
 	void run(FeatureContext context) throws Exception;
 
 	String getShortDescription();
+
+	default Option[] getOptions() {
+		return EMPTY_OPTIONS_ARRAY;
+	}
 
 	interface Out {
 
@@ -27,15 +33,15 @@ public interface Feature {
 
 		interface Text {
 
-			interface PrintStream extends CLI {
+			interface PrintStream {
 				void setOut(java.io.PrintStream printStreamOut);
 			}
 
-			interface Writer extends CLI {
+			interface Writer {
 				void setOut(java.io.Writer out);
 			}
 
-			interface String extends CLI {
+			interface String {
 				void setOut(IOConsumer<java.lang.String> out);
 			}
 
@@ -62,11 +68,11 @@ public interface Feature {
 
 		interface Text {
 
-			interface Reader extends CLI {
+			interface Reader {
 				void setIn(java.io.Reader reader);
 			}
 
-			interface String extends CLI {
+			interface String {
 				void setIn(java.lang.String in);
 			}
 
@@ -75,12 +81,6 @@ public interface Feature {
 	}
 
 	interface CLI {
-
-		Option[] EMPTY_OPTIONS_ARRAY = {};
-
-		default Option[] getOptions() {
-			return EMPTY_OPTIONS_ARRAY;
-		}
 
 		default void setCommandLine(CommandLine commandLine) {
 		}

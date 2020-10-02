@@ -23,7 +23,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import io.github.saneea.Feature.CLI;
 import io.github.saneea.Feature.CLI.CommonOptions;
 import io.github.saneea.Feature.Util.IOConsumer;
 
@@ -55,19 +54,9 @@ public class App {
 
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			FeatureResources featureResources = null;
 
-			try {
-				if (feature instanceof Feature.CLI) {
-					featureResources = handleCLIParameterizedFeature((Feature.CLI) feature, featureName, args);
-				}
-
+			try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
 				feature.run(new FeatureContext(args, input, output, System.err, appContext));
-
-			} finally {
-				if (featureResources != null) {
-					featureResources.close();
-				}
 			}
 		}
 	}
@@ -92,14 +81,15 @@ public class App {
 		}
 	}
 
-	private FeatureResources handleCLIParameterizedFeature(Feature.CLI feature, String featureName, String[] args)
+	private FeatureResources handleFeatureResources(Feature feature, String featureName, String[] args)
 			throws IOException {
 
 		FeatureResources featureResources = new FeatureResources(feature, featureName, args);
 
-		CommandLine commandLine = featureResources.getCommandLine();
-
-		feature.setCommandLine(commandLine);
+		if (feature instanceof Feature.CLI) {
+			((Feature.CLI) feature)//
+					.setCommandLine(featureResources.getCommandLine());
+		}
 
 		if (feature instanceof Feature.Out.Text.PrintStream) {
 			((Feature.Out.Text.PrintStream) feature)//
@@ -150,7 +140,7 @@ public class App {
 
 		private final Deque<AutoCloseable> closeables = new ArrayDeque<>();
 
-		private final Feature.CLI feature;
+		private final Feature feature;
 		private final String featureName;
 		private final String[] args;
 
@@ -163,7 +153,7 @@ public class App {
 		private String inTextString;
 		private InputStream inBinStream;
 
-		public FeatureResources(CLI feature, String featureName, String[] args) {
+		public FeatureResources(Feature feature, String featureName, String[] args) {
 			this.feature = feature;
 			this.featureName = featureName;
 			this.args = args;
@@ -235,7 +225,7 @@ public class App {
 		}
 
 		private Charset getEncoding(String encodingOptionName) {
-			String encodingName = commandLine.getOptionValue(encodingOptionName);
+			String encodingName = getCommandLine().getOptionValue(encodingOptionName);
 			return encodingName != null//
 					? Charset.forName(encodingName)//
 					: Charset.defaultCharset();
