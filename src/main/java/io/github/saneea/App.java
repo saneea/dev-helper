@@ -11,8 +11,9 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.Charset;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -22,7 +23,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import io.github.saneea.Feature.CLI;
 import io.github.saneea.Feature.CLI.CommonOptions;
+import io.github.saneea.Feature.Util.IOConsumer;
 
 public class App {
 
@@ -52,24 +55,28 @@ public class App {
 
 		try (InputStream input = new BufferedInputStream(System.in); //
 				OutputStream output = new BufferedOutputStream(System.out)) {
-			List<AutoCloseable> closeables = new ArrayList<>();
+			FeatureResources featureResources = null;
 
 			try {
 				if (feature instanceof Feature.CLI) {
-					closeables.addAll(handleCLIParameterizedFeature((Feature.CLI) feature, featureName, args));
+					featureResources = handleCLIParameterizedFeature((Feature.CLI) feature, featureName, args);
 				}
 
 				feature.run(new FeatureContext(args, input, output, System.err, appContext));
 
 			} finally {
-				closeAll(closeables);
+				if (featureResources != null) {
+					featureResources.close();
+				}
 			}
 		}
 	}
 
-	private void closeAll(List<AutoCloseable> closeables) throws Exception {
+	private static void closeAll(Deque<AutoCloseable> closeables) throws Exception {
 		Exception onCloseException = null;
-		for (AutoCloseable closeable : closeables) {
+
+		while (!closeables.isEmpty()) {
+			AutoCloseable closeable = closeables.pollLast();
 			try {
 				closeable.close();
 			} catch (Exception e) {
@@ -79,139 +86,204 @@ public class App {
 				onCloseException = e;
 			}
 		}
+
 		if (onCloseException != null) {
 			throw onCloseException;
 		}
 	}
 
-	private List<AutoCloseable> handleCLIParameterizedFeature(Feature.CLI feature, String featureName, String[] args)
+	private FeatureResources handleCLIParameterizedFeature(Feature.CLI feature, String featureName, String[] args)
 			throws IOException {
 
-		List<AutoCloseable> closeables = new ArrayList<>();
+		FeatureResources featureResources = new FeatureResources(feature, featureName, args);
 
-		Options cliOptions = new Options();
-		for (Option option : feature.getOptions()) {
-			cliOptions.addOption(option);
-		}
-
-		if (feature instanceof Feature.Out.Text.PrintStream//
-				|| feature instanceof Feature.Out.Text.Writer//
-				|| feature instanceof Feature.Out.Text.String) {
-			cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
-		}
-
-		if (feature instanceof Feature.In.Text.Reader//
-				|| feature instanceof Feature.In.Text.String) {
-			cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
-		}
-
-		CommandLineParser commandLineParser = new DefaultParser();
-
-		CommandLine commandLine;
-		try {
-			commandLine = commandLineParser.parse(cliOptions, args);
-		} catch (ParseException e) {
-			System.err.println(e.getLocalizedMessage());
-			new HelpFormatter().printHelp(featureName, cliOptions);
-			throw new AppExitException(AppExitException.ExitCode.ERROR, e);
-		}
+		CommandLine commandLine = featureResources.getCommandLine();
 
 		feature.setCommandLine(commandLine);
 
 		if (feature instanceof Feature.Out.Text.PrintStream) {
-			Feature.Out.Text.PrintStream printStreamOutputable = (Feature.Out.Text.PrintStream) feature;
-
-			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
-
-			OutputStream out = new BufferedOutputStream(System.out);
-
-			PrintStream printStreamOut = outputEncoding == null//
-					? new PrintStream(out)//
-					: new PrintStream(out, false, outputEncoding);
-
-			printStreamOutputable.setOut(printStreamOut);
-
-			closeables.add(printStreamOut);
+			((Feature.Out.Text.PrintStream) feature)//
+					.setOut(//
+							featureResources.getOutTextPrintStream());
 		}
 
 		if (feature instanceof Feature.Out.Text.Writer) {
-			Feature.Out.Text.Writer writerOutputable = (Feature.Out.Text.Writer) feature;
-
-			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
-
-			OutputStream out = new BufferedOutputStream(System.out);
-
-			Writer writerOut = outputEncoding == null//
-					? new OutputStreamWriter(out)//
-					: new OutputStreamWriter(out, outputEncoding);
-
-			writerOutputable.setOut(writerOut);
-
-			closeables.add(writerOut);
+			((Feature.Out.Text.Writer) feature)//
+					.setOut(//
+							featureResources.getOutTextWriter());
 		}
 
 		if (feature instanceof Feature.Out.Text.String) {
-			Feature.Out.Text.String writerOutputable = (Feature.Out.Text.String) feature;
-
-			String outputEncoding = commandLine.getOptionValue(CommonOptions.OUTPUT_ENCODING);
-
-			OutputStream out = new BufferedOutputStream(System.out);
-
-			Writer writerOut = outputEncoding == null//
-					? new OutputStreamWriter(out)//
-					: new OutputStreamWriter(out, outputEncoding);
-
-			writerOutputable.setOut(writerOut::write);
-
-			closeables.add(writerOut);
+			((Feature.Out.Text.String) feature)//
+					.setOut(//
+							featureResources.getOutTextString());
 		}
 
 		if (feature instanceof Feature.Out.Bin.Stream) {
-			Feature.Out.Bin.Stream outputStreamOutputable = (Feature.Out.Bin.Stream) feature;
-			OutputStream out = new BufferedOutputStream(System.out);
-			outputStreamOutputable.setOut(out);
-			closeables.add(out);
+			((Feature.Out.Bin.Stream) feature)//
+					.setOut(//
+							featureResources.getOutBinStream());
 		}
 
 		if (feature instanceof Feature.In.Text.Reader) {
-			Feature.In.Text.Reader readerInputtable = (Feature.In.Text.Reader) feature;
-
-			String inputEncoding = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING);
-
-			Reader readerIn = inputEncoding == null//
-					? new InputStreamReader(System.in)//
-					: new InputStreamReader(System.in, inputEncoding);
-
-			readerInputtable.setIn(readerIn);
-
-			closeables.add(readerIn);
+			((Feature.In.Text.Reader) feature)//
+					.setIn(//
+							featureResources.getInTextReader());
 		}
 
 		if (feature instanceof Feature.In.Text.String) {
-			Feature.In.Text.String stringInputtable = (Feature.In.Text.String) feature;
-
-			String inputEncoding = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING);
-
-			try (Reader readerIn = inputEncoding == null//
-					? new InputStreamReader(System.in)//
-					: new InputStreamReader(System.in, inputEncoding)) {
-
-				StringWriter sw = new StringWriter();
-
-				readerIn.transferTo(sw);
-
-				stringInputtable.setIn(sw.toString());
-			}
+			((Feature.In.Text.String) feature)//
+					.setIn(//
+							featureResources.getInTextString());
 		}
 
 		if (feature instanceof Feature.In.Bin.Stream) {
-			Feature.In.Bin.Stream inputStreamInputtable = (Feature.In.Bin.Stream) feature;
-			InputStream in = System.in;
-			inputStreamInputtable.setIn(in);
-			closeables.add(in);
+			((Feature.In.Bin.Stream) feature)//
+					.setIn(//
+							featureResources.getInBinStream());
 		}
 
-		return closeables;
+		return featureResources;
+	}
+
+	private static class FeatureResources implements AutoCloseable {
+
+		private final Deque<AutoCloseable> closeables = new ArrayDeque<>();
+
+		private final Feature.CLI feature;
+		private final String featureName;
+		private final String[] args;
+
+		private Options cliOptions;
+		private CommandLine commandLine;
+		private PrintStream outTextPrintStream;
+		private Writer outTextWriter;
+		private OutputStream outBinStream;
+		private Reader inTextReader;
+		private String inTextString;
+		private InputStream inBinStream;
+
+		public FeatureResources(CLI feature, String featureName, String[] args) {
+			this.feature = feature;
+			this.featureName = featureName;
+			this.args = args;
+		}
+
+		public Options getCliOptions() {
+			if (cliOptions == null) {
+				cliOptions = new Options();
+				for (Option option : feature.getOptions()) {
+					cliOptions.addOption(option);
+				}
+
+				if (feature instanceof Feature.Out.Text.PrintStream//
+						|| feature instanceof Feature.Out.Text.Writer//
+						|| feature instanceof Feature.Out.Text.String) {
+					cliOptions.addOption(CommonOptions.OUTPUT_ENCODING_OPTION);
+				}
+
+				if (feature instanceof Feature.In.Text.Reader//
+						|| feature instanceof Feature.In.Text.String) {
+					cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
+				}
+
+			}
+			return cliOptions;
+		}
+
+		public CommandLine getCommandLine() {
+			if (commandLine == null) {
+				Options cliOptions = getCliOptions();
+
+				CommandLineParser commandLineParser = new DefaultParser();
+
+				try {
+					commandLine = commandLineParser.parse(cliOptions, args);
+				} catch (ParseException e) {
+					System.err.println(e.getLocalizedMessage());
+					new HelpFormatter().printHelp(featureName, cliOptions);
+					throw new AppExitException(AppExitException.ExitCode.ERROR, e);
+				}
+			}
+			return commandLine;
+		}
+
+		public IOConsumer<String> getOutTextString() {
+			return getOutTextWriter()::write;
+		}
+
+		public Writer getOutTextWriter() {
+			if (outTextWriter == null) {
+				outTextWriter = new OutputStreamWriter(//
+						getOutBinStream(), //
+						getEncoding(CommonOptions.OUTPUT_ENCODING));
+				closeables.add(outTextWriter);
+			}
+			return outTextWriter;
+		}
+
+		public PrintStream getOutTextPrintStream() {
+			if (outTextPrintStream == null) {
+				outTextPrintStream = new PrintStream(//
+						getOutBinStream(), //
+						false, //
+						getEncoding(CommonOptions.OUTPUT_ENCODING));
+
+				closeables.add(outTextPrintStream);
+			}
+			return outTextPrintStream;
+		}
+
+		private Charset getEncoding(String encodingOptionName) {
+			String encodingName = commandLine.getOptionValue(encodingOptionName);
+			return encodingName != null//
+					? Charset.forName(encodingName)//
+					: Charset.defaultCharset();
+		}
+
+		public OutputStream getOutBinStream() {
+			if (outBinStream == null) {
+				outBinStream = new BufferedOutputStream(System.out);
+				closeables.add(outBinStream);
+			}
+			return outBinStream;
+		}
+
+		public String getInTextString() throws IOException {
+			if (inTextString == null) {
+				inTextString = readAll(getInTextReader());
+			}
+			return inTextString;
+		}
+
+		private static String readAll(Reader reader) throws IOException {
+			StringWriter buf = new StringWriter();
+			reader.transferTo(buf);
+			return buf.toString();
+		}
+
+		public Reader getInTextReader() {
+			if (inTextReader == null) {
+				inTextReader = new InputStreamReader(//
+						getInBinStream(), //
+						getEncoding(CommonOptions.INPUT_ENCODING));
+				closeables.add(inTextReader);
+			}
+			return inTextReader;
+		}
+
+		public InputStream getInBinStream() {
+			if (inBinStream == null) {
+				inBinStream = System.in;
+				closeables.add(inBinStream);
+			}
+			return inBinStream;
+		}
+
+		@Override
+		public void close() throws Exception {
+			closeAll(closeables);
+		}
 	}
 
 	private static String[] withoutFeatureName(String[] args) {
