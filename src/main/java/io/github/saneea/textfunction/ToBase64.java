@@ -1,13 +1,17 @@
 package io.github.saneea.textfunction;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Base64;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class ToBase64 implements Feature {
+public class ToBase64 implements Feature, Feature.In.Bin.Stream, Feature.Out.Bin.Stream {
+
+	private InputStream in;
+	private OutputStream out;
 
 	@Override
 	public String getShortDescription() {
@@ -16,9 +20,19 @@ public class ToBase64 implements Feature {
 
 	@Override
 	public void run(FeatureContext context) throws IOException {
-		try (OutputStream base64stream = Base64.getEncoder().wrap(context.getOut())) {
-			context.getIn().transferTo(base64stream);
+		try (OutputStream base64stream = Base64.getEncoder().wrap(out)) {
+			in.transferTo(base64stream);
 		}
+	}
+
+	@Override
+	public void setIn(InputStream in) {
+		this.in = in;
+	}
+
+	@Override
+	public void setOut(OutputStream out) {
+		this.out = out;
 	}
 
 }
