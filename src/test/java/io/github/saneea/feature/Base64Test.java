@@ -44,7 +44,10 @@ public class Base64Test {
 	private byte[] fromBase64(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new FromBase64().run(new FeatureContext(new String[] {}, inputStream, output, null, null));
+			FromBase64 fromBase64 = new FromBase64();
+			fromBase64.setIn(inputStream);
+			fromBase64.setOut(output);
+			fromBase64.run(new FeatureContext(new String[] {}, null, null, null, null));
 			return output.toByteArray();
 		}
 	}
@@ -52,7 +55,10 @@ public class Base64Test {
 	private String toBase64(Path inputFilePath) throws Exception {
 		try (InputStream inputStream = new BufferedInputStream(Files.newInputStream(inputFilePath)); //
 				ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-			new ToBase64().run(new FeatureContext(new String[] {}, inputStream, output, null, null));
+			ToBase64 toBase64 = new ToBase64();
+			toBase64.setIn(inputStream);
+			toBase64.setOut(output);
+			toBase64.run(new FeatureContext(new String[] {}, null, null, null, null));
 			return new String(output.toByteArray(), StandardCharsets.UTF_8);
 		}
 	}
