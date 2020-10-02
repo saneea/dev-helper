@@ -4,7 +4,7 @@ import io.github.saneea.Feature;
 import io.github.saneea.Feature.Util.IOConsumer;
 import io.github.saneea.FeatureContext;
 
-public class UUID implements Feature, Feature.CLI, Feature.Out.Text.String {
+public class UUID implements Feature, Feature.Out.Text.String {
 
 	private IOConsumer<String> out;
 

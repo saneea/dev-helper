@@ -82,8 +82,7 @@ public interface Feature {
 
 	interface CLI {
 
-		default void setCommandLine(CommandLine commandLine) {
-		}
+		void setCommandLine(CommandLine commandLine);
 
 		interface CommonOptions {
 

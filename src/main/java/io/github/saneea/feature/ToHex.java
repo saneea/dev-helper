@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class ToHex implements Feature, Feature.CLI, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
+public class ToHex implements Feature, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
 
 	private InputStream in;
 	private PrintStream out;
