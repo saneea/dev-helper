@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class ToFile implements Feature {
+public class ToFile implements Feature, Feature.Err.Bin.Stream {
 
 	interface ExitCode {
 		int OK = 0;
@@ -27,6 +27,8 @@ public class ToFile implements Feature {
 		int FILE_NAME = 0;
 		int COMMAND_LINE = 1;
 	}
+
+	private OutputStream err;
 
 	@Override
 	public String getShortDescription() {
@@ -42,7 +44,7 @@ public class ToFile implements Feature {
 
 		Process forkProc = Runtime.getRuntime().exec(commandLine);
 
-		try (ByteArrayBuffer stdOutBuffer = getStdOutFromProc(forkProc, context.getErr())) {
+		try (ByteArrayBuffer stdOutBuffer = getStdOutFromProc(forkProc, err)) {
 			int exitCode = forkProc.waitFor();
 
 			if (exitCode == ExitCode.OK) {
@@ -111,5 +113,10 @@ public class ToFile implements Feature {
 				}
 			};
 		}
+	}
+
+	@Override
+	public void setErr(OutputStream err) {
+		this.err = err;
 	}
 }
