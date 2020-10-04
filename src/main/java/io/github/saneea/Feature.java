@@ -80,6 +80,18 @@ public interface Feature {
 
 	}
 
+	interface Err {
+
+		interface Bin {
+
+			interface Stream {
+				void setErr(OutputStream err);
+			}
+
+		}
+
+	}
+
 	interface CLI {
 
 		void setCommandLine(CommandLine commandLine);

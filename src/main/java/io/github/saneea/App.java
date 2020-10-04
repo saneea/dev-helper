@@ -115,6 +115,12 @@ public class App {
 							featureResources.getOutBinStream());
 		}
 
+		if (feature instanceof Feature.Err.Bin.Stream) {
+			((Feature.Err.Bin.Stream) feature)//
+					.setErr(//
+							featureResources.getErrBinStream());
+		}
+
 		if (feature instanceof Feature.In.Text.Reader) {
 			((Feature.In.Text.Reader) feature)//
 					.setIn(//
@@ -149,6 +155,7 @@ public class App {
 		private PrintStream outTextPrintStream;
 		private Writer outTextWriter;
 		private OutputStream outBinStream;
+		private OutputStream errBinStream;
 		private Reader inTextReader;
 		private String inTextString;
 		private InputStream inBinStream;
@@ -237,6 +244,14 @@ public class App {
 				closeables.add(outBinStream);
 			}
 			return outBinStream;
+		}
+
+		public OutputStream getErrBinStream() {
+			if (errBinStream == null) {
+				errBinStream = System.err;
+				closeables.add(errBinStream);
+			}
+			return errBinStream;
 		}
 
 		public String getInTextString() throws IOException {
