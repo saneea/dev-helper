@@ -9,7 +9,9 @@ import io.github.saneea.AppContext;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class HelpFeature implements Feature {
+public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
+
+	private PrintStream out;
 
 	@Override
 	public String getShortDescription() {
@@ -23,26 +25,27 @@ public class HelpFeature implements Feature {
 
 		Properties featureAlias = appContext.getFeatureAlias();
 
-		try (PrintStream writer = new PrintStream(context.getOut())) {
+		out.println("usage:");
+		out.println("\tdvh <feature name> [feature args]");
+		out.println();
+		out.println("available features:");
 
-			writer.println("usage:");
-			writer.println("\tdvh <feature name> [feature args]");
-			writer.println();
-			writer.println("available features:");
+		Set<String> featuresNames = featureAlias.stringPropertyNames();
 
-			Set<String> featuresNames = featureAlias.stringPropertyNames();
+		int maxFeatureNameSize = featuresNames.stream().mapToInt(String::length).max().orElse(0);
 
-			int maxFeatureNameSize = featuresNames.stream().mapToInt(String::length).max().orElse(0);
+		for (String featureName : new TreeSet<String>(featuresNames)) {
+			Feature feature = appContext.createFeature(featureName);
+			String featureShortDescription = feature.getShortDescription();
+			String template = "\t%1$" + maxFeatureNameSize + "s - %2$s";
 
-			for (String featureName : new TreeSet<String>(featuresNames)) {
-				Feature feature = appContext.createFeature(featureName);
-				String featureShortDescription = feature.getShortDescription();
-				String template = "\t%1$" + maxFeatureNameSize + "s - %2$s";
-
-				writer.println(String.format(template, featureName, featureShortDescription));
-			}
+			out.println(String.format(template, featureName, featureShortDescription));
 		}
+	}
 
+	@Override
+	public void setOut(PrintStream out) {
+		this.out = out;
 	}
 
 }
