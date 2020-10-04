@@ -1,6 +1,10 @@
 package io.github.saneea;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -234,7 +238,7 @@ public class App {
 
 		public OutputStream getOutBinStream() {
 			if (outBinStream == null) {
-				outBinStream = new BufferedOutputStream(System.out);
+				outBinStream = new BufferedOutputStream(new FileOutputStream(FileDescriptor.out));
 				closeables.add(outBinStream);
 			}
 			return outBinStream;
@@ -242,7 +246,7 @@ public class App {
 
 		public OutputStream getErrBinStream() {
 			if (errBinStream == null) {
-				errBinStream = System.err;
+				errBinStream = new FileOutputStream(FileDescriptor.err);
 				closeables.add(errBinStream);
 			}
 			return errBinStream;
@@ -273,7 +277,7 @@ public class App {
 
 		public InputStream getInBinStream() {
 			if (inBinStream == null) {
-				inBinStream = System.in;
+				inBinStream = new BufferedInputStream(new FileInputStream(FileDescriptor.in));
 				closeables.add(inBinStream);
 			}
 			return inBinStream;
