@@ -53,7 +53,7 @@ public class HexTest {
 			FromHex feature = new FromHex();
 			feature.setIn(reader);
 			feature.setOut(output);
-			feature.run(new FeatureContext(new String[] {}, null, null, null, null));
+			feature.run(new FeatureContext(new String[] {}, null));
 			return output.toByteArray();
 		}
 	}
@@ -67,7 +67,7 @@ public class HexTest {
 			try (PrintStream printStreamOut = new PrintStream(output, false, TEST_CHARSET)) {
 				feature.setIn(inputStream);
 				feature.setOut(printStreamOut);
-				feature.run(new FeatureContext(new String[] {}, null, output, null, null));
+				feature.run(new FeatureContext(new String[] {}, null));
 			}
 
 			return new String(output.toByteArray(), TEST_CHARSET);

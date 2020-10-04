@@ -1,6 +1,5 @@
 package io.github.saneea;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,13 +50,8 @@ public class App {
 	}
 
 	private void runFeature(Feature feature, String featureName, String[] args) throws Exception {
-
-		try (InputStream input = new BufferedInputStream(System.in); //
-				OutputStream output = new BufferedOutputStream(System.out)) {
-
-			try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
-				feature.run(new FeatureContext(args, input, output, System.err, appContext));
-			}
+		try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
+			feature.run(new FeatureContext(args, appContext));
 		}
 	}
 
