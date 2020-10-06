@@ -182,6 +182,11 @@ public class App {
 					cliOptions.addOption(CommonOptions.INPUT_ENCODING_OPTION);
 				}
 
+				if (feature instanceof Feature.In.Bin.Stream//
+						|| feature instanceof Feature.Out.Bin.Stream) {
+					cliOptions.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION);
+				}
+
 			}
 			return cliOptions;
 		}
@@ -238,7 +243,12 @@ public class App {
 
 		public OutputStream getOutBinStream() {
 			if (outBinStream == null) {
-				outBinStream = new BufferedOutputStream(new FileOutputStream(FileDescriptor.out));
+				outBinStream = new FileOutputStream(FileDescriptor.out);
+
+				if (useBufferedStreams()) {
+					outBinStream = new BufferedOutputStream(outBinStream);
+				}
+
 				closeables.add(outBinStream);
 			}
 			return outBinStream;
@@ -277,10 +287,19 @@ public class App {
 
 		public InputStream getInBinStream() {
 			if (inBinStream == null) {
-				inBinStream = new BufferedInputStream(new FileInputStream(FileDescriptor.in));
+				inBinStream = new FileInputStream(FileDescriptor.in);
+
+				if (useBufferedStreams()) {
+					inBinStream = new BufferedInputStream(inBinStream);
+				}
+
 				closeables.add(inBinStream);
 			}
 			return inBinStream;
+		}
+
+		private boolean useBufferedStreams() {
+			return !getCommandLine().hasOption(CommonOptions.NON_BUFFERED_STREAMS);
 		}
 
 		@Override

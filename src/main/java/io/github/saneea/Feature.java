@@ -26,19 +26,25 @@ public interface Feature {
 		interface Bin {
 
 			interface Stream {
-				void setOut(OutputStream outputStreamOut);
+				void setOut(OutputStream out);
 			}
 
 		}
 
 		interface Text {
 
-			interface PrintStream {
-				void setOut(java.io.PrintStream printStreamOut);
+			interface PrintStream extends Bin.Stream {
+				void setOut(java.io.PrintStream out);
+
+				default void setOut(OutputStream out) {
+				}
 			}
 
-			interface Writer {
+			interface Writer extends Bin.Stream {
 				void setOut(java.io.Writer out);
+
+				default void setOut(OutputStream out) {
+				}
 			}
 
 			interface String {
@@ -61,15 +67,18 @@ public interface Feature {
 		interface Bin {
 
 			interface Stream {
-				void setIn(InputStream inputStream);
+				void setIn(InputStream in);
 			}
 
 		}
 
 		interface Text {
 
-			interface Reader {
-				void setIn(java.io.Reader reader);
+			interface Reader extends Bin.Stream {
+				void setIn(java.io.Reader in);
+
+				default void setIn(InputStream in) {
+				}
 			}
 
 			interface String {
@@ -100,6 +109,7 @@ public interface Feature {
 
 			String OUTPUT_ENCODING = "outputEncoding";
 			String INPUT_ENCODING = "inputEncoding";
+			String NON_BUFFERED_STREAMS = "nonBufferedStreams";
 
 			Option OUTPUT_ENCODING_OPTION = Option//
 					.builder("oe")//
@@ -117,6 +127,14 @@ public interface Feature {
 					.argName("encoding")//
 					.required(false)//
 					.desc("input encoding")//
+					.build();
+
+			Option NON_BUFFERED_STREAMS_OPTION = Option//
+					.builder("nbs")//
+					.longOpt(NON_BUFFERED_STREAMS)//
+					.hasArg(false)//
+					.required(false)//
+					.desc("do not use memory buffers for i/o operations")//
 					.build();
 		}
 	}
