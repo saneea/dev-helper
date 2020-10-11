@@ -62,7 +62,6 @@ public class RootFeatureProvider extends FeatureProvider {
 					"Class " + featureObj.getClass() + " does not implement " + Feature.class);
 		}
 
-		Feature feature = (Feature) featureObj;
-		return feature;
+		return (Feature) featureObj;
 	}
 }
