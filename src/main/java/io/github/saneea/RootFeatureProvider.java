@@ -9,10 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-public class AppContext {
+public class RootFeatureProvider extends FeatureProvider {
 	private final Properties featureAlias;
 
-	public AppContext() throws IOException {
+	public RootFeatureProvider() throws IOException {
 		this.featureAlias = new Properties();
 		InputStream resourceAsStream = App.class.getResourceAsStream("/feature-alias.properties");
 		try (Reader reader = new InputStreamReader(//
@@ -23,10 +23,12 @@ public class AppContext {
 		}
 	}
 
+	@Override
 	public Properties getFeatureAlias() {
 		return featureAlias;
 	}
 
+	@Override
 	public Feature createFeature(String featureName) throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Class<?> featureClass = getFeatureClass(featureName);

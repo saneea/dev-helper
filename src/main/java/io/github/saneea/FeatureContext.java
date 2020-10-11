@@ -2,19 +2,19 @@ package io.github.saneea;
 
 public class FeatureContext {
 	final String[] args;
-	final AppContext appContext;
+	final FeatureProvider featureProvider;
 
-	public FeatureContext(String[] args, AppContext appContext) {
+	public FeatureContext(String[] args, FeatureProvider featureProvider) {
 		this.args = args;
-		this.appContext = appContext;
+		this.featureProvider = featureProvider;
 	}
 
 	public String[] getArgs() {
 		return args;
 	}
 
-	public AppContext getAppContext() {
-		return appContext;
+	public FeatureProvider getFeatureProvider() {
+		return featureProvider;
 	}
 
 }
