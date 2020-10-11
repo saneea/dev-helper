@@ -7,13 +7,20 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Properties;
 
+import io.github.saneea.textfunction.Utils;
+
 public class RootFeatureProvider extends FeatureProvider {
-	private final Properties featureAlias;
+	private final Map<String, String> featureAlias;
 
 	public RootFeatureProvider() throws IOException {
-		this.featureAlias = new Properties();
+		this.featureAlias = Utils.toMap(loadProperties());
+	}
+
+	private static Properties loadProperties() throws IOException {
+		Properties featureAlias = new Properties();
 		InputStream resourceAsStream = App.class.getResourceAsStream("/feature-alias.properties");
 		try (Reader reader = new InputStreamReader(//
 				new BufferedInputStream(//
@@ -21,10 +28,11 @@ public class RootFeatureProvider extends FeatureProvider {
 				StandardCharsets.UTF_8)) {
 			featureAlias.load(reader);
 		}
+		return featureAlias;
 	}
 
 	@Override
-	public Properties getFeatureAlias() {
+	public Map<String, String> getFeatureAlias() {
 		return featureAlias;
 	}
 
@@ -36,7 +44,7 @@ public class RootFeatureProvider extends FeatureProvider {
 	}
 
 	private Class<?> getFeatureClass(String featureName) throws ClassNotFoundException {
-		String featureClassName = featureAlias.getProperty(featureName);
+		String featureClassName = featureAlias.get(featureName);
 
 		if (featureClassName == null) {
 			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
