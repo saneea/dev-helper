@@ -1,8 +1,8 @@
 package io.github.saneea.feature;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
@@ -21,17 +21,16 @@ public class Hex implements Feature {
 		return "hex decoding/encoding";
 	}
 
-	private static class HexFeatureProvider extends FeatureProvider {
+	private static class HexFeatureProvider implements FeatureProvider {
 
 		private static final String TO_BIN = "toBin";
 		private static final String FROM_BIN = "fromBin";
 
+		private static final Set<String> FEATURE_NAMES = new HashSet<>(Arrays.asList(TO_BIN, FROM_BIN));
+
 		@Override
-		public Map<String, String> getFeatureAlias() {
-			Map<String, String> m = new HashMap<>();
-			m.put(TO_BIN, "stub");
-			m.put(FROM_BIN, "stub");
-			return Collections.unmodifiableMap(m);
+		public Set<String> featuresNames() {
+			return FEATURE_NAMES;
 		}
 
 		@Override

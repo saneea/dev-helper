@@ -9,10 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import io.github.saneea.textfunction.Utils;
 
-public class RootFeatureProvider extends FeatureProvider {
+public class RootFeatureProvider implements FeatureProvider {
 	private final Map<String, String> featureAlias;
 
 	public RootFeatureProvider() throws IOException {
@@ -32,8 +33,8 @@ public class RootFeatureProvider extends FeatureProvider {
 	}
 
 	@Override
-	public Map<String, String> getFeatureAlias() {
-		return featureAlias;
+	public Set<String> featuresNames() {
+		return featureAlias.keySet();
 	}
 
 	@Override

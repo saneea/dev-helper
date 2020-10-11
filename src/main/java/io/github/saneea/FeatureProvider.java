@@ -1,9 +1,9 @@
 package io.github.saneea;
 
-import java.util.Map;
+import java.util.Set;
 
-public abstract class FeatureProvider {
-	public abstract Map<String, String> getFeatureAlias();
+public interface FeatureProvider {
+	Set<String> featuresNames();
 
-	public abstract Feature createFeature(String featureName) throws Exception;
+	Feature createFeature(String featureName) throws Exception;
 }

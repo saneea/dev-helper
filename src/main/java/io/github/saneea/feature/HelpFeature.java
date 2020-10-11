@@ -1,7 +1,6 @@
 package io.github.saneea.feature;
 
 import java.io.PrintStream;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,14 +22,12 @@ public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
 
 		FeatureProvider featureProvider = context.getFeatureProvider();
 
-		Map<String, String> featureAlias = featureProvider.getFeatureAlias();
-
 		out.println("usage:");
 		out.println("\tdvh <feature name> [feature args]");
 		out.println();
 		out.println("available features:");
 
-		Set<String> featuresNames = featureAlias.keySet();
+		Set<String> featuresNames = featureProvider.featuresNames();
 
 		int maxFeatureNameSize = featuresNames.stream().mapToInt(String::length).max().orElse(0);
 
