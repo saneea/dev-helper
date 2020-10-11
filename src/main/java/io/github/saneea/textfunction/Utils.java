@@ -1,19 +1,15 @@
 package io.github.saneea.textfunction;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class Utils {
 
-	public static long transferData(InputStream in, OutputStream out) throws IOException {
-		long transfered = 0;
-		int wasRead;
-		byte[] buff = new byte[4096];
-		while ((wasRead = in.read(buff)) != -1) {
-			out.write(buff, 0, wasRead);
-			transfered += wasRead;
+	public static String[] withoutFeatureName(String[] args) {
+		String[] newArgs;
+		if (args.length == 0) {
+			newArgs = args;
+		} else {
+			newArgs = new String[args.length - 1];
+			System.arraycopy(args, 1, newArgs, 0, newArgs.length);
 		}
-		return transfered;
+		return newArgs;
 	}
 }
