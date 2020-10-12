@@ -1,8 +1,10 @@
 package io.github.saneea.feature;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
@@ -23,25 +25,37 @@ public class Hex implements Feature {
 
 	private static class HexFeatureProvider implements FeatureProvider {
 
-		private static final String TO_BIN = "toBin";
-		private static final String FROM_BIN = "fromBin";
+		private final Map<String, Supplier<Feature>> featureAlias;
 
-		private static final Set<String> FEATURE_NAMES = new HashSet<>(Arrays.asList(TO_BIN, FROM_BIN));
+		public HexFeatureProvider() {
+			this(createFeatureAlias());
+		}
+
+		public HexFeatureProvider(Map<String, Supplier<Feature>> featureAlias) {
+			this.featureAlias = featureAlias;
+		}
+
+		private static Map<String, Supplier<Feature>> createFeatureAlias() {
+			Map<String, Supplier<Feature>> m = new HashMap<>();
+			m.put("fromBin", ToHex::new);
+			m.put("toBin", FromHex::new);
+			return Collections.unmodifiableMap(m);
+		}
 
 		@Override
 		public Set<String> featuresNames() {
-			return FEATURE_NAMES;
+			return featureAlias.keySet();
 		}
 
 		@Override
 		public Feature createFeature(String featureName) {
-			switch (featureName) {
-			case TO_BIN:
-				return new FromHex();
-			case FROM_BIN:
-				return new ToHex();
+			Supplier<Feature> featureCtor = featureAlias.get(featureName);
+
+			if (featureCtor == null) {
+				throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
 			}
-			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
+
+			return featureCtor.get();
 		}
 	}
 
