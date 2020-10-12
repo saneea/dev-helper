@@ -10,6 +10,11 @@ import io.github.saneea.FeatureProvider;
 
 public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
 
+	public interface Alias {
+		String SHORT = "-h";
+		String LONG = "--help";
+	}
+
 	private PrintStream out;
 
 	@Override

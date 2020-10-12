@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.FeatureRunner;
+import io.github.saneea.feature.HelpFeature;
 
 public class Utils {
 
 	public static void dvhEntryPoint(String[] args, FeatureProvider featureProvider) throws Exception {
-		String featureName = args.length != 0 ? args[0] : "help";
+		String featureName = args.length != 0//
+				? args[0]//
+				: HelpFeature.Alias.SHORT;
 
 		FeatureRunner featureRunner = new FeatureRunner(featureProvider);
 		featureRunner.run(featureName, withoutFeatureName(args));

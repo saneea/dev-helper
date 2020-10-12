@@ -46,12 +46,9 @@ public class RootFeatureProvider implements FeatureProvider {
 
 	private Class<?> getFeatureClass(String featureName) throws ClassNotFoundException {
 		String featureClassName = featureAlias.get(featureName);
-
-		if (featureClassName == null) {
-			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
-		}
-
-		return Class.forName(featureClassName);
+		return featureClassName == null//
+				? null //
+				: Class.forName(featureClassName);
 	}
 
 	private Feature createFeatureInstance(Class<?> featureClass)

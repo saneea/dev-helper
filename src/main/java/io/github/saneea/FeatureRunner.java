@@ -2,6 +2,8 @@ package io.github.saneea;
 
 import java.io.IOException;
 
+import io.github.saneea.feature.HelpFeature;
+
 public class FeatureRunner {
 
 	private final FeatureProvider featureProvider;
@@ -11,8 +13,23 @@ public class FeatureRunner {
 	}
 
 	public void run(String featureName, String[] args) throws Exception {
-		Feature feature = featureProvider.createFeature(featureName);
+		Feature feature = createFeature(featureName);
+		if (feature == null) {
+			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
+		}
+
 		runFeature(feature, featureName, args);
+	}
+
+	private Feature createFeature(String featureName) throws Exception {
+		switch (featureName) {
+		case HelpFeature.Alias.SHORT:
+		case HelpFeature.Alias.LONG:
+			return new HelpFeature();
+
+		default:
+			return featureProvider.createFeature(featureName);
+		}
 	}
 
 	private void runFeature(Feature feature, String featureName, String[] args) throws Exception {
