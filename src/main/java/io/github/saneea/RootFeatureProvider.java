@@ -41,7 +41,9 @@ public class RootFeatureProvider implements FeatureProvider {
 	public Feature createFeature(String featureName) throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Class<?> featureClass = getFeatureClass(featureName);
-		return createFeatureInstance(featureClass);
+		return featureClass == null//
+				? null //
+				: createFeatureInstance(featureClass);
 	}
 
 	private Class<?> getFeatureClass(String featureName) throws ClassNotFoundException {
