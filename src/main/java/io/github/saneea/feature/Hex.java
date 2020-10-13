@@ -50,12 +50,9 @@ public class Hex implements Feature {
 		@Override
 		public Feature createFeature(String featureName) {
 			Supplier<Feature> featureCtor = featureAlias.get(featureName);
-
-			if (featureCtor == null) {
-				throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
-			}
-
-			return featureCtor.get();
+			return featureCtor != null//
+					? featureCtor.get()//
+					: null;
 		}
 	}
 
