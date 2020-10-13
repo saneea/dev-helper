@@ -5,19 +5,22 @@ import java.util.Properties;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.FeatureRunner;
 import io.github.saneea.feature.HelpFeature;
 
 public class Utils {
 
-	public static void dvhEntryPoint(String[] args, FeatureProvider featureProvider) throws Exception {
+	public static void dvhEntryPoint(FeatureContext parentFeatureContext, FeatureProvider featureProvider)
+			throws Exception {
+		String[] args = parentFeatureContext.getArgs();
 		String featureName = args.length != 0//
 				? args[0]//
 				: HelpFeature.Alias.SHORT;
 
 		FeatureRunner featureRunner = new FeatureRunner(featureProvider);
-		featureRunner.run(featureName, withoutFeatureName(args));
+		featureRunner.run(parentFeatureContext, featureName, withoutFeatureName(args));
 	}
 
 	private static String[] withoutFeatureName(String[] args) {

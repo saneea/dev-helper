@@ -15,7 +15,7 @@ public class Hex implements Feature {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		Utils.dvhEntryPoint(context.getArgs(), new HexFeatureProvider());
+		Utils.dvhEntryPoint(context, new HexFeatureProvider());
 	}
 
 	@Override

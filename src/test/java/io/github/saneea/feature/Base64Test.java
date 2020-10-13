@@ -47,7 +47,7 @@ public class Base64Test {
 			FromBase64 fromBase64 = new FromBase64();
 			fromBase64.setIn(inputStream);
 			fromBase64.setOut(output);
-			fromBase64.run(new FeatureContext(new String[] {}, null));
+			fromBase64.run(new FeatureContext(null, null, new String[] {}, null));
 			return output.toByteArray();
 		}
 	}
@@ -58,7 +58,7 @@ public class Base64Test {
 			ToBase64 toBase64 = new ToBase64();
 			toBase64.setIn(inputStream);
 			toBase64.setOut(output);
-			toBase64.run(new FeatureContext(new String[] {}, null));
+			toBase64.run(new FeatureContext(null, null, new String[] {}, null));
 			return new String(output.toByteArray(), StandardCharsets.UTF_8);
 		}
 	}

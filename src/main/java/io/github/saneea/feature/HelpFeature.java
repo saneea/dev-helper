@@ -28,7 +28,7 @@ public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
 		FeatureProvider featureProvider = context.getFeatureProvider();
 
 		out.println("usage:");
-		out.println("\tdvh <feature name> [feature args]");
+		out.println("\t" + getFeaturesChain(context.getParentContext()) + "<feature name> [feature args]");
 		out.println();
 		out.println("available features:");
 
@@ -43,6 +43,12 @@ public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
 
 			out.println(String.format(template, featureName, featureShortDescription));
 		}
+	}
+
+	private static String getFeaturesChain(FeatureContext context) {
+		return context != null//
+				? getFeaturesChain(context.getParentContext()) + context.getFeatureName() + " "//
+				: "";
 	}
 
 	@Override

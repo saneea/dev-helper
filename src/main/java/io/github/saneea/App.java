@@ -6,7 +6,7 @@ public class App {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			Utils.dvhEntryPoint(args, new RootFeatureProvider());
+			Utils.dvhEntryPoint(new FeatureContext(null, "dvh", args, null), new RootFeatureProvider());
 		} catch (AppExitException appExitException) {
 			System.exit(appExitException.getExitCode());
 		}
