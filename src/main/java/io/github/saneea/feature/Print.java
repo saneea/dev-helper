@@ -6,18 +6,18 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 
-public class Hex extends MultiFeature {
+public class Print extends MultiFeature {
 
 	@Override
 	public String getShortDescription() {
-		return "hex decoding/encoding";
+		return "just print text from CLI args";
 	}
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
 		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("fromBin", ToHex::new);
-		m.put("toBin", FromHex::new);
+		m.put("args", PrintArgsFeature::new);
+		m.put("line", PrintLine::new);
 		return m;
 	}
 
