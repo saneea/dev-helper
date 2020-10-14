@@ -1,1 +1,1 @@
-dvh fromCB | dvh upperCase | dvh toCB
+dvh clip read | dvh txt case upper | dvh clip write

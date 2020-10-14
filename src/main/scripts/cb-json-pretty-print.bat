@@ -1,1 +1,1 @@
-dvh fromCB | dvh jsonPrettyPrint | dvh toCB
+dvh clip read | dvh json prettyPrint | dvh clip write

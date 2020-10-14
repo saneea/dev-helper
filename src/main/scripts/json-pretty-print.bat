@@ -1,1 +1,1 @@
-dvh toFile %2 "dvh.bat jsonPrettyPrint < %1"
+dvh bin toFile %2 "dvh.bat json prettyPrint < %1"

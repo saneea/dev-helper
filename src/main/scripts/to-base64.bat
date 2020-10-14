@@ -1,1 +1,1 @@
-dvh toBase64 < %1 > %2
+dvh bin toBase64 < %1 > %2
