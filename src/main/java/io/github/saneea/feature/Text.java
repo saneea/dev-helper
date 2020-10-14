@@ -30,7 +30,8 @@ public class Text extends MultiFeature {
 		@Override
 		public Map<String, Supplier<Feature>> getFeatureAlias() {
 			Map<String, Supplier<Feature>> m = new HashMap<>();
-			m.put("upper", UpperCase::new);
+			m.put("upper", ConvertTextCase.Upper::new);
+			m.put("lower", ConvertTextCase.Lower::new);
 			return m;
 		}
 
