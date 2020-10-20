@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -15,10 +14,10 @@ public class Print extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("args", PrintArgsFeature::new);
-		m.put("line", PrintLine::new);
-		return m;
+		return new AliasesBuilder()//
+				.feature("args", PrintArgsFeature::new)//
+				.feature("line", PrintLine::new)//
+				.build();
 	}
 
 }

@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -15,25 +14,14 @@ public class Text extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("case", TextCase::new);
-		return m;
-	}
-
-	private static class TextCase extends MultiFeature {
-
-		@Override
-		public String getShortDescription() {
-			return "transform to upper/lower case";
-		}
-
-		@Override
-		public Map<String, Supplier<Feature>> getFeatureAlias() {
-			Map<String, Supplier<Feature>> m = new HashMap<>();
-			m.put("upper", ConvertTextCase.Upper::new);
-			m.put("lower", ConvertTextCase.Lower::new);
-			return m;
-		}
-
+		return new AliasesBuilder()//
+				.multiFeature(//
+						"case", //
+						"transform to upper/lower case", //
+						new AliasesBuilder()//
+								.feature("upper", ConvertTextCase.Upper::new)//
+								.feature("lower", ConvertTextCase.Lower::new)//
+								.build())//
+				.build();
 	}
 }

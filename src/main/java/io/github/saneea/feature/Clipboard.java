@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -15,10 +14,10 @@ public class Clipboard extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("read", TextFromClipboard::new);
-		m.put("write", TextToClipboard::new);
-		return m;
+		return new AliasesBuilder()//
+				.feature("read", TextFromClipboard::new)//
+				.feature("write", TextToClipboard::new)//
+				.build();
 	}
 
 }

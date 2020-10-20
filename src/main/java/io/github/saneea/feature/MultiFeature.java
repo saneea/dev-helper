@@ -1,6 +1,7 @@
 package io.github.saneea.feature;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -22,6 +23,38 @@ public abstract class MultiFeature implements Feature {
 	}
 
 	public abstract Map<String, Supplier<Feature>> getFeatureAlias();
+
+	public static class AliasesBuilder {
+		private final Map<String, Supplier<Feature>> aliases = new LinkedHashMap<>();
+
+		public AliasesBuilder feature(String featureAlias, Supplier<Feature> featureCtor) {
+			aliases.put(featureAlias, featureCtor);
+			return this;
+		}
+
+		public AliasesBuilder multiFeature(//
+				String featureAlias, //
+				String shortDescription, //
+				Map<String, Supplier<Feature>> children) {
+			return feature(featureAlias, () -> new MultiFeature() {
+
+				@Override
+				public String getShortDescription() {
+					return shortDescription;
+				}
+
+				@Override
+				public Map<String, Supplier<Feature>> getFeatureAlias() {
+					return children;
+				}
+
+			});
+		}
+
+		public Map<String, Supplier<Feature>> build() {
+			return aliases;
+		}
+	}
 
 	private static class MultiFeatureProvider implements FeatureProvider {
 

@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -15,9 +14,9 @@ public class Json extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("prettyPrint", JsonPrettyPrint::new);
-		return m;
+		return new AliasesBuilder()//
+				.feature("prettyPrint", JsonPrettyPrint::new)//
+				.build();
 	}
 
 }

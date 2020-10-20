@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -15,11 +14,11 @@ public class Xml extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("toLine", XmlToLine::new);
-		m.put("prettyPrint", XmlPrettyPrint::new);
-		m.put("reform", XmlReform::new);
-		return m;
+		return new AliasesBuilder()//
+				.feature("toLine", XmlToLine::new)//
+				.feature("prettyPrint", XmlPrettyPrint::new)//
+				.feature("reform", XmlReform::new)//
+				.build();
 	}
 
 }

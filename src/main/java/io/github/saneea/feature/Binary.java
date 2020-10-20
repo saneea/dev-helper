@@ -1,6 +1,5 @@
 package io.github.saneea.feature;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -17,15 +16,15 @@ public class Binary extends MultiFeature {
 
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAlias() {
-		Map<String, Supplier<Feature>> m = new HashMap<>();
-		m.put("toHex", ToHex::new);
-		m.put("fromHex", FromHex::new);
-		m.put("toBase64", ToBase64::new);
-		m.put("fromBase64", FromBase64::new);
-		m.put("hash", Hash::new);
-		m.put("toFile", ToFile::new);
-		m.put("slowPipe", SlowPipe::new);
-		return m;
+		return new AliasesBuilder()//
+				.feature("toHex", ToHex::new)//
+				.feature("fromHex", FromHex::new)//
+				.feature("toBase64", ToBase64::new)//
+				.feature("fromBase64", FromBase64::new)//
+				.feature("hash", Hash::new)//
+				.feature("toFile", ToFile::new)//
+				.feature("slowPipe", SlowPipe::new)//
+				.build();
 	}
 
 }
