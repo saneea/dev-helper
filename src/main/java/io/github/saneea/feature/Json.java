@@ -15,7 +15,12 @@ public class Json extends MultiFeature {
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
-				.feature("prettyPrint", JsonPrettyPrint::new)//
+				.multiFeature("formatting", //
+						"pretty print / line", //
+						new AliasesBuilder()//
+								.feature("pretty", JsonFormatting.Pretty::new)//
+								.feature("line", JsonFormatting.Line::new)//
+								.build())//
 				.build();
 	}
 
