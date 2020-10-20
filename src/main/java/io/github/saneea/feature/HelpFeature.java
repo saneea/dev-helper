@@ -2,7 +2,6 @@ package io.github.saneea.feature;
 
 import java.io.PrintStream;
 import java.util.Set;
-import java.util.TreeSet;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
@@ -36,7 +35,7 @@ public class HelpFeature implements Feature, Feature.Out.Text.PrintStream {
 
 		int maxFeatureNameSize = featuresNames.stream().mapToInt(String::length).max().orElse(0);
 
-		for (String featureName : new TreeSet<String>(featuresNames)) {
+		for (String featureName : featuresNames) {
 			Feature feature = featureProvider.createFeature(featureName);
 			String featureShortDescription = feature.getShortDescription();
 			String template = "\t%1$" + maxFeatureNameSize + "s - %2$s";
