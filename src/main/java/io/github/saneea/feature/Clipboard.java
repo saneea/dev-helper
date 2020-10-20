@@ -13,7 +13,7 @@ public class Clipboard extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("read", TextFromClipboard::new)//
 				.feature("write", TextToClipboard::new)//

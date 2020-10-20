@@ -14,27 +14,27 @@ import java.util.Set;
 import io.github.saneea.textfunction.Utils;
 
 public class RootFeatureProvider implements FeatureProvider {
-	private final Map<String, String> featureAlias;
+	private final Map<String, String> featureAliases;
 
 	public RootFeatureProvider() throws IOException {
-		this.featureAlias = Utils.toMap(loadProperties());
+		this.featureAliases = Utils.toMap(loadProperties());
 	}
 
 	private static Properties loadProperties() throws IOException {
-		Properties featureAlias = new Properties();
-		InputStream resourceAsStream = App.class.getResourceAsStream("/feature-alias.properties");
+		Properties featureAliases = new Properties();
+		InputStream resourceAsStream = App.class.getResourceAsStream("/feature-aliases.properties");
 		try (Reader reader = new InputStreamReader(//
 				new BufferedInputStream(//
 						resourceAsStream), //
 				StandardCharsets.UTF_8)) {
-			featureAlias.load(reader);
+			featureAliases.load(reader);
 		}
-		return featureAlias;
+		return featureAliases;
 	}
 
 	@Override
 	public Set<String> featuresNames() {
-		return featureAlias.keySet();
+		return featureAliases.keySet();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class RootFeatureProvider implements FeatureProvider {
 	}
 
 	private Class<?> getFeatureClass(String featureName) throws ClassNotFoundException {
-		String featureClassName = featureAlias.get(featureName);
+		String featureClassName = featureAliases.get(featureName);
 		return featureClassName == null//
 				? null //
 				: Class.forName(featureClassName);

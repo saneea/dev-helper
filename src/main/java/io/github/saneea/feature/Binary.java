@@ -15,7 +15,7 @@ public class Binary extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("toHex", ToHex::new)//
 				.feature("fromHex", FromHex::new)//

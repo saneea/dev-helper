@@ -19,10 +19,10 @@ public abstract class MultiFeature implements Feature {
 				context, //
 				new MultiFeatureProvider(//
 						Collections.unmodifiableMap(//
-								getFeatureAlias())));
+								getFeatureAliases())));
 	}
 
-	public abstract Map<String, Supplier<Feature>> getFeatureAlias();
+	public abstract Map<String, Supplier<Feature>> getFeatureAliases();
 
 	public static class AliasesBuilder {
 		private final Map<String, Supplier<Feature>> aliases = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public abstract class MultiFeature implements Feature {
 				}
 
 				@Override
-				public Map<String, Supplier<Feature>> getFeatureAlias() {
+				public Map<String, Supplier<Feature>> getFeatureAliases() {
 					return children;
 				}
 
@@ -58,20 +58,20 @@ public abstract class MultiFeature implements Feature {
 
 	private static class MultiFeatureProvider implements FeatureProvider {
 
-		private final Map<String, Supplier<Feature>> featureAlias;
+		private final Map<String, Supplier<Feature>> featureAliases;
 
-		public MultiFeatureProvider(Map<String, Supplier<Feature>> featureAlias) {
-			this.featureAlias = featureAlias;
+		public MultiFeatureProvider(Map<String, Supplier<Feature>> featureAliases) {
+			this.featureAliases = featureAliases;
 		}
 
 		@Override
 		public Set<String> featuresNames() {
-			return featureAlias.keySet();
+			return featureAliases.keySet();
 		}
 
 		@Override
 		public Feature createFeature(String featureName) {
-			Supplier<Feature> featureCtor = featureAlias.get(featureName);
+			Supplier<Feature> featureCtor = featureAliases.get(featureName);
 			return featureCtor != null//
 					? featureCtor.get()//
 					: null;

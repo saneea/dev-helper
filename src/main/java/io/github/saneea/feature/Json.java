@@ -13,7 +13,7 @@ public class Json extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("prettyPrint", JsonPrettyPrint::new)//
 				.build();

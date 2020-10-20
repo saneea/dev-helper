@@ -13,7 +13,7 @@ public class Xml extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("toLine", XmlToLine::new)//
 				.feature("prettyPrint", XmlPrettyPrint::new)//

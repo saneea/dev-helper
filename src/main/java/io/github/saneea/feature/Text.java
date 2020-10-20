@@ -13,7 +13,7 @@ public class Text extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.multiFeature(//
 						"case", //

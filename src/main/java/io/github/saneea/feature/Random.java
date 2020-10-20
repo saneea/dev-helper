@@ -13,7 +13,7 @@ public class Random extends MultiFeature {
 	}
 
 	@Override
-	public Map<String, Supplier<Feature>> getFeatureAlias() {
+	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("bytes", RandomBytes::new)//
 				.feature("uuid", UUID::new)//
