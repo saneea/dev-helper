@@ -7,7 +7,7 @@ import io.github.saneea.Feature;
 import io.github.saneea.textfunction.FromBase64;
 import io.github.saneea.textfunction.ToBase64;
 
-public class Binary extends MultiFeature {
+public class Binary extends MultiFeatureBase {
 
 	@Override
 	public String getShortDescription() {

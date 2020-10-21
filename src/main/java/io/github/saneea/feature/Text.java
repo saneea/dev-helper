@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 
-public class Text extends MultiFeature {
+public class Text extends MultiFeatureBase {
 
 	@Override
 	public String getShortDescription() {

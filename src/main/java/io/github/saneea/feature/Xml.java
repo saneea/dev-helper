@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 
-public class Xml extends MultiFeature {
+public class Xml extends MultiFeatureBase {
 
 	@Override
 	public String getShortDescription() {

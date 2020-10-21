@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 
-public class Clipboard extends MultiFeature {
+public class Clipboard extends MultiFeatureBase {
 
 	@Override
 	public String getShortDescription() {

@@ -9,17 +9,23 @@ import java.util.function.Supplier;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
+import io.github.saneea.MultiFeature;
 import io.github.saneea.textfunction.Utils;
 
-public abstract class MultiFeature implements Feature {
+public abstract class MultiFeatureBase implements MultiFeature {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
 		Utils.dvhEntryPoint(//
 				context, //
-				new MultiFeatureProvider(//
-						Collections.unmodifiableMap(//
-								getFeatureAliases())));
+				getFeatureProvider());
+	}
+
+	@Override
+	public FeatureProvider getFeatureProvider() {
+		return new MultiFeatureProvider(//
+				Collections.unmodifiableMap(//
+						getFeatureAliases()));
 	}
 
 	public abstract Map<String, Supplier<Feature>> getFeatureAliases();
@@ -36,7 +42,7 @@ public abstract class MultiFeature implements Feature {
 				String featureAlias, //
 				String shortDescription, //
 				Map<String, Supplier<Feature>> children) {
-			return feature(featureAlias, () -> new MultiFeature() {
+			return feature(featureAlias, () -> new MultiFeatureBase() {
 
 				@Override
 				public String getShortDescription() {
