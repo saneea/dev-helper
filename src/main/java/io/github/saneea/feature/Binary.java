@@ -17,13 +17,22 @@ public class Binary extends MultiFeatureBase {
 	@Override
 	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
-				.feature("toHex", ToHex::new)//
-				.feature("fromHex", FromHex::new)//
-				.feature("toBase64", ToBase64::new)//
-				.feature("fromBase64", FromBase64::new)//
 				.feature("hash", Hash::new)//
-				.feature("toFile", ToFile::new)//
 				.feature("slowPipe", SlowPipe::new)//
+				.multiFeature(//
+						"to", //
+						"convert input to...", //
+						new AliasesBuilder()//
+								.feature("hex", ToHex::new)//
+								.feature("base64", ToBase64::new)//
+								.build())//
+				.multiFeature(//
+						"from", //
+						"create output from...", //
+						new AliasesBuilder()//
+								.feature("hex", FromHex::new)//
+								.feature("base64", FromBase64::new)//
+								.build())//
 				.build();
 	}
 
