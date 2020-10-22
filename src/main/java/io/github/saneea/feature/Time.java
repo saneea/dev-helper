@@ -1,7 +1,12 @@
 package io.github.saneea.feature;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
 
 import io.github.saneea.Feature;
 import io.github.saneea.Feature.Util.IOConsumer;
@@ -10,6 +15,11 @@ import io.github.saneea.FeatureContext;
 public class Time extends MultiFeatureBase {
 
 	private static final int MILLIS_IN_SECOND = 1000;
+	private static final String FORMAT = "format";
+	private static final String FORMAT_UNIX = "unix";
+	private static final String FORMAT_JAVA = "java";
+	private static final String FORMAT_HUMAN = "human";
+	private static final String FORMAT_ISO = "ISO";
 
 	@Override
 	public String getShortDescription() {
@@ -23,9 +33,13 @@ public class Time extends MultiFeatureBase {
 				.build();
 	}
 
-	private static class Now implements Feature, Feature.Out.Text.String {
+	private static class Now implements//
+			Feature, //
+			Feature.CLI, //
+			Feature.Out.Text.String {
 
-		IOConsumer<String> out;
+		private IOConsumer<String> out;
+		private CommandLine commandLine;
 
 		@Override
 		public String getShortDescription() {
@@ -34,18 +48,56 @@ public class Time extends MultiFeatureBase {
 
 		@Override
 		public void run(FeatureContext context) throws Exception {
-			long millis = System.currentTimeMillis();
+			String format = commandLine.getOptionValue(FORMAT, FORMAT_HUMAN);
+			out.accept(getFormattedTime(format));
+		}
 
-			long seconds = millis / MILLIS_IN_SECOND;
+		private static String getFormattedTime(String format) {
+			switch (format) {
+			case FORMAT_JAVA:
+				return String.valueOf(System.currentTimeMillis());
 
-			out.accept(//
-					String.valueOf(//
-							seconds));
+			case FORMAT_UNIX:
+				return String.valueOf(System.currentTimeMillis() / MILLIS_IN_SECOND);
+
+			case FORMAT_HUMAN:
+				return DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now());
+
+			case FORMAT_ISO:
+				return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now());
+
+			default:
+				return DateTimeFormatter.ofPattern(format).format(ZonedDateTime.now());
+			}
 		}
 
 		@Override
 		public void setOut(IOConsumer<String> out) {
 			this.out = out;
+		}
+
+		@Override
+		public void setCommandLine(CommandLine commandLine) {
+			this.commandLine = commandLine;
+		}
+
+		@Override
+		public Option[] getOptions() {
+			Option[] options = { //
+					Option//
+							.builder("f")//
+							.longOpt(FORMAT)//
+							.hasArg(true)//
+							.argName(FORMAT_UNIX + //
+									'|' + FORMAT_JAVA//
+									+ '|' + FORMAT_HUMAN//
+									+ '|' + FORMAT_ISO//
+									+ "|<pattern>")//
+							.required(false)//
+							.desc("output time format")//
+							.build()//
+			};
+			return options;
 		}
 
 	}
