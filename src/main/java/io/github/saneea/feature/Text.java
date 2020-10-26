@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.feature.text.JoinLines;
 import io.github.saneea.feature.text.Split;
 
 public class Text extends MultiFeatureBase {
@@ -24,6 +25,7 @@ public class Text extends MultiFeatureBase {
 								.feature("lower", ConvertTextCase.Lower::new)//
 								.build())//
 				.feature("split", Split::new)//
+				.feature("joinLines", JoinLines::new)//
 				.build();
 	}
 }
