@@ -30,22 +30,21 @@ public class Split implements//
 	}
 
 	private boolean transferLine() throws IOException {
-
-		boolean isContinue = true;
-
 		for (int i = 0; i < LINE_SIZE; ++i) {
 			int charCode = in.read();
 
 			if (charCode == -1) {
-				isContinue = false;
-				break;
+				if (i != 0) {
+					out.println();
+				}
+				return false;
 			}
 
 			out.print((char) charCode);
 		}
 		out.println();
 
-		return isContinue;
+		return true;
 	}
 
 	@Override
