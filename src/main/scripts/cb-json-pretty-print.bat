@@ -1,1 +1,1 @@
-dvh clip read | dvh json prettyPrint | dvh clip write
+dvh clip read | dvh json formatting pretty | dvh clip write
