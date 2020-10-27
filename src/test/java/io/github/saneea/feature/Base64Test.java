@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import io.github.saneea.FeatureContext;
 import io.github.saneea.TestUtils;
-import io.github.saneea.textfunction.FromBase64;
-import io.github.saneea.textfunction.ToBase64;
+import io.github.saneea.feature.binary.FromBase64;
+import io.github.saneea.feature.binary.ToBase64;
 
 public class Base64Test {
 

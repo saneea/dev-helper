@@ -18,6 +18,8 @@ import org.junit.Test;
 
 import io.github.saneea.FeatureContext;
 import io.github.saneea.TestUtils;
+import io.github.saneea.feature.binary.FromHex;
+import io.github.saneea.feature.binary.ToHex;
 
 public class HexTest {
 

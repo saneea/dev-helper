@@ -17,6 +17,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import io.github.saneea.TestUtils;
+import io.github.saneea.feature.xml.XmlReform;
 
 @RunWith(value = Parameterized.class)
 public class XmlReformTest {
