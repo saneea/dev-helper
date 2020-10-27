@@ -12,7 +12,7 @@ import io.github.saneea.FeatureContext;
 
 public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream {
 
-	private static final String COUNT = "count";
+	private static final String SIZE = "size";
 	private static final String SEED = "seed";
 
 	private OutputStream out;
@@ -27,7 +27,7 @@ public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream
 	@Override
 	public void run(FeatureContext context) throws IOException {
 
-		long count = Long.parseLong(commandLine.getOptionValue(COUNT));
+		long count = Long.parseLong(commandLine.getOptionValue(SIZE));
 
 		String seed = commandLine.getOptionValue(SEED);
 
@@ -58,8 +58,8 @@ public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream
 		return new Option[] { //
 
 				Option//
-						.builder("c")//
-						.longOpt(COUNT)//
+						.builder("s")//
+						.longOpt(SIZE)//
 						.hasArg(true)//
 						.argName("bytes count")//
 						.required(true)//
@@ -67,7 +67,7 @@ public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream
 						.build(), //
 
 				Option//
-						.builder("s")//
+						.builder()//
 						.longOpt(SEED)//
 						.hasArg(true)//
 						.argName("seed number")//
