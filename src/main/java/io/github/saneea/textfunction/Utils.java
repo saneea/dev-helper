@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.FeatureRunner;
-import io.github.saneea.feature.HelpFeature;
+import io.github.saneea.feature.help.HelpFeature;
 
 public class Utils {
 

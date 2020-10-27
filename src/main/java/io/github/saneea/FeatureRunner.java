@@ -2,7 +2,7 @@ package io.github.saneea;
 
 import java.io.IOException;
 
-import io.github.saneea.feature.HelpFeature;
+import io.github.saneea.feature.help.HelpFeature;
 
 public class FeatureRunner {
 

@@ -1,4 +1,4 @@
-package io.github.saneea.feature;
+package io.github.saneea.feature.help;
 
 import java.io.PrintStream;
 import java.util.Collection;
