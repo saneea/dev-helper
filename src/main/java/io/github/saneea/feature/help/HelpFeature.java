@@ -2,7 +2,9 @@ package io.github.saneea.feature.help;
 
 import java.io.PrintStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -77,8 +79,11 @@ public class HelpFeature implements//
 	}
 
 	private static int getMaxStringLength(Collection<String> strings) {
+		return getMaxStringLength(strings.stream());
+	}
+
+	private static int getMaxStringLength(Stream<String> strings) {
 		return strings//
-				.stream()//
 				.mapToInt(String::length)//
 				.max()//
 				.orElse(0);
@@ -90,19 +95,45 @@ public class HelpFeature implements//
 		out.println();
 		out.println("available features:");
 
-		printCatalogTreeBranch(featureProvider, 0);
+		FeatureTree featureTree = new FeatureTree("dvh", "dvh");
+		buildFeatureTree(featureTree, featureProvider);
+
+		printCatalogTreeBranch(featureTree, 0);
 	}
 
-	private void printCatalogTreeBranch(FeatureProvider featureProvider, int level) throws Exception {
+	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) throws Exception {
 		Set<String> featuresNames = featureProvider.featuresNames();
-
-		int maxFeatureNameSize = getMaxStringLength(featuresNames);
 
 		for (String featureName : featuresNames) {
 			Feature feature = featureProvider.createFeature(featureName);
 			String featureShortDescription = feature.getShortDescription();
 
+			FeatureTree child = new FeatureTree(featureName, featureShortDescription);
+			parent.getChildren().add(child);
+
 			boolean isHub = feature instanceof MultiFeature;
+
+			if (isHub) {
+				MultiFeature multiFeature = (MultiFeature) feature;
+				buildFeatureTree(child, multiFeature.getFeatureProvider());
+			}
+		}
+	}
+
+	private void printCatalogTreeBranch(FeatureTree featureTree, int level) throws Exception {
+
+		List<FeatureTree> features = featureTree.getChildren();
+
+		int maxFeatureNameSize = getMaxStringLength(//
+				features//
+						.stream()//
+						.map(FeatureTree::getAlias));
+
+		for (FeatureTree feature : features) {
+			String featureName = feature.getAlias();
+			String featureShortDescription = feature.getDescription();
+
+			boolean isHub = !feature.getChildren().isEmpty();
 
 			StringBuilder featureLine = new StringBuilder("\t")//
 					.append(repeatString("|---", level))//
@@ -117,8 +148,7 @@ public class HelpFeature implements//
 			out.println(featureLine);
 
 			if (isHub) {
-				MultiFeature multiFeature = (MultiFeature) feature;
-				printCatalogTreeBranch(multiFeature.getFeatureProvider(), level + 1);
+				printCatalogTreeBranch(feature, level + 1);
 			}
 		}
 	}
