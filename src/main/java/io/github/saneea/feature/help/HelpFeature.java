@@ -98,7 +98,7 @@ public class HelpFeature implements//
 		FeatureTree featureTree = new FeatureTree("dvh", "dvh");
 		buildFeatureTree(featureTree, featureProvider);
 
-		printCatalogTreeBranch(featureTree, 0);
+		printCatalogTreeBranch(featureTree, 1);
 	}
 
 	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) throws Exception {
@@ -129,14 +129,19 @@ public class HelpFeature implements//
 						.stream()//
 						.map(FeatureTree::getAlias));
 
-		for (FeatureTree feature : features) {
+		for (int i = 0; i < features.size(); ++i) {
+			FeatureTree feature = features.get(i);
+			boolean last = i == features.size() - 1;
+
 			String featureName = feature.getAlias();
 			String featureShortDescription = feature.getDescription();
 
 			boolean isHub = !feature.getChildren().isEmpty();
 
 			StringBuilder featureLine = new StringBuilder("\t")//
-					.append(repeatString("|---", level))//
+					.append(repeatString("|   ", level - 1))//
+					.append(last ? "\\" : "+")//
+					.append("---")//
 					.append(featureName);
 			if (!isHub) {
 				featureLine//
