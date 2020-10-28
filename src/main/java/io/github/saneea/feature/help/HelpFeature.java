@@ -98,7 +98,7 @@ public class HelpFeature implements//
 		FeatureTree featureTree = new FeatureTree("dvh", "dvh");
 		buildFeatureTree(featureTree, featureProvider);
 
-		printCatalogTreeBranch(featureTree, 1);
+		printCatalogTreeBranch(featureTree, "\t");
 	}
 
 	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) throws Exception {
@@ -111,16 +111,14 @@ public class HelpFeature implements//
 			FeatureTree child = new FeatureTree(featureName, featureShortDescription);
 			parent.getChildren().add(child);
 
-			boolean isHub = feature instanceof MultiFeature;
-
-			if (isHub) {
+			if (feature instanceof MultiFeature) {
 				MultiFeature multiFeature = (MultiFeature) feature;
 				buildFeatureTree(child, multiFeature.getFeatureProvider());
 			}
 		}
 	}
 
-	private void printCatalogTreeBranch(FeatureTree featureTree, int level) throws Exception {
+	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix) throws Exception {
 
 		List<FeatureTree> features = featureTree.getChildren();
 
@@ -138,11 +136,12 @@ public class HelpFeature implements//
 
 			boolean isHub = !feature.getChildren().isEmpty();
 
-			StringBuilder featureLine = new StringBuilder("\t")//
-					.append(repeatString("|   ", level - 1))//
+			StringBuilder featureLine = new StringBuilder()//
+					.append(levelLineSuffix)//
 					.append(last ? "\\" : "+")//
 					.append("---")//
 					.append(featureName);
+
 			if (!isHub) {
 				featureLine//
 						.append(repeatString(" ", maxFeatureNameSize - featureName.length()))//
@@ -153,7 +152,9 @@ public class HelpFeature implements//
 			out.println(featureLine);
 
 			if (isHub) {
-				printCatalogTreeBranch(feature, level + 1);
+				printCatalogTreeBranch(feature, levelLineSuffix + (last ? " " : "|") + "   ");
+			} else if (last) {
+				out.println(levelLineSuffix);
 			}
 		}
 	}
