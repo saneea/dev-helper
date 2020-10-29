@@ -1,0 +1,1 @@
+dvh clip read | dvh slash %1 | dvh clip write

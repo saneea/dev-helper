@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 
 import io.github.saneea.textfunction.String2CharArray;
 import io.github.saneea.textfunction.TextFunction;
-import io.github.saneea.textfunction.UnixPathNormalizer;
-import io.github.saneea.textfunction.WindowsPathNormalizer;
 
 public class MainWindow extends JFrame {
 
@@ -33,8 +31,6 @@ public class MainWindow extends JFrame {
 		Container contentPane = getContentPane();
 
 		addInput(contentPane);
-		addConverter(contentPane, "Windows path", new WindowsPathNormalizer());
-		addConverter(contentPane, "Unix path", new UnixPathNormalizer());
 		addConverter(contentPane, "lower case", String::toLowerCase);
 		addConverter(contentPane, "UPPER CASE", String::toUpperCase);
 		addConverter(contentPane, "Char array", new String2CharArray());
