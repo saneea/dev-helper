@@ -23,8 +23,13 @@ public class Text extends MultiFeatureBase {
 								.feature("upper", ConvertTextCase.Upper::new)//
 								.feature("lower", ConvertTextCase.Lower::new)//
 								.build())//
-				.feature("split", Split::new)//
-				.feature("joinLines", JoinLines::new)//
+				.multiFeature(//
+						"chunker", //
+						"split text to chunks or join chunks again", //
+						new AliasesBuilder()//
+								.feature("split", Split::new)//
+								.feature("join", JoinLines::new)//
+								.build())//
 				.feature("toCharArray", ToCharArray::new)//
 				.build();
 	}
