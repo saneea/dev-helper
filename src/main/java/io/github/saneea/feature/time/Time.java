@@ -17,6 +17,7 @@ public class Time extends MultiFeatureBase {
 	public Map<String, Supplier<Feature>> getFeatureAliases() {
 		return new AliasesBuilder()//
 				.feature("now", Now::new)//
+				.feature("convert", Converter::new)//
 				.build();
 	}
 
