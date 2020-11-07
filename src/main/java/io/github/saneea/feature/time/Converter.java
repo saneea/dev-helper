@@ -1,9 +1,6 @@
 package io.github.saneea.feature.time;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -11,6 +8,8 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.Feature.Util.IOConsumer;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.feature.time.format.Format;
+import io.github.saneea.feature.time.format.FormatFactory;
 
 public class Converter implements//
 		Feature, //
@@ -30,6 +29,8 @@ public class Converter implements//
 	private IOConsumer<String> out;
 	private CommandLine commandLine;
 
+	private final FormatFactory formatFactory = new FormatFactory();
+
 	@Override
 	public String getShortDescription() {
 		return "convert time from original format to another one";
@@ -37,53 +38,17 @@ public class Converter implements//
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		String inFormat = commandLine.getOptionValue(IN_FORMAT, FORMAT_HUMAN);
-		String outFormat = commandLine.getOptionValue(OUT_FORMAT, FORMAT_HUMAN);
+		Format inFormat = getFormatFromCLI(IN_FORMAT);
+		Format outFormat = getFormatFromCLI(OUT_FORMAT);
 
-		ZonedDateTime zoned2 = parseFormattedTime(in, inFormat);
+		ZonedDateTime timeAsZoned = inFormat.parse(in);
+		String converted = outFormat.render(timeAsZoned);
 
-		String convertedFormatted = getFormattedTime(zoned2, outFormat);
-
-		out.accept(convertedFormatted);
+		out.accept(converted);
 	}
 
-	private static ZonedDateTime parseFormattedTime(String time, String format) {
-		switch (format) {
-		case FORMAT_JAVA:
-			return ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(time)), ZoneId.systemDefault());
-
-		case FORMAT_UNIX:
-			return ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.valueOf(time)), ZoneId.systemDefault());
-
-		case FORMAT_HUMAN:
-			return ZonedDateTime.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(time));
-
-		case FORMAT_ISO:
-			return ZonedDateTime.from(DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(time));
-
-		default:
-			return ZonedDateTime.from(DateTimeFormatter.ofPattern(format).parse(time));
-		}
-	}
-
-	private static String getFormattedTime(ZonedDateTime time, String format) {
-
-		switch (format) {
-		case FORMAT_JAVA:
-			return String.valueOf(time.toInstant().toEpochMilli());
-
-		case FORMAT_UNIX:
-			return String.valueOf(time.toInstant().getEpochSecond());
-
-		case FORMAT_HUMAN:
-			return DateTimeFormatter.RFC_1123_DATE_TIME.format(time);
-
-		case FORMAT_ISO:
-			return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(time);
-
-		default:
-			return DateTimeFormatter.ofPattern(format).format(time);
-		}
+	private Format getFormatFromCLI(String cliOptionName) {
+		return formatFactory.createFormat(commandLine.getOptionValue(cliOptionName));
 	}
 
 	@Override
@@ -113,7 +78,7 @@ public class Converter implements//
 								+ '|' + FORMAT_HUMAN//
 								+ '|' + FORMAT_ISO//
 								+ "|<pattern>")//
-						.required(false)//
+						.required(true)//
 						.desc("input time format")//
 						.build(), //
 
@@ -126,7 +91,7 @@ public class Converter implements//
 								+ '|' + FORMAT_HUMAN//
 								+ '|' + FORMAT_ISO//
 								+ "|<pattern>")//
-						.required(false)//
+						.required(true)//
 						.desc("output time format")//
 						.build()//
 		};
