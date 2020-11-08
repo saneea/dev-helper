@@ -20,11 +20,6 @@ public class Converter implements//
 	private static final String IN_FORMAT = "inputFormat";
 	private static final String OUT_FORMAT = "outputFormat";
 
-	private static final String FORMAT_UNIX = "unix";
-	private static final String FORMAT_JAVA = "java";
-	private static final String FORMAT_HUMAN = "human";
-	private static final String FORMAT_ISO = "ISO";
-
 	private String in;
 	private IOConsumer<String> out;
 	private CommandLine commandLine;
@@ -69,33 +64,21 @@ public class Converter implements//
 	@Override
 	public Option[] getOptions() {
 		Option[] options = { //
-				Option//
-						.builder("if")//
-						.longOpt(IN_FORMAT)//
-						.hasArg(true)//
-						.argName(FORMAT_UNIX + //
-								'|' + FORMAT_JAVA//
-								+ '|' + FORMAT_HUMAN//
-								+ '|' + FORMAT_ISO//
-								+ "|<pattern>")//
-						.required(true)//
-						.desc("input time format")//
-						.build(), //
-
-				Option//
-						.builder("of")//
-						.longOpt(OUT_FORMAT)//
-						.hasArg(true)//
-						.argName(FORMAT_UNIX + //
-								'|' + FORMAT_JAVA//
-								+ '|' + FORMAT_HUMAN//
-								+ '|' + FORMAT_ISO//
-								+ "|<pattern>")//
-						.required(true)//
-						.desc("output time format")//
-						.build()//
+				createFormatCliOption("if", IN_FORMAT, "input time format"), //
+				createFormatCliOption("of", OUT_FORMAT, "output time format")//
 		};
 		return options;
+	}
+
+	private Option createFormatCliOption(String shortName, String longName, String description) {
+		return Option//
+				.builder(shortName)//
+				.longOpt(longName)//
+				.hasArg(true)//
+				.argName(formatFactory.getAvailableFormatsString())//
+				.required(true)//
+				.desc(description)//
+				.build();
 	}
 
 }
