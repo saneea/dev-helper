@@ -107,9 +107,18 @@ public interface Feature {
 
 		interface CommonOptions {
 
+			String HELP = "help";
 			String OUTPUT_ENCODING = "outputEncoding";
 			String INPUT_ENCODING = "inputEncoding";
 			String NON_BUFFERED_STREAMS = "nonBufferedStreams";
+
+			Option HELP_OPTION = Option//
+					.builder("h")//
+					.longOpt(HELP)//
+					.hasArg(false)//
+					.required(false)//
+					.desc("print help")//
+					.build();
 
 			Option OUTPUT_ENCODING_OPTION = Option//
 					.builder("oe")//

@@ -60,6 +60,8 @@ public class FeatureResources implements AutoCloseable {
 				cliOptions.addOption(option);
 			}
 
+			cliOptions.addOption(CommonOptions.HELP_OPTION);
+
 			if (feature instanceof Feature.Out.Text.PrintStream//
 					|| feature instanceof Feature.Out.Text.Writer//
 					|| feature instanceof Feature.Out.Text.String) {
@@ -90,11 +92,20 @@ public class FeatureResources implements AutoCloseable {
 				commandLine = commandLineParser.parse(cliOptions, args);
 			} catch (ParseException e) {
 				System.err.println(e.getLocalizedMessage());
-				new HelpFormatter().printHelp(featureName, cliOptions);
+				printHelp(cliOptions);
 				throw new AppExitException(AppExitException.ExitCode.ERROR, e);
+			}
+
+			if (commandLine.hasOption(CommonOptions.HELP)) {
+				printHelp(cliOptions);
+				throw new AppExitException(AppExitException.ExitCode.OK);
 			}
 		}
 		return commandLine;
+	}
+
+	private void printHelp(Options cliOptions) {
+		new HelpFormatter().printHelp(featureName, cliOptions);
 	}
 
 	public IOConsumer<String> getOutTextString() {
