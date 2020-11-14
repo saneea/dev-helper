@@ -7,19 +7,10 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
-import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.MultiFeature;
-import io.github.saneea.textfunction.Utils;
 
 public abstract class MultiFeatureBase implements MultiFeature {
-
-	@Override
-	public void run(FeatureContext context) throws Exception {
-		Utils.dvhEntryPoint(//
-				context, //
-				getFeatureProvider());
-	}
 
 	@Override
 	public FeatureProvider getFeatureProvider() {
