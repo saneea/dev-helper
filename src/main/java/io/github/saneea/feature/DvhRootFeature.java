@@ -6,7 +6,7 @@ import io.github.saneea.FeatureProvider;
 import io.github.saneea.MultiFeature;
 import io.github.saneea.RootFeatureProvider;
 
-public class DvhRootFeature implements MultiFeature {
+public class DvhRootFeature extends MultiFeature {
 
 	private final FeatureProvider featureProvider;
 

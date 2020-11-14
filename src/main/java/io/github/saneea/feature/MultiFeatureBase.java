@@ -10,7 +10,7 @@ import io.github.saneea.Feature;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.MultiFeature;
 
-public abstract class MultiFeatureBase implements MultiFeature {
+public abstract class MultiFeatureBase extends MultiFeature {
 
 	@Override
 	public FeatureProvider getFeatureProvider() {
