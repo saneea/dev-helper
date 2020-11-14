@@ -9,7 +9,7 @@ public class App {
 		DvhRootFeature rootFeature = new DvhRootFeature();
 
 		try {
-			rootFeature.run(new FeatureContext(null, "dvh", args, null));
+			rootFeature.run(new FeatureContext(null, "dvh", args));
 		} catch (AppExitException appExitException) {
 			System.exit(appExitException.getExitCode());
 		}

@@ -11,6 +11,7 @@ import org.apache.commons.cli.Option;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.FeatureContext.Parent;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.MultiFeature;
 
@@ -40,8 +41,12 @@ public class HelpFeature implements//
 	@Override
 	public void run(FeatureContext context) throws Exception {
 
+		FeatureContext.Parent parent = context.getParent();
+
 		out.println("usage:");
-		out.println("\t" + getFeaturesChain(context.getParentContext()) + "<feature name> [feature args]");
+		out.println("\t" + getFeaturesChain(parent.getContext()) + "<feature name> [feature args]");
+
+		FeatureProvider parentFeatureProvider = parent.getFeatureProvider();
 
 		String catalogMode = commandLine.getOptionValue(CATALOG, CATALOG_LIST);
 
@@ -50,18 +55,16 @@ public class HelpFeature implements//
 			break;
 
 		case CATALOG_LIST:
-			printCatalogAsList(context);
+			printCatalogAsList(parentFeatureProvider);
 			break;
 
 		case CATALOG_TREE:
-			printCatalogAsTree(context);
+			printCatalogAsTree(parentFeatureProvider);
 			break;
 		}
 	}
 
-	private void printCatalogAsList(FeatureContext context) throws Exception {
-		FeatureProvider parentFeatureProvider = context.getParentFeatureProvider();
-
+	private void printCatalogAsList(FeatureProvider parentFeatureProvider) throws Exception {
 		out.println();
 		out.println("available features:");
 
@@ -89,9 +92,7 @@ public class HelpFeature implements//
 				.orElse(0);
 	}
 
-	private void printCatalogAsTree(FeatureContext context) throws Exception {
-		FeatureProvider parentFeatureProvider = context.getParentFeatureProvider();
-
+	private void printCatalogAsTree(FeatureProvider parentFeatureProvider) throws Exception {
 		out.println();
 		out.println("available features:");
 
@@ -168,9 +169,16 @@ public class HelpFeature implements//
 	}
 
 	private static String getFeaturesChain(FeatureContext context) {
-		return context != null//
-				? getFeaturesChain(context.getParentContext()) + context.getFeatureName() + " "//
-				: "";
+		if (context == null) {
+			return "";
+		}
+
+		Parent parent = context.getParent();
+		FeatureContext parentContext = parent != null//
+				? parent.getContext()//
+				: null;
+
+		return getFeaturesChain(parentContext) + context.getFeatureName() + " ";
 	}
 
 	@Override

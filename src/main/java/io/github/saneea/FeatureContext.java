@@ -1,21 +1,19 @@
 package io.github.saneea;
 
 public class FeatureContext {
-	private final FeatureContext parentContext;
+
+	private final Parent parent;
 	private final String featureName;
 	private final String[] args;
-	private final FeatureProvider parentFeatureProvider;
 
-	public FeatureContext(FeatureContext parentContext, String featureName, String[] args,
-			FeatureProvider parentFeatureProvider) {
-		this.parentContext = parentContext;
+	public FeatureContext(Parent parent, String featureName, String[] args) {
+		this.parent = parent;
 		this.featureName = featureName;
 		this.args = args;
-		this.parentFeatureProvider = parentFeatureProvider;
 	}
 
-	public FeatureContext getParentContext() {
-		return parentContext;
+	public Parent getParent() {
+		return parent;
 	}
 
 	public String getFeatureName() {
@@ -26,8 +24,22 @@ public class FeatureContext {
 		return args;
 	}
 
-	public FeatureProvider getParentFeatureProvider() {
-		return parentFeatureProvider;
+	public static class Parent {
+		private final FeatureContext context;
+		private final FeatureProvider featureProvider;
+
+		public Parent(FeatureContext context, FeatureProvider featureProvider) {
+			this.context = context;
+			this.featureProvider = featureProvider;
+		}
+
+		public FeatureContext getContext() {
+			return context;
+		}
+
+		public FeatureProvider getFeatureProvider() {
+			return featureProvider;
+		}
 	}
 
 }
