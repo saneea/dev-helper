@@ -60,17 +60,17 @@ public class HelpFeature implements//
 	}
 
 	private void printCatalogAsList(FeatureContext context) throws Exception {
-		FeatureProvider featureProvider = context.getFeatureProvider();
+		FeatureProvider parentFeatureProvider = context.getParentFeatureProvider();
 
 		out.println();
 		out.println("available features:");
 
-		Set<String> featuresNames = featureProvider.featuresNames();
+		Set<String> featuresNames = parentFeatureProvider.featuresNames();
 
 		int maxFeatureNameSize = getMaxStringLength(featuresNames);
 
 		for (String featureName : featuresNames) {
-			Feature feature = featureProvider.createFeature(featureName);
+			Feature feature = parentFeatureProvider.createFeature(featureName);
 			String featureShortDescription = feature.getShortDescription();
 			String template = "\t%1$" + maxFeatureNameSize + "s - %2$s";
 
@@ -90,13 +90,13 @@ public class HelpFeature implements//
 	}
 
 	private void printCatalogAsTree(FeatureContext context) throws Exception {
-		FeatureProvider featureProvider = context.getFeatureProvider();
+		FeatureProvider parentFeatureProvider = context.getParentFeatureProvider();
 
 		out.println();
 		out.println("available features:");
 
 		FeatureTree featureTree = new FeatureTree("dvh", "dvh");
-		buildFeatureTree(featureTree, featureProvider);
+		buildFeatureTree(featureTree, parentFeatureProvider);
 
 		printCatalogTreeBranch(featureTree, "\t");
 	}

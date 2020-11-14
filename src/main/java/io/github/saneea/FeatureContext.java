@@ -4,14 +4,14 @@ public class FeatureContext {
 	private final FeatureContext parentContext;
 	private final String featureName;
 	private final String[] args;
-	private final FeatureProvider featureProvider;
+	private final FeatureProvider parentFeatureProvider;
 
 	public FeatureContext(FeatureContext parentContext, String featureName, String[] args,
-			FeatureProvider featureProvider) {
+			FeatureProvider parentFeatureProvider) {
 		this.parentContext = parentContext;
 		this.featureName = featureName;
 		this.args = args;
-		this.featureProvider = featureProvider;
+		this.parentFeatureProvider = parentFeatureProvider;
 	}
 
 	public FeatureContext getParentContext() {
@@ -26,8 +26,8 @@ public class FeatureContext {
 		return args;
 	}
 
-	public FeatureProvider getFeatureProvider() {
-		return featureProvider;
+	public FeatureProvider getParentFeatureProvider() {
+		return parentFeatureProvider;
 	}
 
 }

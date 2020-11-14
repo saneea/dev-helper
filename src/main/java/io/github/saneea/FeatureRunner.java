@@ -12,13 +12,13 @@ public class FeatureRunner {
 		this.featureProvider = featureProvider;
 	}
 
-	public void run(FeatureContext parentFeatureContext, String featureName, String[] args) throws Exception {
+	public void run(FeatureContext context, String featureName, String[] args) throws Exception {
 		Feature feature = createFeature(featureName);
 		if (feature == null) {
 			throw new IllegalArgumentException("Unknown feature: \"" + featureName + "\"");
 		}
 
-		runFeature(parentFeatureContext, feature, featureName, args);
+		runFeature(context, feature, featureName, args);
 	}
 
 	private Feature createFeature(String featureName) throws Exception {
@@ -33,12 +33,12 @@ public class FeatureRunner {
 	}
 
 	private void runFeature(//
-			FeatureContext parentFeatureContext, //
+			FeatureContext context, //
 			Feature feature, //
 			String featureName, //
 			String[] args) throws Exception {
 		try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
-			feature.run(new FeatureContext(parentFeatureContext, featureName, args, featureProvider));
+			feature.run(new FeatureContext(context, featureName, args, featureProvider));
 		}
 	}
 
