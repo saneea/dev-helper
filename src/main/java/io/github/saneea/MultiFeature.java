@@ -10,6 +10,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import io.github.saneea.Feature.CLI.CommonOptions;
 import io.github.saneea.FeatureContext.Parent;
 import io.github.saneea.feature.help.FeatureTree;
 import io.github.saneea.textfunction.Utils;
@@ -33,28 +34,26 @@ public abstract class MultiFeature implements Feature {
 	public void run(FeatureContext context) throws Exception {
 		String[] args = context.getArgs();
 
-		String featureName = args.length != 0//
-				? args[0]//
-				: HelpAlias.SHORT;
+		if (args.length != 0 && !args[0].startsWith("-")) {
+			String featureName = args[0];
+			String[] featureArgs = withoutFeatureName(args);
 
-		String[] featureArgs = withoutFeatureName(args);
-
-		if (HelpAlias.SHORT.equals(featureName)//
-				|| HelpAlias.LONG.equals(featureName)) {
+			FeatureRunner featureRunner = new FeatureRunner(getFeatureProvider());
+			featureRunner.run(context, featureName, featureArgs);
+		} else {
 			Options cliOptions = new Options();
+			cliOptions.addOption(CommonOptions.HELP_OPTION);
 			for (Option cliOption : getCliOptions()) {
 				cliOptions.addOption(cliOption);
 			}
-			CommandLine commandLine = Utils.parseCli(context.getFeatureName(), featureArgs, cliOptions);
+			CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions);
 			FeatureContext childContext = new FeatureContext(//
 					new FeatureContext.Parent(//
 							context, getFeatureProvider()), //
-					featureName, args);
+					null, args);
 			runHelpFeature(childContext, commandLine);
-		} else {
-			FeatureRunner featureRunner = new FeatureRunner(getFeatureProvider());
-			featureRunner.run(context, featureName, featureArgs);
 		}
+
 	}
 
 	private static String[] withoutFeatureName(String[] args) {
