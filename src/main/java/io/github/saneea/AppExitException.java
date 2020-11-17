@@ -7,7 +7,7 @@ public class AppExitException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	interface ExitCode {
+	public interface ExitCode {
 		int OK = 0;
 		int ERROR = 1;
 	}

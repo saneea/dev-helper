@@ -19,15 +19,12 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.Feature.CLI.CommonOptions;
 import io.github.saneea.Feature.Util.IOConsumer;
+import io.github.saneea.textfunction.Utils;
 
 public class FeatureResources implements AutoCloseable {
 
@@ -84,28 +81,9 @@ public class FeatureResources implements AutoCloseable {
 
 	public CommandLine getCommandLine() {
 		if (commandLine == null) {
-			Options cliOptions = getCliOptions();
-
-			CommandLineParser commandLineParser = new DefaultParser();
-
-			try {
-				commandLine = commandLineParser.parse(cliOptions, args);
-			} catch (ParseException e) {
-				System.err.println(e.getLocalizedMessage());
-				printHelp(cliOptions);
-				throw new AppExitException(AppExitException.ExitCode.ERROR, e);
-			}
-
-			if (commandLine.hasOption(CommonOptions.HELP)) {
-				printHelp(cliOptions);
-				throw new AppExitException(AppExitException.ExitCode.OK);
-			}
+			commandLine = Utils.parseCli(featureName, args, getCliOptions());
 		}
 		return commandLine;
-	}
-
-	private void printHelp(Options cliOptions) {
-		new HelpFormatter().printHelp(featureName, cliOptions);
 	}
 
 	public IOConsumer<String> getOutTextString() {
