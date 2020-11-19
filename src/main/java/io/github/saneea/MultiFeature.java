@@ -22,11 +22,6 @@ public abstract class MultiFeature implements Feature {
 	public static final String CATALOG_LIST = "list";
 	public static final String CATALOG_TREE = "tree";
 
-	public interface HelpAlias {
-		String SHORT = "-h";
-		String LONG = "--help";
-	}
-
 	private PrintStream out = System.out;
 
 	public abstract FeatureProvider getFeatureProvider();
