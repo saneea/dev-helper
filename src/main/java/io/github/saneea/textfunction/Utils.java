@@ -1,6 +1,7 @@
 package io.github.saneea.textfunction;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,6 +29,10 @@ public class Utils {
 	}
 
 	public static CommandLine parseCli(String featureName, String[] args, Options cliOptions) {
+		return parseCli(featureName, args, cliOptions, new DefaultHelpPrinter(featureName, cliOptions));
+	}
+
+	public static CommandLine parseCli(String featureName, String[] args, Options cliOptions, HelpPrinter helpPrinter) {
 		CommandLineParser commandLineParser = new DefaultParser();
 
 		CommandLine commandLine;
@@ -36,19 +41,36 @@ public class Utils {
 			commandLine = commandLineParser.parse(cliOptions, args);
 		} catch (ParseException e) {
 			System.err.println(e.getLocalizedMessage());
-			printHelp(featureName, cliOptions);
+			helpPrinter.print(Optional.empty());
 			throw new AppExitException(AppExitException.ExitCode.ERROR, e);
 		}
 
 		if (commandLine.hasOption(CommonOptions.HELP)) {
-			printHelp(featureName, cliOptions);
+			helpPrinter.print(Optional.of(commandLine));
 			throw new AppExitException(AppExitException.ExitCode.OK);
 		}
 
 		return commandLine;
 	}
 
-	private static void printHelp(String featureName, Options cliOptions) {
-		new HelpFormatter().printHelp(featureName, cliOptions);
+	public interface HelpPrinter {
+		void print(Optional<CommandLine> commandLine);
 	}
+
+	public static class DefaultHelpPrinter implements HelpPrinter {
+
+		private final String cmdLineSyntax;
+		private final Options options;
+
+		public DefaultHelpPrinter(String cmdLineSyntax, Options options) {
+			this.cmdLineSyntax = cmdLineSyntax;
+			this.options = options;
+		}
+
+		@Override
+		public void print(Optional<CommandLine> commandLine) {
+			new HelpFormatter().printHelp(cmdLineSyntax, options);
+		}
+	}
+
 }
