@@ -69,7 +69,7 @@ public class Utils {
 
 		@Override
 		public void print(Optional<CommandLine> commandLine) {
-			new HelpFormatter().printHelp(cmdLineSyntax, options);
+			new HelpFormatter().printHelp(cmdLineSyntax, options, true);
 		}
 	}
 
