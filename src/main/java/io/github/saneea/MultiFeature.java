@@ -75,7 +75,7 @@ public abstract class MultiFeature implements Feature {
 		return options;
 	}
 
-	private void runHelpFeature(FeatureContext context, CommandLine commandLine) throws Exception {
+	private void runHelpFeature(FeatureContext context, CommandLine commandLine) {
 
 		FeatureContext.Parent parent = context.getParent();
 
@@ -100,7 +100,7 @@ public abstract class MultiFeature implements Feature {
 		}
 	}
 
-	private void printCatalogAsList(FeatureProvider parentFeatureProvider) throws Exception {
+	private void printCatalogAsList(FeatureProvider parentFeatureProvider) {
 		out.println();
 		out.println("available features:");
 
@@ -109,11 +109,10 @@ public abstract class MultiFeature implements Feature {
 		int maxFeatureNameSize = getMaxStringLength(featuresNames);
 
 		for (String featureName : featuresNames) {
-			Feature feature = parentFeatureProvider.createFeature(featureName);
-			String featureShortDescription = feature.getShortDescription();
+			FeatureInfo featureInfo = getFeatureInfo(parentFeatureProvider, featureName);
 			String template = "\t%1$" + maxFeatureNameSize + "s - %2$s";
 
-			out.println(String.format(template, featureName, featureShortDescription));
+			out.println(String.format(template, featureName, featureInfo.description));
 		}
 	}
 
@@ -128,7 +127,7 @@ public abstract class MultiFeature implements Feature {
 				.orElse(0);
 	}
 
-	private void printCatalogAsTree(FeatureProvider parentFeatureProvider) throws Exception {
+	private void printCatalogAsTree(FeatureProvider parentFeatureProvider) {
 		out.println();
 		out.println("available features:");
 
@@ -138,24 +137,39 @@ public abstract class MultiFeature implements Feature {
 		printCatalogTreeBranch(featureTree, "\t");
 	}
 
-	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) throws Exception {
+	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) {
 		Set<String> featuresNames = featureProvider.featuresNames();
 
 		for (String featureName : featuresNames) {
-			Feature feature = featureProvider.createFeature(featureName);
-			String featureShortDescription = feature.getShortDescription();
+			FeatureInfo featureInfo = getFeatureInfo(featureProvider, featureName);
 
-			FeatureTree child = new FeatureTree(featureName, featureShortDescription);
+			FeatureTree child = new FeatureTree(featureName, featureInfo.description);
 			parent.getChildren().add(child);
 
-			if (feature instanceof MultiFeature) {
-				MultiFeature multiFeature = (MultiFeature) feature;
+			if (featureInfo.feature instanceof MultiFeature) {
+				MultiFeature multiFeature = (MultiFeature) featureInfo.feature;
 				buildFeatureTree(child, multiFeature.getFeatureProvider());
 			}
 		}
 	}
 
-	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix) throws Exception {
+	private static FeatureInfo getFeatureInfo(FeatureProvider featureProvider, String featureName) {
+
+		Feature feature;
+		String featureShortDescription;
+
+		try {
+			feature = featureProvider.createFeature(featureName);
+			featureShortDescription = feature.getShortDescription();
+		} catch (Exception e) {
+			feature = null;
+			featureShortDescription = e.toString();
+		}
+
+		return new FeatureInfo(feature, featureShortDescription);
+	}
+
+	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix) {
 
 		List<FeatureTree> features = featureTree.getChildren();
 
@@ -215,5 +229,15 @@ public abstract class MultiFeature implements Feature {
 				: null;
 
 		return getFeaturesChain(parentContext) + context.getFeatureName() + " ";
+	}
+
+	private static class FeatureInfo {
+		final Feature feature;
+		final String description;
+
+		public FeatureInfo(Feature feature, String description) {
+			this.feature = feature;
+			this.description = description;
+		}
 	}
 }
