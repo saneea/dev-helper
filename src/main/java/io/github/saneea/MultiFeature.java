@@ -3,7 +3,9 @@ package io.github.saneea;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
@@ -14,6 +16,7 @@ import io.github.saneea.Feature.CLI.CommonOptions;
 import io.github.saneea.FeatureContext.Parent;
 import io.github.saneea.feature.help.FeatureTree;
 import io.github.saneea.textfunction.Utils;
+import io.github.saneea.textfunction.Utils.DefaultHelpPrinter;
 
 public abstract class MultiFeature implements Feature {
 
@@ -41,11 +44,40 @@ public abstract class MultiFeature implements Feature {
 			for (Option cliOption : getCliOptions()) {
 				cliOptions.addOption(cliOption);
 			}
-			CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions);
+
 			FeatureContext childContext = new FeatureContext(//
 					new FeatureContext.Parent(//
 							context, getFeatureProvider()), //
 					null, args);
+
+			MultiFeatureHelpPrinter helpPrinter = new MultiFeatureHelpPrinter(//
+					context.getFeatureName(), cliOptions, childContext);
+
+			CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions, helpPrinter);
+
+			helpPrinter.print(Optional.of(commandLine));
+		}
+
+	}
+
+	private class MultiFeatureHelpPrinter extends DefaultHelpPrinter {
+
+		private final FeatureContext childContext;
+
+		public MultiFeatureHelpPrinter(String cmdLineSyntax, Options options, FeatureContext childContext) {
+			super(cmdLineSyntax, options);
+			this.childContext = childContext;
+		}
+
+		@Override
+		public void print(Optional<CommandLine> commandLine) {
+			out.println("usage: "//
+					+ getFeaturesChain(childContext.getParent().getContext()) //
+					+ "<feature name> [feature args]");
+			out.println("--- or ---");
+
+			super.print(commandLine);
+
 			runHelpFeature(childContext, commandLine);
 		}
 
@@ -75,16 +107,17 @@ public abstract class MultiFeature implements Feature {
 		return options;
 	}
 
-	private void runHelpFeature(FeatureContext context, CommandLine commandLine) {
+	private void runHelpFeature(FeatureContext context, Optional<CommandLine> commandLine) {
 
 		FeatureContext.Parent parent = context.getParent();
 
-		out.println("usage:");
-		out.println("\t" + getFeaturesChain(parent.getContext()) + "<feature name> [feature args]");
-
 		FeatureProvider parentFeatureProvider = parent.getFeatureProvider();
 
-		String catalogMode = commandLine.getOptionValue(CATALOG, CATALOG_LIST);
+		String catalogMode = commandLine//
+				.map(cl -> cl.getOptionValue(CATALOG))//
+				.map(Optional::ofNullable)//
+				.flatMap(Function.identity())//
+				.orElse(CATALOG_LIST);
 
 		switch (catalogMode) {
 		case CATALOG_HIDE:
