@@ -80,8 +80,8 @@ public class Utils {
 
 	public static class DefaultHelpPrinter implements HelpPrinter {
 
-		private final String cmdLineSyntax;
-		private final Options options;
+		protected final String cmdLineSyntax;
+		protected final Options options;
 
 		public DefaultHelpPrinter(String cmdLineSyntax, Options options) {
 			this.cmdLineSyntax = cmdLineSyntax;

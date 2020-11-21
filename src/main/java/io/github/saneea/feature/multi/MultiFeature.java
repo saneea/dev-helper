@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -65,8 +67,12 @@ public abstract class MultiFeature implements Feature {
 						context, getFeatureProvider()), //
 				null, args);
 
+		String featuresChain = getFeaturesChain(childContext.getParent().getContext())//
+				.collect(//
+						Collectors.joining(" "));
+
 		MultiFeatureHelpPrinter helpPrinter = new MultiFeatureHelpPrinter(//
-				context.getFeatureName(), cliOptions, childContext);
+				featuresChain, cliOptions, childContext);
 
 		CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions, helpPrinter);
 
@@ -85,8 +91,8 @@ public abstract class MultiFeature implements Feature {
 		@Override
 		public void print(Optional<CommandLine> commandLine) {
 			out.println("usage: "//
-					+ getFeaturesChain(childContext.getParent().getContext()) //
-					+ "<featureName> [feature args]");
+					+ cmdLineSyntax //
+					+ " <featureName> [feature args]");
 			out.println("--- or ---");
 
 			super.print(commandLine);
@@ -129,7 +135,7 @@ public abstract class MultiFeature implements Feature {
 			break;
 
 		case CATALOG_TREE:
-			printCatalogAsTree(parentFeatureProvider);
+			printCatalogAsTree(parentFeatureProvider, context);
 			break;
 
 		default:
@@ -150,11 +156,19 @@ public abstract class MultiFeature implements Feature {
 		}
 	}
 
-	private void printCatalogAsTree(FeatureProvider parentFeatureProvider) {
-		FeatureTree featureTree = new FeatureTree("dvh", "dvh");
-		buildFeatureTree(featureTree, parentFeatureProvider);
+	private void printCatalogAsTree(FeatureProvider parentFeatureProvider, FeatureContext context) {
 
-		printCatalogTreeBranch(featureTree, CATALOG_LINE_SUFFIX);
+		List<FeatureTree> featuresChain = getFeaturesChain(context.getParent().getContext())//
+				.map(featureName -> new FeatureTree(featureName, ""))//
+				.collect(Collectors.toList());
+
+		for (int i = 0; i < featuresChain.size() - 1; ++i) {
+			featuresChain.get(i).getChildren().add(featuresChain.get(i + 1));
+		}
+
+		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), parentFeatureProvider);
+
+		printCatalogChildBranch(CATALOG_LINE_SUFFIX, featuresChain.get(0), 0, true);
 	}
 
 	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) {
@@ -192,40 +206,42 @@ public abstract class MultiFeature implements Feature {
 						.map(FeatureTree::getAlias));
 
 		for (int i = 0; i < features.size(); ++i) {
-			FeatureTree feature = features.get(i);
-			boolean last = i == features.size() - 1;
-
-			String featureName = feature.getAlias();
-			String featureShortDescription = feature.getDescription();
-
-			boolean isHub = !feature.getChildren().isEmpty();
-
-			StringBuilder featureLine = new StringBuilder()//
-					.append(levelLineSuffix)//
-					.append(last ? "\\" : "+")//
-					.append("---")//
-					.append(featureName);
-
-			if (!isHub) {
-				featureLine//
-						.append(Utils.repeatString(" ", maxFeatureNameSize - featureName.length()))//
-						.append(" - ")//
-						.append(featureShortDescription);
-			}
-
-			out.println(featureLine);
-
-			if (isHub) {
-				printCatalogTreeBranch(feature, levelLineSuffix + (last ? " " : "|") + "   ");
-			} else if (last) {
-				out.println(levelLineSuffix);
-			}
+			printCatalogChildBranch(levelLineSuffix, features.get(i), maxFeatureNameSize, i == features.size() - 1);
 		}
 	}
 
-	private static String getFeaturesChain(FeatureContext context) {
+	private void printCatalogChildBranch(String levelLineSuffix, FeatureTree feature, int maxFeatureNameSize,
+			boolean last) {
+		String featureName = feature.getAlias();
+		String featureShortDescription = feature.getDescription();
+
+		boolean isHub = !feature.getChildren().isEmpty();
+
+		StringBuilder featureLine = new StringBuilder()//
+				.append(levelLineSuffix)//
+				.append(last ? "\\" : "+")//
+				.append("---")//
+				.append(featureName);
+
+		if (!isHub) {
+			featureLine//
+					.append(Utils.repeatString(" ", maxFeatureNameSize - featureName.length()))//
+					.append(" - ")//
+					.append(featureShortDescription);
+		}
+
+		out.println(featureLine);
+
+		if (isHub) {
+			printCatalogTreeBranch(feature, levelLineSuffix + (last ? " " : "|") + "   ");
+		} else if (last) {
+			out.println(levelLineSuffix);
+		}
+	}
+
+	private static Stream<String> getFeaturesChain(FeatureContext context) {
 		if (context == null) {
-			return "";
+			return Stream.empty();
 		}
 
 		Parent parent = context.getParent();
@@ -233,6 +249,8 @@ public abstract class MultiFeature implements Feature {
 				? parent.getContext()//
 				: null;
 
-		return getFeaturesChain(parentContext) + context.getFeatureName() + " ";
+		return Stream.concat(//
+				getFeaturesChain(parentContext), //
+				Stream.of(context.getFeatureName()));
 	}
 }
