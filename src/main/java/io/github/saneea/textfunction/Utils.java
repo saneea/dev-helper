@@ -1,10 +1,12 @@
 package io.github.saneea.textfunction;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -26,6 +28,25 @@ public class Utils {
 						Collectors.toMap(//
 								Function.identity(), //
 								properties::getProperty));
+	}
+
+	public static int getMaxStringLength(Collection<String> strings) {
+		return getMaxStringLength(strings.stream());
+	}
+
+	public static int getMaxStringLength(Stream<String> strings) {
+		return strings//
+				.mapToInt(String::length)//
+				.max()//
+				.orElse(0);
+	}
+
+	public static String repeatString(String s, int level) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < level; ++i) {
+			sb.append(s);
+		}
+		return sb.toString();
 	}
 
 	public static CommandLine parseCli(String featureName, String[] args, Options cliOptions) {
