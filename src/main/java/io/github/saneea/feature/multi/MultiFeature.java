@@ -1,4 +1,4 @@
-package io.github.saneea;
+package io.github.saneea.feature.multi;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -12,8 +12,12 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import io.github.saneea.Feature;
 import io.github.saneea.Feature.CLI.CommonOptions;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureContext.Parent;
+import io.github.saneea.FeatureProvider;
+import io.github.saneea.FeatureRunner;
 import io.github.saneea.feature.help.FeatureTree;
 import io.github.saneea.textfunction.Utils;
 import io.github.saneea.textfunction.Utils.DefaultHelpPrinter;

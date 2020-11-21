@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
-import io.github.saneea.feature.MultiFeatureBase;
+import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Text extends MultiFeatureBase {
 

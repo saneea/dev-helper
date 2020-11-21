@@ -3,8 +3,8 @@ package io.github.saneea.feature;
 import java.io.IOException;
 
 import io.github.saneea.FeatureProvider;
-import io.github.saneea.MultiFeature;
 import io.github.saneea.RootFeatureProvider;
+import io.github.saneea.feature.multi.MultiFeature;
 
 public class DvhRootFeature extends MultiFeature {
 

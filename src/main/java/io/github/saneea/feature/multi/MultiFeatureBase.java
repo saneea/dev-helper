@@ -1,4 +1,4 @@
-package io.github.saneea.feature;
+package io.github.saneea.feature.multi;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureProvider;
-import io.github.saneea.MultiFeature;
 
 public abstract class MultiFeatureBase extends MultiFeature {
 
