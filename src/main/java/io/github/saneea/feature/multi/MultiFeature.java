@@ -168,7 +168,7 @@ public abstract class MultiFeature implements Feature {
 
 		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), parentFeatureProvider);
 
-		printCatalogChildBranch(CATALOG_LINE_SUFFIX, featuresChain.get(0), 0, true);
+		printCatalogChildBranch("", featuresChain.get(0), 0, true, 0);
 	}
 
 	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) {
@@ -196,7 +196,7 @@ public abstract class MultiFeature implements Feature {
 		}
 	}
 
-	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix) {
+	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix, int level) {
 
 		List<FeatureTree> features = featureTree.getChildren();
 
@@ -206,22 +206,27 @@ public abstract class MultiFeature implements Feature {
 						.map(FeatureTree::getAlias));
 
 		for (int i = 0; i < features.size(); ++i) {
-			printCatalogChildBranch(levelLineSuffix, features.get(i), maxFeatureNameSize, i == features.size() - 1);
+			printCatalogChildBranch(levelLineSuffix, features.get(i), maxFeatureNameSize, i == features.size() - 1,
+					level + 1);
 		}
 	}
 
 	private void printCatalogChildBranch(String levelLineSuffix, FeatureTree feature, int maxFeatureNameSize,
-			boolean last) {
+			boolean last, int level) {
 		String featureName = feature.getAlias();
 		String featureShortDescription = feature.getDescription();
 
+		boolean isRoot = level == 0;
+
 		boolean isHub = !feature.getChildren().isEmpty();
 
-		StringBuilder featureLine = new StringBuilder()//
-				.append(levelLineSuffix)//
-				.append(last ? "\\" : "+")//
-				.append("---")//
-				.append(featureName);
+		StringBuilder featureLine = new StringBuilder();
+		featureLine.append(levelLineSuffix);
+		if (!isRoot) {
+			featureLine.append(last ? "\\" : "+");
+			featureLine.append("---");
+		}
+		featureLine.append(featureName);
 
 		if (!isHub) {
 			featureLine//
@@ -233,7 +238,12 @@ public abstract class MultiFeature implements Feature {
 		out.println(featureLine);
 
 		if (isHub) {
-			printCatalogTreeBranch(feature, levelLineSuffix + (last ? " " : "|") + "   ");
+			StringBuilder nextLevelLineSuffix = new StringBuilder(levelLineSuffix);
+			if (!isRoot) {
+				nextLevelLineSuffix.append(last ? " " : "|");
+				nextLevelLineSuffix.append("   ");
+			}
+			printCatalogTreeBranch(feature, nextLevelLineSuffix.toString(), level);
 		} else if (last) {
 			out.println(levelLineSuffix);
 		}
