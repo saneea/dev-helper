@@ -18,7 +18,6 @@ import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureContext.Parent;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.FeatureRunner;
-import io.github.saneea.feature.help.FeatureTree;
 import io.github.saneea.textfunction.Utils;
 import io.github.saneea.textfunction.Utils.DefaultHelpPrinter;
 
