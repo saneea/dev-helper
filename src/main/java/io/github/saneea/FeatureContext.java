@@ -1,5 +1,7 @@
 package io.github.saneea;
 
+import java.util.stream.Stream;
+
 public class FeatureContext {
 
 	private final Parent parent;
@@ -22,6 +24,25 @@ public class FeatureContext {
 
 	public String[] getArgs() {
 		return args;
+	}
+
+	public Stream<String> getFeaturesChain() {
+		return getFeaturesChain(this);
+	}
+
+	private static Stream<String> getFeaturesChain(FeatureContext context) {
+		if (context == null) {
+			return Stream.empty();
+		}
+
+		Parent parent = context.getParent();
+		FeatureContext parentContext = parent != null//
+				? parent.getContext()//
+				: null;
+
+		return Stream.concat(//
+				getFeaturesChain(parentContext), //
+				Stream.of(context.getFeatureName()));
 	}
 
 	public static class Parent {
