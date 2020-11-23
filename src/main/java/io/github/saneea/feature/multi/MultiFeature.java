@@ -108,11 +108,6 @@ public abstract class MultiFeature implements Feature {
 	}
 
 	private void printFeaturesCatalog(FeatureContext context, Optional<CommandLine> commandLine) {
-
-		FeatureContext.Parent parent = context.getParent();
-
-		FeatureProvider parentFeatureProvider = parent.getFeatureProvider();
-
 		String catalogMode = commandLine//
 				.map(cl -> cl.getOptionValue(CATALOG))//
 				.map(Optional::ofNullable)//
@@ -123,7 +118,7 @@ public abstract class MultiFeature implements Feature {
 		out.println("available features:");
 
 		getCatalogPrinter(catalogMode)//
-				.print(parentFeatureProvider, context);
+				.print(context.getParent().getFeatureProvider(), context);
 	}
 
 	private FeatureCatalogPrinter getCatalogPrinter(String catalogMode) {
