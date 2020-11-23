@@ -24,15 +24,16 @@ public class FeatureRunner {
 			Feature feature, //
 			String featureName, //
 			String[] args) throws Exception {
-		try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
-			feature.run(new FeatureContext(context, featureName, args));
+		FeatureContext childContext = new FeatureContext(context, featureName, args);
+		try (FeatureResources featureResources = handleFeatureResources(feature, args, childContext)) {
+			feature.run(childContext);
 		}
 	}
 
-	private FeatureResources handleFeatureResources(Feature feature, String featureName, String[] args)
+	private FeatureResources handleFeatureResources(Feature feature, String[] args, FeatureContext context)
 			throws IOException {
 
-		FeatureResources featureResources = new FeatureResources(feature, featureName, args);
+		FeatureResources featureResources = new FeatureResources(feature, args, context);
 
 		if (feature instanceof Feature.CLI) {
 			((Feature.CLI) feature)//

@@ -17,6 +17,7 @@ import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.AppExitException;
 import io.github.saneea.Feature.CLI.CommonOptions;
+import io.github.saneea.FeatureContext;
 
 public class Utils {
 
@@ -49,11 +50,11 @@ public class Utils {
 		return sb.toString();
 	}
 
-	public static CommandLine parseCli(String featureName, String[] args, Options cliOptions) {
-		return parseCli(featureName, args, cliOptions, new DefaultHelpPrinter(featureName, cliOptions));
+	public static CommandLine parseCli(String[] args, Options cliOptions, FeatureContext context) {
+		return parseCli(args, cliOptions, new DefaultHelpPrinter(cliOptions, context));
 	}
 
-	public static CommandLine parseCli(String featureName, String[] args, Options cliOptions, HelpPrinter helpPrinter) {
+	public static CommandLine parseCli(String[] args, Options cliOptions, HelpPrinter helpPrinter) {
 		CommandLineParser commandLineParser = new DefaultParser();
 
 		CommandLine commandLine;
@@ -79,18 +80,25 @@ public class Utils {
 	}
 
 	public static class DefaultHelpPrinter implements HelpPrinter {
-
-		protected final String cmdLineSyntax;
 		protected final Options options;
+		protected final FeatureContext context;
+		protected final String cmdLineSyntax;
 
-		public DefaultHelpPrinter(String cmdLineSyntax, Options options) {
-			this.cmdLineSyntax = cmdLineSyntax;
+		public DefaultHelpPrinter(Options options, FeatureContext context) {
 			this.options = options;
+			this.context = context;
+			this.cmdLineSyntax = cmdLineSyntax();
 		}
 
 		@Override
 		public void print(Optional<CommandLine> commandLine) {
 			new HelpFormatter().printHelp(cmdLineSyntax, options, true);
+		}
+
+		private String cmdLineSyntax() {
+			return context//
+					.getFeaturesChain()//
+					.collect(Collectors.joining(" "));
 		}
 	}
 

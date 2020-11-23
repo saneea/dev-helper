@@ -3,13 +3,21 @@ package io.github.saneea.feature.multi;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Set;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.textfunction.Utils;
 
 public class TreePrinter extends FeatureCatalogPrinter {
+
+	private static final int DASH_LENGTH = 3;
+	private static final String DASH_STRING = "-";
+	private static final String SPACE_STRING = " ";
+	private static final String DASH_FOR_NODE = Utils.repeatString(DASH_STRING, DASH_LENGTH);
+	private static final String SPACE_FOR_NODE = Utils.repeatString(SPACE_STRING, DASH_LENGTH);
 
 	public TreePrinter(PrintStream out) {
 		super(out);
@@ -27,17 +35,33 @@ public class TreePrinter extends FeatureCatalogPrinter {
 
 		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), featureProvider);
 
-		printCatalogChildBranch("", featuresChain.get(0), 0, true, 0);
+		FeatureTree root = featuresChain.get(0);
+
+		int maxFeatureNameSize = getMaxFeatureNameSize(root, 0);
+
+		printCatalogChildBranch("", root, maxFeatureNameSize, true, 0);
 	}
 
-	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix, int level) {
+	private int getMaxFeatureNameSize(FeatureTree featureTree, int level) {
+		return IntStream.concat(//
+
+				IntStream.of(//
+						featureTree//
+								.getAlias()//
+								.length() + level * (DASH_LENGTH + 1)), //
+
+				featureTree.getChildren().stream()//
+						.map(childBranch -> getMaxFeatureNameSize(childBranch, level + 1))//
+						.mapToInt(identity()))//
+
+				.max()//
+				.getAsInt();
+	}
+
+	private void printCatalogTreeBranch(FeatureTree featureTree, String levelLineSuffix, int level,
+			int maxFeatureNameSize) {
 
 		List<FeatureTree> features = featureTree.getChildren();
-
-		int maxFeatureNameSize = Utils.getMaxStringLength(//
-				features//
-						.stream()//
-						.map(FeatureTree::getAlias));
 
 		for (int i = 0; i < features.size(); ++i) {
 			printCatalogChildBranch(levelLineSuffix, features.get(i), maxFeatureNameSize, i == features.size() - 1,
@@ -58,13 +82,14 @@ public class TreePrinter extends FeatureCatalogPrinter {
 		featureLine.append(levelLineSuffix);
 		if (!isRoot) {
 			featureLine.append(last ? "\\" : "+");
-			featureLine.append("---");
+			featureLine.append(DASH_FOR_NODE);
 		}
 		featureLine.append(featureName);
 
 		if (!isHub) {
 			featureLine//
-					.append(Utils.repeatString(" ", maxFeatureNameSize - featureName.length()))//
+					.append(Utils.repeatString(" ",
+							maxFeatureNameSize - featureName.length() - (DASH_LENGTH + 1) * level))//
 					.append(" - ")//
 					.append(featureShortDescription);
 		}
@@ -75,9 +100,9 @@ public class TreePrinter extends FeatureCatalogPrinter {
 			StringBuilder nextLevelLineSuffix = new StringBuilder(levelLineSuffix);
 			if (!isRoot) {
 				nextLevelLineSuffix.append(last ? " " : "|");
-				nextLevelLineSuffix.append("   ");
+				nextLevelLineSuffix.append(SPACE_FOR_NODE);
 			}
-			printCatalogTreeBranch(feature, nextLevelLineSuffix.toString(), level);
+			printCatalogTreeBranch(feature, nextLevelLineSuffix.toString(), level, maxFeatureNameSize);
 		} else if (last) {
 			out.println(levelLineSuffix);
 		}
@@ -97,5 +122,9 @@ public class TreePrinter extends FeatureCatalogPrinter {
 				buildFeatureTree(child, multiFeature.getFeatureProvider());
 			}
 		}
+	}
+
+	private static ToIntFunction<Integer> identity() {
+		return i -> i;
 	}
 }

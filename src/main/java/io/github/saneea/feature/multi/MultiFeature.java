@@ -3,7 +3,6 @@ package io.github.saneea.feature.multi;
 import java.io.PrintStream;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -58,22 +57,15 @@ public abstract class MultiFeature implements Feature {
 
 		MultiFeatureHelpPrinter helpPrinter = new MultiFeatureHelpPrinter(cliOptions, context);
 
-		CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions, helpPrinter);
+		CommandLine commandLine = Utils.parseCli(args, cliOptions, helpPrinter);
 
 		helpPrinter.print(Optional.of(commandLine));
 	}
 
 	private class MultiFeatureHelpPrinter extends DefaultHelpPrinter {
 
-		private final FeatureContext context;
-
 		public MultiFeatureHelpPrinter(Options options, FeatureContext context) {
-			super(context//
-					.getFeaturesChain()//
-					.collect(Collectors.joining(" ")), //
-					options);
-
-			this.context = context;
+			super(options, context);
 		}
 
 		@Override

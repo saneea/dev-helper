@@ -31,8 +31,8 @@ public class FeatureResources implements AutoCloseable {
 	private final Deque<AutoCloseable> closeables = new ArrayDeque<>();
 
 	private final Feature feature;
-	private final String featureName;
 	private final String[] args;
+	private final FeatureContext context;
 
 	private Options cliOptions;
 	private CommandLine commandLine;
@@ -44,10 +44,10 @@ public class FeatureResources implements AutoCloseable {
 	private String inTextString;
 	private InputStream inBinStream;
 
-	public FeatureResources(Feature feature, String featureName, String[] args) {
+	public FeatureResources(Feature feature, String[] args, FeatureContext context) {
 		this.feature = feature;
-		this.featureName = featureName;
 		this.args = args;
+		this.context = context;
 	}
 
 	public Options getCliOptions() {
@@ -81,7 +81,7 @@ public class FeatureResources implements AutoCloseable {
 
 	public CommandLine getCommandLine() {
 		if (commandLine == null) {
-			commandLine = Utils.parseCli(featureName, args, getCliOptions());
+			commandLine = Utils.parseCli(args, getCliOptions(), context);
 		}
 		return commandLine;
 	}
