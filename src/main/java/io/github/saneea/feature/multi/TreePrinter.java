@@ -48,7 +48,7 @@ public class TreePrinter extends FeatureCatalogPrinter {
 				IntStream.of(//
 						featureTree//
 								.getAlias()//
-								.length() + level * (DASH_LENGTH + 1)), //
+								.length() + getLevelOffset(level)), //
 
 				featureTree.getChildren().stream()//
 						.map(childBranch -> getMaxFeatureNameSize(childBranch, level + 1))//
@@ -88,8 +88,7 @@ public class TreePrinter extends FeatureCatalogPrinter {
 
 		if (!isHub) {
 			featureLine//
-					.append(Utils.repeatString(" ",
-							maxFeatureNameSize - featureName.length() - (DASH_LENGTH + 1) * level))//
+					.append(Utils.repeatString(" ", maxFeatureNameSize - featureName.length() - getLevelOffset(level)))//
 					.append(" - ")//
 					.append(featureShortDescription);
 		}
@@ -106,6 +105,10 @@ public class TreePrinter extends FeatureCatalogPrinter {
 		} else if (last) {
 			out.println(levelLineSuffix);
 		}
+	}
+
+	private int getLevelOffset(int level) {
+		return (DASH_LENGTH + 1) * level;
 	}
 
 	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) {
