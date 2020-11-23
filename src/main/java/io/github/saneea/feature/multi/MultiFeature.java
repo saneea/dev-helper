@@ -56,17 +56,7 @@ public abstract class MultiFeature implements Feature {
 						.desc("features catalog show mode")//
 						.build());
 
-		FeatureContext childContext = new FeatureContext(//
-				new FeatureContext.Parent(//
-						context, getFeatureProvider()), //
-				null, args);
-
-		String featuresChain = childContext.getParent().getContext().getFeaturesChain()//
-				.collect(//
-						Collectors.joining(" "));
-
-		MultiFeatureHelpPrinter helpPrinter = new MultiFeatureHelpPrinter(//
-				featuresChain, cliOptions, childContext);
+		MultiFeatureHelpPrinter helpPrinter = new MultiFeatureHelpPrinter(cliOptions, context);
 
 		CommandLine commandLine = Utils.parseCli(context.getFeatureName(), args, cliOptions, helpPrinter);
 
@@ -75,11 +65,15 @@ public abstract class MultiFeature implements Feature {
 
 	private class MultiFeatureHelpPrinter extends DefaultHelpPrinter {
 
-		private final FeatureContext childContext;
+		private final FeatureContext context;
 
-		public MultiFeatureHelpPrinter(String cmdLineSyntax, Options options, FeatureContext childContext) {
-			super(cmdLineSyntax, options);
-			this.childContext = childContext;
+		public MultiFeatureHelpPrinter(Options options, FeatureContext context) {
+			super(context//
+					.getFeaturesChain()//
+					.collect(Collectors.joining(" ")), //
+					options);
+
+			this.context = context;
 		}
 
 		@Override
@@ -91,7 +85,7 @@ public abstract class MultiFeature implements Feature {
 
 			super.print(commandLine);
 
-			printFeaturesCatalog(childContext, commandLine);
+			printFeaturesCatalog(context, commandLine);
 		}
 
 	}
@@ -118,7 +112,7 @@ public abstract class MultiFeature implements Feature {
 		out.println("available features:");
 
 		getCatalogPrinter(catalogMode)//
-				.print(context.getParent().getFeatureProvider(), context);
+				.print(getFeatureProvider(), context);
 	}
 
 	private FeatureCatalogPrinter getCatalogPrinter(String catalogMode) {

@@ -14,14 +14,14 @@ public class ListPrinter extends FeatureCatalogPrinter {
 	}
 
 	@Override
-	public void print(FeatureProvider parentFeatureProvider, FeatureContext context) {
+	public void print(FeatureProvider featureProvider, FeatureContext context) {
 
-		Set<String> featuresNames = parentFeatureProvider.featuresNames();
+		Set<String> featuresNames = featureProvider.featuresNames();
 
 		int maxFeatureNameSize = Utils.getMaxStringLength(featuresNames);
 
 		for (String featureName : featuresNames) {
-			FeatureInfo featureInfo = parentFeatureProvider.featureInfo(featureName);
+			FeatureInfo featureInfo = featureProvider.featureInfo(featureName);
 			String template = "%1$" + maxFeatureNameSize + "s - %2$s";
 
 			out.println(String.format(template, featureName, featureInfo.description));

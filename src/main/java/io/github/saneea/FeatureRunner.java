@@ -25,7 +25,7 @@ public class FeatureRunner {
 			String featureName, //
 			String[] args) throws Exception {
 		try (FeatureResources featureResources = handleFeatureResources(feature, featureName, args)) {
-			feature.run(new FeatureContext(new FeatureContext.Parent(context, featureProvider), featureName, args));
+			feature.run(new FeatureContext(context, featureName, args));
 		}
 	}
 

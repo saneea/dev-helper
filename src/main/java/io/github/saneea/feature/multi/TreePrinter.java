@@ -16,9 +16,8 @@ public class TreePrinter extends FeatureCatalogPrinter {
 	}
 
 	@Override
-	public void print(FeatureProvider parentFeatureProvider, FeatureContext context) {
-
-		List<FeatureTree> featuresChain = context.getParent().getContext().getFeaturesChain()//
+	public void print(FeatureProvider featureProvider, FeatureContext context) {
+		List<FeatureTree> featuresChain = context.getFeaturesChain()//
 				.map(featureName -> new FeatureTree(featureName, ""))//
 				.collect(Collectors.toList());
 
@@ -26,7 +25,7 @@ public class TreePrinter extends FeatureCatalogPrinter {
 			featuresChain.get(i).getChildren().add(featuresChain.get(i + 1));
 		}
 
-		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), parentFeatureProvider);
+		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), featureProvider);
 
 		printCatalogChildBranch("", featuresChain.get(0), 0, true, 0);
 	}

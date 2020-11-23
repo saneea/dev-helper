@@ -12,5 +12,5 @@ public abstract class FeatureCatalogPrinter {
 		this.out = out;
 	}
 
-	abstract void print(FeatureProvider parentFeatureProvider, FeatureContext context);
+	abstract void print(FeatureProvider featureProvider, FeatureContext context);
 }
