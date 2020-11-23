@@ -27,22 +27,16 @@ public class FeatureContext {
 	}
 
 	public Stream<String> getFeaturesChain() {
-		return getFeaturesChain(this);
-	}
-
-	private static Stream<String> getFeaturesChain(FeatureContext context) {
-		if (context == null) {
-			return Stream.empty();
-		}
-
-		Parent parent = context.getParent();
+		Parent parent = getParent();
 		FeatureContext parentContext = parent != null//
 				? parent.getContext()//
 				: null;
 
 		return Stream.concat(//
-				getFeaturesChain(parentContext), //
-				Stream.of(context.getFeatureName()));
+				parentContext != null//
+						? parentContext.getFeaturesChain()//
+						: Stream.empty(), //
+				Stream.of(getFeatureName()));
 	}
 
 	public static class Parent {
