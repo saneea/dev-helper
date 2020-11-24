@@ -21,7 +21,8 @@ public class ListPrinter extends FeatureCatalogPrinter {
 		int maxFeatureNameSize = Utils.getMaxStringLength(featuresNames);
 
 		for (String featureName : featuresNames) {
-			FeatureInfo featureInfo = featureProvider.featureInfo(featureName);
+			FeatureInfo featureInfo = featureProvider.featureInfo(//
+					new FeatureContext(context, featureName, Utils.NO_ARGS));
 			String template = "%1$" + maxFeatureNameSize + "s - %2$s";
 
 			out.println(String.format(template, featureName, featureInfo.description));

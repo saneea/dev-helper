@@ -9,10 +9,10 @@ public interface FeatureProvider {
 
 	Feature createFeature(String featureName) throws Exception;
 
-	default FeatureInfo featureInfo(String featureName) {
+	default FeatureInfo featureInfo(FeatureContext context) {
 		try {
-			Feature feature = createFeature(featureName);
-			return new FeatureInfo(feature, feature.getShortDescription());
+			Feature feature = createFeature(context.getFeatureName());
+			return new FeatureInfo(feature, feature.meta(context).description().brief());
 		} catch (Exception e) {
 			return new FeatureInfo(null, e.toString());
 		}

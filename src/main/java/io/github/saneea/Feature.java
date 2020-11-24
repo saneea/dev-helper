@@ -3,6 +3,8 @@ package io.github.saneea;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -15,10 +17,87 @@ public interface Feature {
 
 	void run(FeatureContext context) throws Exception;
 
+	default Meta meta(FeatureContext context) {
+		String shortDescription = getShortDescription();
+		return Meta.from(//
+				Meta.Description.from(//
+						shortDescription, //
+						shortDescription), //
+				Collections.emptyList());
+	}
+
+	/**
+	 * Deprecated. Use method "{@code Meta meta(FeatureContext)}"
+	 * 
+	 * @return
+	 */
+	@Deprecated(forRemoval = true)
 	String getShortDescription();
 
 	default Option[] getOptions() {
 		return EMPTY_OPTIONS_ARRAY;
+	}
+
+	interface Meta {
+
+		Description description();
+
+		List<Example> examples();
+
+		interface Example {
+			String name();
+
+			String body();
+
+			static Example from(String name, String body) {
+				return new Example() {
+					@Override
+					public String name() {
+						return name;
+					}
+
+					@Override
+					public String body() {
+						return body;
+					}
+				};
+			}
+		}
+
+		interface Description {
+			String brief();
+
+			String detailed();
+
+			static Description from(String brief, String detailed) {
+				return new Description() {
+					@Override
+					public String brief() {
+						return brief;
+					}
+
+					@Override
+					public String detailed() {
+						return detailed;
+					}
+				};
+			}
+		}
+
+		static Meta from(Description description, List<Example> examples) {
+			return new Meta() {
+				@Override
+				public Description description() {
+					return description;
+				}
+
+				@Override
+				public List<Example> examples() {
+					return examples;
+				}
+			};
+		}
+
 	}
 
 	interface Out {

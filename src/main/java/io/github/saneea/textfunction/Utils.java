@@ -21,6 +21,8 @@ import io.github.saneea.FeatureContext;
 
 public class Utils {
 
+	public static final String[] NO_ARGS = {};
+
 	public static Map<String, String> toMap(Properties properties) {
 		return properties//
 				.stringPropertyNames()//

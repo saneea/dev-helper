@@ -33,7 +33,7 @@ public class TreePrinter extends FeatureCatalogPrinter {
 			featuresChain.get(i).getChildren().add(featuresChain.get(i + 1));
 		}
 
-		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), featureProvider);
+		buildFeatureTree(featuresChain.get(featuresChain.size() - 1), featureProvider, context);
 
 		FeatureTree root = featuresChain.get(0);
 
@@ -111,18 +111,19 @@ public class TreePrinter extends FeatureCatalogPrinter {
 		return (DASH_LENGTH + 1) * level;
 	}
 
-	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider) {
+	private void buildFeatureTree(FeatureTree parent, FeatureProvider featureProvider, FeatureContext context) {
 		Set<String> featuresNames = featureProvider.featuresNames();
 
 		for (String featureName : featuresNames) {
-			FeatureInfo featureInfo = featureProvider.featureInfo(featureName);
+			FeatureContext childContext = new FeatureContext(context, featureName, Utils.NO_ARGS);
+			FeatureInfo featureInfo = featureProvider.featureInfo(childContext);
 
 			FeatureTree child = new FeatureTree(featureName, featureInfo.description);
 			parent.getChildren().add(child);
 
 			if (featureInfo.feature instanceof MultiFeature) {
 				MultiFeature multiFeature = (MultiFeature) featureInfo.feature;
-				buildFeatureTree(child, multiFeature.getFeatureProvider());
+				buildFeatureTree(child, multiFeature.getFeatureProvider(), childContext);
 			}
 		}
 	}
