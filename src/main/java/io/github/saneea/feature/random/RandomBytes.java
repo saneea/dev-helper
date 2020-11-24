@@ -10,7 +10,11 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream {
+public class RandomBytes implements//
+		Feature, //
+		Feature.CLI, //
+		Feature.CLI.Options, //
+		Feature.Out.Bin.Stream {
 
 	private static final String SIZE = "size";
 	private static final String SEED = "seed";

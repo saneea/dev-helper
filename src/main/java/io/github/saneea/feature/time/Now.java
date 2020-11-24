@@ -14,6 +14,7 @@ import io.github.saneea.feature.time.format.FormatFactory;
 public class Now implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.Out.Text.String {
 
 	private static final String FORMAT = "format";

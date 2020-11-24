@@ -17,9 +17,9 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature.CLI.CommonOptions;
@@ -53,8 +53,14 @@ public class FeatureResources implements AutoCloseable {
 	public Options getCliOptions() {
 		if (cliOptions == null) {
 			cliOptions = new Options();
-			for (Option option : feature.getOptions()) {
-				cliOptions.addOption(option);
+
+			if (feature instanceof Feature.CLI.Options) {
+				Stream//
+						.of(//
+								((Feature.CLI.Options) feature)//
+										.getOptions())//
+						.forEach(//
+								cliOptions::addOption);
 			}
 
 			cliOptions.addOption(CommonOptions.HELP_OPTION);

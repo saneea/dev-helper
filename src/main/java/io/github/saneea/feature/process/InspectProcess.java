@@ -15,6 +15,7 @@ import io.github.saneea.FeatureContext;
 public class InspectProcess implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.Out.Text.PrintStream//
 {
 

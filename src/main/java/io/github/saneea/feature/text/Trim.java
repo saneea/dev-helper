@@ -16,6 +16,7 @@ import io.github.saneea.FeatureContext;
 public class Trim implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.In.Text.Reader, //
 		Feature.Out.Text.Writer {
 

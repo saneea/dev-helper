@@ -13,7 +13,12 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class Hash implements Feature, Feature.CLI, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
+public class Hash implements//
+		Feature, //
+		Feature.CLI, //
+		Feature.CLI.Options, //
+		Feature.In.Bin.Stream, //
+		Feature.Out.Text.PrintStream {
 
 	private static int BUFFER_SIZE = 4096;
 

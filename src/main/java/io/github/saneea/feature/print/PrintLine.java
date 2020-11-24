@@ -12,6 +12,7 @@ import io.github.saneea.FeatureContext;
 public class PrintLine implements //
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.Out.Text.PrintStream //
 {
 

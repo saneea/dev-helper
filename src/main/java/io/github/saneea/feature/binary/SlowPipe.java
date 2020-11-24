@@ -10,7 +10,12 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class SlowPipe implements Feature, Feature.CLI, Feature.In.Bin.Stream, Feature.Out.Bin.Stream {
+public class SlowPipe implements//
+		Feature, //
+		Feature.CLI, //
+		Feature.CLI.Options, //
+		Feature.In.Bin.Stream, //
+		Feature.Out.Bin.Stream {
 
 	private static String DELAY = "delay";
 

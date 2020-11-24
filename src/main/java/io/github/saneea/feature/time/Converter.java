@@ -14,6 +14,7 @@ import io.github.saneea.feature.time.format.FormatFactory;
 public class Converter implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.In.Text.String, //
 		Feature.Out.Text.String {
 

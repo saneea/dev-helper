@@ -13,6 +13,7 @@ import io.github.saneea.FeatureContext;
 public class Split implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.In.Text.Reader, //
 		Feature.Out.Text.PrintStream {
 

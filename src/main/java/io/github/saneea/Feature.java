@@ -13,15 +13,9 @@ import io.github.saneea.Feature.Util.IOConsumer;
 
 public interface Feature {
 
-	Option[] EMPTY_OPTIONS_ARRAY = {};
-
 	void run(FeatureContext context) throws Exception;
 
 	Meta meta(FeatureContext context);
-
-	default Option[] getOptions() {
-		return EMPTY_OPTIONS_ARRAY;
-	}
 
 	interface Meta {
 
@@ -180,6 +174,10 @@ public interface Feature {
 	interface CLI {
 
 		void setCommandLine(CommandLine commandLine);
+
+		interface Options {
+			Option[] getOptions();
+		}
 
 		interface CommonOptions {
 
