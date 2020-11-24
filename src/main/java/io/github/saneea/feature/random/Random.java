@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Random extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "generate random data";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("generate random data");
 	}
 
 	@Override

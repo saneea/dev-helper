@@ -16,8 +16,8 @@ public class Pipe implements//
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "just transfer text from std_in to std_out";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("just transfer text from std_in to std_out");
 	}
 
 	@Override

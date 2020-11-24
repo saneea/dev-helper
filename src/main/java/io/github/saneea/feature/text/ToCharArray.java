@@ -16,8 +16,8 @@ public class ToCharArray implements//
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "convert input string to char array";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("convert input string to char array");
 	}
 
 	@Override

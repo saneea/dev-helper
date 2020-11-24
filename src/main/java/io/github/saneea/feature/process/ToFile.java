@@ -31,8 +31,8 @@ public class ToFile implements Feature, Feature.Err.Bin.Stream {
 	private OutputStream err;
 
 	@Override
-	public String getShortDescription() {
-		return "save output of external process to file";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("save output of external process to file");
 	}
 
 	@Override

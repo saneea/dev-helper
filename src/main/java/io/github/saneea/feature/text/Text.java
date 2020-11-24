@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Text extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "plain text processing";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("plain text processing");
 	}
 
 	@Override

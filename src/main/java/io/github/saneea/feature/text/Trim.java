@@ -27,8 +27,8 @@ public class Trim implements//
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "trim leading and/or trailing whitespaces";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("trim leading and/or trailing whitespaces");
 	}
 
 	@Override

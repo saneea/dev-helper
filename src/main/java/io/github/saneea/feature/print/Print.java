@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Print extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "just print text from CLI args";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("just print text from CLI args");
 	}
 
 	@Override

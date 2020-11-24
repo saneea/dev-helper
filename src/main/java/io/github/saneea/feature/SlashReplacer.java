@@ -15,8 +15,8 @@ public class SlashReplacer implements//
 	private IOConsumer<String> out;
 
 	@Override
-	public String getShortDescription() {
-		return "replace slashes (/) or backslashes (\\)";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("replace slashes (/) or backslashes (\\)");
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package io.github.saneea.feature;
 
 import java.io.IOException;
 
+import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 import io.github.saneea.RootFeatureProvider;
 import io.github.saneea.feature.multi.MultiFeature;
@@ -15,8 +16,8 @@ public class DvhRootFeature extends MultiFeature {
 	}
 
 	@Override
-	public String getShortDescription() {
-		return "developer helper";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("developer helper");
 	}
 
 	@Override

@@ -18,8 +18,8 @@ public class JoinLines implements//
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "join lines to one line";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("join lines to one line");
 	}
 
 	@Override

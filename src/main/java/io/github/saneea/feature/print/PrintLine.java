@@ -22,8 +22,8 @@ public class PrintLine implements //
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "print text to output";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("print text to output");
 	}
 
 	@Override

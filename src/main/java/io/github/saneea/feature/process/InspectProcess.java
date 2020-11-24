@@ -25,8 +25,8 @@ public class InspectProcess implements//
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "print statistic about process";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("print statistic about process");
 	}
 
 	@Override

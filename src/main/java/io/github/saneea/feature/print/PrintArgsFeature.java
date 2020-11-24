@@ -10,8 +10,8 @@ public class PrintArgsFeature implements Feature, Feature.Out.Text.PrintStream {
 	private PrintStream out;
 
 	@Override
-	public String getShortDescription() {
-		return "print CLI args";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("print CLI args");
 	}
 
 	@Override

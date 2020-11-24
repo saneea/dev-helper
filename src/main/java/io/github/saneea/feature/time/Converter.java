@@ -27,8 +27,8 @@ public class Converter implements//
 	private final FormatFactory formatFactory = new FormatFactory();
 
 	@Override
-	public String getShortDescription() {
-		return "convert time from original format to another one";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("convert time from original format to another one");
 	}
 
 	@Override

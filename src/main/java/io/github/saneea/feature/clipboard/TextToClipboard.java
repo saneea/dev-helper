@@ -12,8 +12,8 @@ public class TextToClipboard implements Feature, Feature.In.Text.String {
 	private String in;
 
 	@Override
-	public String getShortDescription() {
-		return "write text to clipboard";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("write text to clipboard");
 	}
 
 	@Override

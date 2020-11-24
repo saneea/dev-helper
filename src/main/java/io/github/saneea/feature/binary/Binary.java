@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Binary extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "binary data processing (decoding/encoding, hash, etc)";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("binary data processing (decoding/encoding, hash, etc)");
 	}
 
 	@Override

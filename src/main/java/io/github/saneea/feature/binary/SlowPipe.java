@@ -19,8 +19,8 @@ public class SlowPipe implements Feature, Feature.CLI, Feature.In.Bin.Stream, Fe
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "transfer bytes with delay";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("transfer bytes with delay");
 	}
 
 	@Override

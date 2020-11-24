@@ -16,8 +16,8 @@ public abstract class ConvertTextCase implements Feature, Feature.CLI, Feature.I
 		}
 
 		@Override
-		public String getShortDescription() {
-			return "convert text to upper case (aBcDe -> ABCDE)";
+		public Meta meta(FeatureContext context) {
+			return Meta.from("convert text to upper case (aBcDe -> ABCDE)");
 		}
 	}
 
@@ -27,8 +27,8 @@ public abstract class ConvertTextCase implements Feature, Feature.CLI, Feature.I
 		}
 
 		@Override
-		public String getShortDescription() {
-			return "convert text to lower case (aBcDe -> abcde)";
+		public Meta meta(FeatureContext context) {
+			return Meta.from("convert text to lower case (aBcDe -> abcde)");
 		}
 	}
 

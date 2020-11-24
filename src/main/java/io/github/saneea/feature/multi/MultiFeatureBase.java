@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.FeatureProvider;
 
 public abstract class MultiFeatureBase extends MultiFeature {
@@ -35,8 +36,8 @@ public abstract class MultiFeatureBase extends MultiFeature {
 			return feature(featureAlias, () -> new MultiFeatureBase() {
 
 				@Override
-				public String getShortDescription() {
-					return shortDescription;
+				public Meta meta(FeatureContext context) {
+					return Meta.from(shortDescription);
 				}
 
 				@Override

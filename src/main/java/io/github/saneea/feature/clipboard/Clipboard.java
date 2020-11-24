@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Clipboard extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "read/write clipboard (text only)";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("read/write clipboard (text only)");
 	}
 
 	@Override

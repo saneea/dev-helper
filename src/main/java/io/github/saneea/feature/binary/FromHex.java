@@ -18,8 +18,8 @@ public class FromHex implements Feature, Feature.In.Text.Reader, Feature.Out.Bin
 	private OutputStream output;
 
 	@Override
-	public String getShortDescription() {
-		return "convert input hex sequence to binary";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("convert input hex sequence to binary");
 	}
 
 	@Override

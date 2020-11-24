@@ -13,8 +13,8 @@ public class Nowhere implements Feature, Feature.In.Bin.Stream {
 	private InputStream in;
 
 	@Override
-	public String getShortDescription() {
-		return "read all input data and do nothing";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("read all input data and do nothing");
 	}
 
 	@Override

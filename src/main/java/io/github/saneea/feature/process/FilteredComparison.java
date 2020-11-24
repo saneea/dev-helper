@@ -16,8 +16,8 @@ import io.github.saneea.feature.xml.XmlReform;
 public class FilteredComparison implements Feature {
 
 	@Override
-	public String getShortDescription() {
-		return "run external comparison tool for 'pretty printed' xml files";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("run external comparison tool for 'pretty printed' xml files");
 	}
 
 	@Override

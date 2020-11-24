@@ -23,8 +23,8 @@ public class Now implements//
 	private final FormatFactory formatFactory = new FormatFactory();
 
 	@Override
-	public String getShortDescription() {
-		return "print current time";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("print current time");
 	}
 
 	@Override

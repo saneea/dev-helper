@@ -6,8 +6,8 @@ import io.github.saneea.FeatureContext;
 public class Stub implements Feature {
 
 	@Override
-	public String getShortDescription() {
-		return "do nothing";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("do nothing");
 	}
 
 	@Override

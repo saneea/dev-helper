@@ -6,8 +6,8 @@ import io.github.saneea.FeatureContext;
 public class Sleep implements Feature {
 
 	@Override
-	public String getShortDescription() {
-		return "wait some time before exit";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("wait some time before exit");
 	}
 
 	@Override

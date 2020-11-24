@@ -24,8 +24,8 @@ public class XmlToLine implements Feature, Feature.In.Text.Reader, Feature.Out.T
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "remove whitespaces from XML";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("remove whitespaces from XML");
 	}
 
 	@Override

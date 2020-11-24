@@ -24,8 +24,8 @@ public class Split implements//
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "split text as lines";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("split text as lines");
 	}
 
 	@Override

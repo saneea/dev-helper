@@ -16,8 +16,8 @@ public class AddNewLine implements//
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end");
 	}
 
 	@Override

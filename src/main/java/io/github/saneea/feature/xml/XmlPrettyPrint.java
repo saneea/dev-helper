@@ -20,8 +20,8 @@ public class XmlPrettyPrint implements Feature, Feature.In.Text.Reader, Feature.
 	private Writer out;
 
 	@Override
-	public String getShortDescription() {
-		return "format XML with indents";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("format XML with indents");
 	}
 
 	@Override

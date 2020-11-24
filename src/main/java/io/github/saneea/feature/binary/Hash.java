@@ -23,8 +23,8 @@ public class Hash implements Feature, Feature.CLI, Feature.In.Bin.Stream, Featur
 	private PrintStream out;
 
 	@Override
-	public String getShortDescription() {
-		return "calc hash (md5, sha-* etc.)";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("calc hash (md5, sha-* etc.)");
 	}
 
 	private static void execute(InputStream input, PrintStream out, String alg)

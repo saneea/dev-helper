@@ -13,8 +13,8 @@ public class ToHex implements Feature, Feature.In.Bin.Stream, Feature.Out.Text.P
 	private PrintStream out;
 
 	@Override
-	public String getShortDescription() {
-		return "convert input binary sequence to hex";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("convert input binary sequence to hex");
 	}
 
 	@Override

@@ -17,17 +17,7 @@ public interface Feature {
 
 	void run(FeatureContext context) throws Exception;
 
-	default Meta meta(FeatureContext context) {
-		return Meta.from(getShortDescription());
-	}
-
-	/**
-	 * Deprecated. Use method "{@code Meta meta(FeatureContext)}"
-	 * 
-	 * @return
-	 */
-	@Deprecated(forRemoval = true)
-	String getShortDescription();
+	Meta meta(FeatureContext context);
 
 	default Option[] getOptions() {
 		return EMPTY_OPTIONS_ARRAY;

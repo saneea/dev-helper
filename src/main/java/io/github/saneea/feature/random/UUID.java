@@ -9,8 +9,8 @@ public class UUID implements Feature, Feature.Out.Text.String {
 	private IOConsumer<String> out;
 
 	@Override
-	public String getShortDescription() {
-		return "generate new UUID";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("generate new UUID");
 	}
 
 	@Override

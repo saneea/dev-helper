@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
+import io.github.saneea.FeatureContext;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Xml extends MultiFeatureBase {
 
 	@Override
-	public String getShortDescription() {
-		return "xml processing";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("xml processing");
 	}
 
 	@Override

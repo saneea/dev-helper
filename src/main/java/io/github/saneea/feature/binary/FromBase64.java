@@ -14,8 +14,8 @@ public class FromBase64 implements Feature, Feature.In.Bin.Stream, Feature.Out.B
 	private OutputStream out;
 
 	@Override
-	public String getShortDescription() {
-		return "convert input Base64 sequence to binary";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("convert input Base64 sequence to binary");
 	}
 
 	@Override

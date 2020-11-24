@@ -13,8 +13,8 @@ public class TextFromClipboard implements Feature, Feature.Out.Text.String {
 	private IOConsumer<String> out;
 
 	@Override
-	public String getShortDescription() {
-		return "read text from clipboard";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("read text from clipboard");
 	}
 
 	@Override

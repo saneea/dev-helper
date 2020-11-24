@@ -20,8 +20,8 @@ public class RandomBytes implements Feature, Feature.CLI, Feature.Out.Bin.Stream
 	private CommandLine commandLine;
 
 	@Override
-	public String getShortDescription() {
-		return "generates random binary data";
+	public Meta meta(FeatureContext context) {
+		return Meta.from("generates random binary data");
 	}
 
 	@Override

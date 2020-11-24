@@ -15,8 +15,8 @@ public class JsonFormatting {
 	public static class Pretty extends Base {
 
 		@Override
-		public String getShortDescription() {
-			return "format JSON with indents";
+		public Meta meta(FeatureContext context) {
+			return Meta.from("format JSON with indents");
 		}
 
 		@Override
@@ -30,8 +30,8 @@ public class JsonFormatting {
 	public static class Line extends Base {
 
 		@Override
-		public String getShortDescription() {
-			return "format JSON to line";
+		public Meta meta(FeatureContext context) {
+			return Meta.from("format JSON to line");
 		}
 
 		@Override
