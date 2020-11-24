@@ -18,12 +18,7 @@ public interface Feature {
 	void run(FeatureContext context) throws Exception;
 
 	default Meta meta(FeatureContext context) {
-		String shortDescription = getShortDescription();
-		return Meta.from(//
-				Meta.Description.from(//
-						shortDescription, //
-						shortDescription), //
-				Collections.emptyList());
+		return Meta.from(getShortDescription());
 	}
 
 	/**
@@ -69,6 +64,10 @@ public interface Feature {
 
 			String detailed();
 
+			static Description from(String brief) {
+				return from(brief, brief);
+			}
+
 			static Description from(String brief, String detailed) {
 				return new Description() {
 					@Override
@@ -82,6 +81,14 @@ public interface Feature {
 					}
 				};
 			}
+		}
+
+		static Meta from(String shortDescription) {
+			return from(Description.from(shortDescription));
+		}
+
+		static Meta from(Description description) {
+			return from(description, Collections.emptyList());
 		}
 
 		static Meta from(Description description, List<Example> examples) {
