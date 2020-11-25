@@ -65,17 +65,19 @@ public abstract class MultiFeature implements Feature {
 	private class MultiFeatureHelpPrinter extends DefaultHelpPrinter {
 
 		public MultiFeatureHelpPrinter(Options options, FeatureContext context) {
-			super(options, context);
+			super(options, MultiFeature.this, context);
 		}
 
 		@Override
 		public void print(Optional<CommandLine> commandLine) {
+			printDescription();
+
 			out.println("usage: "//
 					+ cmdLineSyntax //
 					+ " <featureName> [feature args]");
 			out.println("--- or ---");
 
-			super.print(commandLine);
+			printCLI();
 
 			printFeaturesCatalog(context, commandLine);
 		}

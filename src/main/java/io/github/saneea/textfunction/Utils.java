@@ -16,6 +16,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import io.github.saneea.AppExitException;
+import io.github.saneea.Feature;
 import io.github.saneea.Feature.CLI.CommonOptions;
 import io.github.saneea.FeatureContext;
 
@@ -52,8 +53,8 @@ public class Utils {
 		return sb.toString();
 	}
 
-	public static CommandLine parseCli(String[] args, Options cliOptions, FeatureContext context) {
-		return parseCli(args, cliOptions, new DefaultHelpPrinter(cliOptions, context));
+	public static CommandLine parseCli(String[] args, Options cliOptions, Feature feature, FeatureContext context) {
+		return parseCli(args, cliOptions, new DefaultHelpPrinter(cliOptions, feature, context));
 	}
 
 	public static CommandLine parseCli(String[] args, Options cliOptions, HelpPrinter helpPrinter) {
@@ -83,18 +84,30 @@ public class Utils {
 
 	public static class DefaultHelpPrinter implements HelpPrinter {
 		protected final Options options;
+		protected final Feature feature;
 		protected final FeatureContext context;
 		protected final String cmdLineSyntax;
 
-		public DefaultHelpPrinter(Options options, FeatureContext context) {
+		public DefaultHelpPrinter(Options options, Feature feature, FeatureContext context) {
 			this.options = options;
+			this.feature = feature;
 			this.context = context;
 			this.cmdLineSyntax = cmdLineSyntax();
 		}
 
 		@Override
 		public void print(Optional<CommandLine> commandLine) {
+			printDescription();
+			printCLI();
+		}
+
+		protected void printCLI() {
 			new HelpFormatter().printHelp(cmdLineSyntax, options, true);
+		}
+
+		protected void printDescription() {
+			System.out.println(feature.meta(context).description().detailed());
+			System.out.println();
 		}
 
 		private String cmdLineSyntax() {

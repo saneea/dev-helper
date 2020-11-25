@@ -87,7 +87,7 @@ public class FeatureResources implements AutoCloseable {
 
 	public CommandLine getCommandLine() {
 		if (commandLine == null) {
-			commandLine = Utils.parseCli(args, getCliOptions(), context);
+			commandLine = Utils.parseCli(args, getCliOptions(), feature, context);
 		}
 		return commandLine;
 	}
