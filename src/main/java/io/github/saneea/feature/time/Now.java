@@ -25,7 +25,10 @@ public class Now implements//
 
 	@Override
 	public Meta meta(FeatureContext context) {
-		return Meta.from("print current time");
+		return Meta.from(//
+				Meta.Description.from(//
+						"print current time", //
+						"print current date and/or time in one of format"));
 	}
 
 	@Override
