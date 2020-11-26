@@ -19,6 +19,7 @@ public class Time extends MultiFeatureBase {
 		return new AliasesBuilder()//
 				.feature("now", Now::new)//
 				.feature("convert", Converter::new)//
+				.feature("sleep", Sleep::new)//
 				.build();
 	}
 

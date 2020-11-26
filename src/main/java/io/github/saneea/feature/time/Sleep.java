@@ -1,4 +1,4 @@
-package io.github.saneea.feature;
+package io.github.saneea.feature.time;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
