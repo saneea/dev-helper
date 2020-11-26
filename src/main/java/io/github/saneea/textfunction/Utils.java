@@ -1,6 +1,7 @@
 package io.github.saneea.textfunction;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -18,6 +19,7 @@ import org.apache.commons.cli.ParseException;
 import io.github.saneea.AppExitException;
 import io.github.saneea.Feature;
 import io.github.saneea.Feature.CLI.CommonOptions;
+import io.github.saneea.Feature.Meta.Example;
 import io.github.saneea.FeatureContext;
 
 public class Utils {
@@ -99,6 +101,27 @@ public class Utils {
 		public void print(Optional<CommandLine> commandLine) {
 			printDescription();
 			printCLI();
+			printExamples();
+		}
+
+		protected void printExamples() {
+			List<Example> examples = feature.meta(context).examples();
+			int examplesCount = examples.size();
+
+			if (examplesCount > 0) {
+				System.out.println();
+				System.out.println("Examples (" + examplesCount + "):");
+
+				for (int i = 0; i < examplesCount; ++i) {
+					Example example = examples.get(i);
+					System.out.println("" + (i + 1) + ". " + example.name());
+					System.out.println("run command:");
+					System.out.println("\t" + example.body());
+					System.out.println("output:");
+					System.out.println("\t" + example.result());
+					System.out.println();
+				}
+			}
 		}
 
 		protected void printCLI() {

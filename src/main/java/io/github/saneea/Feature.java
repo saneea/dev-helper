@@ -28,7 +28,9 @@ public interface Feature {
 
 			String body();
 
-			static Example from(String name, String body) {
+			String result();
+
+			static Example from(String name, String body, String result) {
 				return new Example() {
 					@Override
 					public String name() {
@@ -39,6 +41,12 @@ public interface Feature {
 					public String body() {
 						return body;
 					}
+
+					@Override
+					public String result() {
+						return result;
+					}
+
 				};
 			}
 		}
