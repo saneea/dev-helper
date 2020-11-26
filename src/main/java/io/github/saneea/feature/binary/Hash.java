@@ -65,7 +65,7 @@ public class Hash implements//
 
 	public static class Params {
 
-		public static String ALGORITHM = "algorithm";
+		public static final String ALGORITHM = "algorithm";
 
 		private static Option[] createOptions() {
 
