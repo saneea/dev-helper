@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -28,9 +29,17 @@ public interface Feature {
 
 			String body();
 
-			String result();
+			Optional<String> result();
 
 			static Example from(String name, String body, String result) {
+				return from(name, body, Optional.of(result));
+			}
+
+			static Example from(String name, String body) {
+				return from(name, body, Optional.empty());
+			}
+
+			static Example from(String name, String body, Optional<String> result) {
 				return new Example() {
 					@Override
 					public String name() {
@@ -43,7 +52,7 @@ public interface Feature {
 					}
 
 					@Override
-					public String result() {
+					public Optional<String> result() {
 						return result;
 					}
 

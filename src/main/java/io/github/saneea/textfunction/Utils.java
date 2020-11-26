@@ -117,8 +117,12 @@ public class Utils {
 					System.out.println("" + (i + 1) + ". " + example.name());
 					System.out.println("run command:");
 					System.out.println("\t" + example.body());
-					System.out.println("output:");
-					System.out.println("\t" + example.result());
+
+					example.result().ifPresent(result -> {
+						System.out.println("output:");
+						System.out.println("\t" + result);
+					});
+
 					System.out.println();
 				}
 			}
