@@ -2,17 +2,21 @@ package io.github.saneea.feature;
 
 import java.util.Arrays;
 
+import org.apache.commons.cli.CommandLine;
+
 import io.github.saneea.Feature;
 import io.github.saneea.Feature.Util.IOConsumer;
 import io.github.saneea.FeatureContext;
 
 public class SlashReplacer implements//
 		Feature, //
+		Feature.CLI, //
 		Feature.In.Text.String, //
 		Feature.Out.Text.String//
 {
 	private String in;
 	private IOConsumer<String> out;
+	private CommandLine commandLine;
 
 	@Override
 	public Meta meta(FeatureContext context) {
@@ -21,7 +25,7 @@ public class SlashReplacer implements//
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		String[] args = context.getArgs();
+		String[] args = commandLine.getArgs();
 
 		if (args.length > 1) {
 			throw new IllegalArgumentException(//
@@ -44,6 +48,11 @@ public class SlashReplacer implements//
 	@Override
 	public void setOut(IOConsumer<String> out) {
 		this.out = out;
+	}
+
+	@Override
+	public void setCommandLine(CommandLine commandLine) {
+		this.commandLine = commandLine;
 	}
 
 }
