@@ -1,5 +1,6 @@
 package io.github.saneea;
 
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FeatureContext {
@@ -24,6 +25,10 @@ public class FeatureContext {
 
 	public String[] getArgs() {
 		return args;
+	}
+
+	public String getFeaturesChainString() {
+		return getFeaturesChain().collect(Collectors.joining(" "));
 	}
 
 	public Stream<String> getFeaturesChain() {

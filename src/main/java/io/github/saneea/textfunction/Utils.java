@@ -94,7 +94,7 @@ public class Utils {
 			this.options = options;
 			this.feature = feature;
 			this.context = context;
-			this.cmdLineSyntax = cmdLineSyntax();
+			this.cmdLineSyntax = context.getFeaturesChainString();
 		}
 
 		@Override
@@ -131,12 +131,6 @@ public class Utils {
 		protected void printDescription() {
 			System.out.println(feature.meta(context).description().detailed());
 			System.out.println();
-		}
-
-		private String cmdLineSyntax() {
-			return context//
-					.getFeaturesChain()//
-					.collect(Collectors.joining(" "));
 		}
 	}
 
