@@ -20,7 +20,32 @@ public class SlashReplacer implements//
 
 	@Override
 	public Meta meta(FeatureContext context) {
-		return Meta.from("replace slashes (/) or backslashes (\\)");
+		String echoPipeFeature = "echo some////path\\\\to\\\\file.txt | " + context.getFeaturesChainString();
+
+		return Meta.from(//
+				Meta.Description.from(//
+						"replace slashes (/) or backslashes (\\)", //
+						"replace slashes (/) or backslashes (\\) to specified string"//
+				), //
+				Arrays.asList(//
+						Meta.Example.from(//
+								"replace to slashes", //
+								echoPipeFeature, //
+								"some/path/to/file.txt"), //
+						Meta.Example.from(//
+								"replace to backslashes", //
+								echoPipeFeature + " \"\\\\\"", //
+								"some\\path\\to\\file.txt"), //
+						Meta.Example.from(//
+								"replace to custom string", //
+								echoPipeFeature + " ==", //
+								"some==path==to==file.txt"), //
+						Meta.Example.from(//
+								"mix options", //
+								echoPipeFeature + " -oe utf-8 -- \"->\"", //
+								"some->path->to->file.txt")//
+				)//
+		);
 	}
 
 	@Override
