@@ -1,0 +1,1 @@
+dvh proc toFile %2 "dvh.bat xml format pretty < %1"
