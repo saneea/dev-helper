@@ -1,1 +1,1 @@
-dvh proc toFile %2 "dvh.bat json formatting pretty < %1"
+dvh proc toFile %2 "dvh.bat json format pretty < %1"
