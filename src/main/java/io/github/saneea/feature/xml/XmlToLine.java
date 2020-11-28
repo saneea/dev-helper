@@ -30,6 +30,10 @@ public class XmlToLine implements Feature, Feature.In.Text.Reader, Feature.Out.T
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
+		transform(in, out);
+	}
+
+	public static void transform(Reader in, Writer out) throws Exception {
 		try (XmlHandler xmlHandler = new XmlHandler(out)) {
 			SAXParserFactory//
 					.newInstance()//
