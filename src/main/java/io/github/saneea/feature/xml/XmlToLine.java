@@ -25,7 +25,7 @@ public class XmlToLine implements Feature, Feature.In.Text.Reader, Feature.Out.T
 
 	@Override
 	public Meta meta(FeatureContext context) {
-		return Meta.from("remove whitespaces from XML");
+		return Meta.from("format XML to line");
 	}
 
 	@Override
