@@ -5,8 +5,12 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.feature.binary.base64.FromBase64;
+import io.github.saneea.feature.binary.base64.ToBase64;
 import io.github.saneea.feature.binary.gzip.FromGzip;
 import io.github.saneea.feature.binary.gzip.ToGzip;
+import io.github.saneea.feature.binary.hex.FromHex;
+import io.github.saneea.feature.binary.hex.ToHex;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Binary extends MultiFeatureBase {

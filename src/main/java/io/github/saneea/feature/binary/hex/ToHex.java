@@ -1,4 +1,4 @@
-package io.github.saneea.feature.binary;
+package io.github.saneea.feature.binary.hex;
 
 import java.io.IOException;
 import java.io.InputStream;

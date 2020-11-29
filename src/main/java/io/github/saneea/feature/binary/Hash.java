@@ -12,6 +12,7 @@ import org.apache.commons.cli.Option;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.feature.binary.hex.ToHex;
 
 public class Hash implements//
 		Feature, //
