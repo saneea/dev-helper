@@ -1,8 +1,9 @@
-package io.github.saneea.feature;
+package io.github.saneea.feature.text;
 
 import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
 
 import io.github.saneea.Feature;
 import io.github.saneea.Feature.Util.IOConsumer;
@@ -11,9 +12,13 @@ import io.github.saneea.FeatureContext;
 public class SlashReplacer implements//
 		Feature, //
 		Feature.CLI, //
+		Feature.CLI.Options, //
 		Feature.In.Text.String, //
 		Feature.Out.Text.String//
 {
+	private static final String NEW_SLASH = "newSlash";
+	private static final String NEW_SLASH_SHORT = "n";
+
 	private String in;
 	private IOConsumer<String> out;
 	private CommandLine commandLine;
@@ -33,35 +38,15 @@ public class SlashReplacer implements//
 								echoPipeFeature, //
 								"some/path/to/file.txt"), //
 						Meta.Example.from(//
-								"replace to backslashes", //
-								echoPipeFeature + " \"\\\\\"", //
-								"some\\path\\to\\file.txt"), //
-						Meta.Example.from(//
 								"replace to custom string", //
-								echoPipeFeature + " ==", //
-								"some==path==to==file.txt"), //
-						Meta.Example.from(//
-								"mix options", //
-								echoPipeFeature + " -oe utf-8 -- \"->\"", //
-								"some->path->to->file.txt")//
-				)//
+								echoPipeFeature + " -" + NEW_SLASH_SHORT + " \\", //
+								"some\\path\\to\\file.txt"))//
 		);
 	}
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		String[] args = commandLine.getArgs();
-
-		if (args.length > 1) {
-			throw new IllegalArgumentException(//
-					"Only one parameter (replacement string) is expected, but it were " + //
-							args.length + ": " + Arrays.asList(args));
-		}
-
-		String slash = args.length != 0//
-				? args[0]//
-				: "/";
-
+		String slash = commandLine.getOptionValue(NEW_SLASH, "/");
 		out.accept(in.replaceAll("(\\\\|\\/)+", "\\" + slash));
 	}
 
@@ -78,6 +63,21 @@ public class SlashReplacer implements//
 	@Override
 	public void setCommandLine(CommandLine commandLine) {
 		this.commandLine = commandLine;
+	}
+
+	@Override
+	public Option[] getOptions() {
+		Option[] options = { //
+				Option//
+						.builder(NEW_SLASH_SHORT)//
+						.longOpt(NEW_SLASH)//
+						.hasArg(true)//
+						.argName("slash string")//
+						.required(false)//
+						.desc("set new slash string")//
+						.build() };
+
+		return options;
 	}
 
 }

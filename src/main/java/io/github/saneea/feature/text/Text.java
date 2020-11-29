@@ -35,6 +35,7 @@ public class Text extends MultiFeatureBase {
 				.feature("trim", Trim::new)//
 				.feature("newLine", AddNewLine::new)//
 				.feature("pipe", Pipe::new)//
+				.feature("slash", SlashReplacer::new)//
 				.build();
 	}
 }
