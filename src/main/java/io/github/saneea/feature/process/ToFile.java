@@ -14,21 +14,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class ToFile implements Feature, Feature.Err.Bin.Stream {
+public class ToFile implements//
+		Feature, //
+		Feature.CLI, //
+		Feature.CLI.Options, //
+		Feature.Err.Bin.Stream {
+
+	private static final String OUTPUT = "output";
+	private static final String COMMAND = "command";
 
 	interface ExitCode {
 		int OK = 0;
 	}
 
-	interface Arg {
-		int FILE_NAME = 0;
-		int COMMAND_LINE = 1;
-	}
-
 	private OutputStream err;
+	private CommandLine commandLine;
 
 	@Override
 	public Meta meta(FeatureContext context) {
@@ -38,11 +44,10 @@ public class ToFile implements Feature, Feature.Err.Bin.Stream {
 	@Override
 	public void run(FeatureContext context) throws Exception {
 
-		String[] args = context.getArgs();
-		String outFileName = args[Arg.FILE_NAME];
-		String commandLine = args[Arg.COMMAND_LINE];
+		String outFileName = commandLine.getOptionValue(OUTPUT);
+		String command = commandLine.getOptionValue(COMMAND);
 
-		Process forkProc = Runtime.getRuntime().exec(commandLine);
+		Process forkProc = Runtime.getRuntime().exec(command);
 
 		try (ByteArrayBuffer stdOutBuffer = getStdOutFromProc(forkProc, err)) {
 			int exitCode = forkProc.waitFor();
@@ -119,4 +124,37 @@ public class ToFile implements Feature, Feature.Err.Bin.Stream {
 	public void setErr(OutputStream err) {
 		this.err = err;
 	}
+
+	@Override
+	public void setCommandLine(CommandLine commandLine) {
+		this.commandLine = commandLine;
+	}
+
+	@Override
+	public Option[] getOptions() {
+		Option[] option = { //
+
+				Option//
+						.builder("c")//
+						.longOpt(COMMAND)//
+						.hasArg(true)//
+						.argName("system command")//
+						.required(true)//
+						.desc("system command for new process")//
+						.build(), //
+
+				Option//
+						.builder("o")//
+						.longOpt(OUTPUT)//
+						.hasArg(true)//
+						.argName("file name")//
+						.required(true)//
+						.desc("output file name")//
+						.build()//
+
+		};
+
+		return option;
+	}
+
 }
