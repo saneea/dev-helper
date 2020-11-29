@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
+import io.github.saneea.feature.binary.gzip.FromGzip;
+import io.github.saneea.feature.binary.gzip.ToGzip;
 import io.github.saneea.feature.multi.MultiFeatureBase;
 
 public class Binary extends MultiFeatureBase {
@@ -25,6 +27,7 @@ public class Binary extends MultiFeatureBase {
 						new AliasesBuilder()//
 								.feature("hex", ToHex::new)//
 								.feature("base64", ToBase64::new)//
+								.feature("gzip", ToGzip::new)//
 								.build())//
 				.multiFeature(//
 						"from", //
@@ -32,6 +35,7 @@ public class Binary extends MultiFeatureBase {
 						new AliasesBuilder()//
 								.feature("hex", FromHex::new)//
 								.feature("base64", FromBase64::new)//
+								.feature("gzip", FromGzip::new)//
 								.build())//
 				.build();
 	}
