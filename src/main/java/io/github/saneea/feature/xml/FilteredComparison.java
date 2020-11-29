@@ -12,15 +12,17 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
 
-public class FilteredComparison implements Feature {
+public class FilteredComparison implements//
+		Feature, //
+		Feature.CLI, //
+		Feature.CLI.Options {
+
+	private CommandLine commandLine;
 
 	@Override
 	public Meta meta(FeatureContext context) {
@@ -29,11 +31,6 @@ public class FilteredComparison implements Feature {
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		Options options = Params.createOptions();
-
-		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, context.getArgs());
-
 		String comparisonTool = commandLine.getOptionValue(Params.COMPARISON_TOOL);
 		String leftFileName = commandLine.getOptionValue(Params.LEFT);
 		String rightFileName = commandLine.getOptionValue(Params.RIGHT);
@@ -82,34 +79,47 @@ public class FilteredComparison implements Feature {
 		public static String LEFT = "left";
 		public static String RIGHT = "right";
 
-		private static Options createOptions() {
-			Options options = new Options()//
-					.addOption(Option//
+		private static Option[] createOptions() {
+			Option[] options = {
+
+					Option//
 							.builder("ct")//
 							.longOpt(COMPARISON_TOOL)//
 							.hasArg(true)//
 							.argName("system command")//
 							.required(true)//
 							.desc("system command for comparison of just path to extrenal comparison tool")//
-							.build())//
-					.addOption(Option//
+							.build(), //
+					Option//
 							.builder("l")//
 							.longOpt(LEFT)//
 							.hasArg(true)//
 							.argName("file path")//
 							.required(true)//
 							.desc("left side file for comparison")//
-							.build())//
-					.addOption(Option//
+							.build(), //
+					Option//
 							.builder("r")//
 							.longOpt(RIGHT)//
 							.hasArg(true)//
 							.argName("file path")//
 							.required(true)//
 							.desc("right side file for comparison")//
-							.build());
+							.build()//
+			};
 
 			return options;
 		}
 	}
+
+	@Override
+	public void setCommandLine(CommandLine commandLine) {
+		this.commandLine = commandLine;
+	}
+
+	@Override
+	public Option[] getOptions() {
+		return Params.createOptions();
+	}
+
 }
