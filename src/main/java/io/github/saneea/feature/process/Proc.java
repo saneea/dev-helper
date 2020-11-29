@@ -19,7 +19,6 @@ public class Proc extends MultiFeatureBase {
 		return new AliasesBuilder()//
 				.feature("inspect", InspectProcess::new)//
 				.feature("toFile", ToFile::new)//
-				.feature("filteredComparison", FilteredComparison::new)//
 				.build();
 	}
 }

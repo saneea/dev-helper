@@ -24,6 +24,7 @@ public class Xml extends MultiFeatureBase {
 								.feature(Const.PRETTY, XmlPrettyPrint::new)//
 								.feature(Const.LINE, XmlToLine::new)//
 								.build())//
+				.feature("compare", FilteredComparison::new)//
 				.build();
 	}
 

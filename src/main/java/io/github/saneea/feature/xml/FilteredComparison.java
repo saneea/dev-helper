@@ -1,4 +1,4 @@
-package io.github.saneea.feature.process;
+package io.github.saneea.feature.xml;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,7 +19,6 @@ import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.feature.xml.XmlPrettyPrint;
 
 public class FilteredComparison implements Feature {
 
