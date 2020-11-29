@@ -23,7 +23,6 @@ public class Xml extends MultiFeatureBase {
 						new AliasesBuilder()//
 								.feature(Const.PRETTY, XmlPrettyPrint::new)//
 								.feature(Const.LINE, XmlToLine::new)//
-								.feature("reform", XmlReform::new)//
 								.build())//
 				.build();
 	}

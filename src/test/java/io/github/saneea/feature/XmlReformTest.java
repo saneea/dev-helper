@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import io.github.saneea.TestUtils;
-import io.github.saneea.feature.xml.XmlReform;
+import io.github.saneea.feature.xml.XmlPrettyPrint;
 
 @RunWith(value = Parameterized.class)
 public class XmlReformTest {
@@ -44,9 +46,12 @@ public class XmlReformTest {
 	}
 
 	private String prettyPrint(String inputFilePath) throws Exception {
-		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFilePath)); //
+		try (Reader inputStream = new InputStreamReader(//
+				new BufferedInputStream(//
+						new FileInputStream(inputFilePath)), //
+				StandardCharsets.UTF_8); //
 				Writer outputWriter = new StringWriter()) {
-			XmlReform.execute(inputStream, outputWriter);
+			XmlPrettyPrint.run(inputStream, outputWriter, false);
 			return outputWriter.toString();
 		}
 	}

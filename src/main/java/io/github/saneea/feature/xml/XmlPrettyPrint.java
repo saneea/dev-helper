@@ -38,8 +38,13 @@ public class XmlPrettyPrint implements //
 
 	@Override
 	public void run(FeatureContext context) throws Exception {
-		boolean nonToLineBefore = commandLine.hasOption(NON_TO_LINE_BEFORE);
+		run(//
+				in, //
+				out, //
+				commandLine.hasOption(NON_TO_LINE_BEFORE));
+	}
 
+	public static void run(Reader in, Writer out, boolean nonToLineBefore) throws Exception {
 		Reader indentsIn = nonToLineBefore//
 				? in //
 				: new ReaderFromWriter(//

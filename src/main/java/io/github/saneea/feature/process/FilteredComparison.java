@@ -1,6 +1,14 @@
 package io.github.saneea.feature.process;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.cli.CommandLine;
@@ -11,7 +19,7 @@ import org.apache.commons.cli.Options;
 
 import io.github.saneea.Feature;
 import io.github.saneea.FeatureContext;
-import io.github.saneea.feature.xml.XmlReform;
+import io.github.saneea.feature.xml.XmlPrettyPrint;
 
 public class FilteredComparison implements Feature {
 
@@ -50,7 +58,22 @@ public class FilteredComparison implements Feature {
 		File outputFile = File.createTempFile("filtered", null);
 		outputFile.deleteOnExit();
 		String outputFileName = outputFile.getPath();
-		XmlReform.execute(inputFileName, outputFileName, StandardCharsets.UTF_8.toString());
+
+		try (//
+				Reader in = new InputStreamReader(//
+						new BufferedInputStream(//
+								new FileInputStream(//
+										inputFileName)), //
+						StandardCharsets.UTF_8); //
+
+				Writer out = new OutputStreamWriter(//
+						new BufferedOutputStream(//
+								new FileOutputStream(//
+										outputFile)), //
+						StandardCharsets.UTF_8);//
+		) {
+			XmlPrettyPrint.run(in, out, false);
+		}
 		return outputFileName;
 	}
 
