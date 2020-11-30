@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.github.saneea</groupId>
+	<groupId>io.github.saneea.dvh</groupId>
 	<artifactId>dev-helper</artifactId>
 	<version>1.4-SNAPSHOT</version>
 
@@ -31,7 +31,7 @@
 						<configuration>
 							<programs>
 								<program>
-									<mainClass>io.github.saneea.App</mainClass>
+									<mainClass>io.github.saneea.dvh.App</mainClass>
 									<id>dvh</id>
 								</program>
 							</programs>
@@ -48,7 +48,7 @@
 						<configuration>
 							<programs>
 								<program>
-									<mainClass>io.github.saneea.App</mainClass>
+									<mainClass>io.github.saneea.dvh.App</mainClass>
 									<id>dvhw</id>
 								</program>
 							</programs>

@@ -40,9 +40,9 @@ Try to run `dvh time now` in order to test your installation (this command just 
 
 # How to add new feature?
 1. Create class for your feature
-2. Implement interface *io.github.saneea.Feature*
+2. Implement interface *io.github.saneea.dvh.Feature*
 3. Implement specific interfaces if you need working with standard input/output (as text or binary). E.g. Feature.In.Bin.Stream
 4. Implement specific interfaces if you need working with command line options: Feature.CLI and/or Feature.CLI.Options
 5. Register your feature class in file `src/main/config/feature-aliases.properties` or in some existent multifeature (such as `dvh bin`)
 
-If you need to add new multifeature there are a good idea to derive your feature from io.github.saneea.feature.multi.MultiFeatureBase.
+If you need to add new multifeature there are a good idea to derive your feature from io.github.saneea.dvh.feature.multi.MultiFeatureBase.
