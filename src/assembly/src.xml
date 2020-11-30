@@ -17,6 +17,11 @@
 			<outputDirectory>.</outputDirectory>
 			<directory>target/appassembler</directory>
 		</fileSet>
+
+		<fileSet>
+			<directory>src/main/scripts</directory>
+			<outputDirectory>scripts</outputDirectory>
+		</fileSet>
 	</fileSets>
 
 </assembly>

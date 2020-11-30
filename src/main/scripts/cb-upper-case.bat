@@ -1,0 +1,1 @@
+dvh clip read | dvh txt case upper | dvh clip write
