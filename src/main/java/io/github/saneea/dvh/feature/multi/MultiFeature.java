@@ -13,8 +13,8 @@ import io.github.saneea.dvh.Feature.CLI.CommonOptions;
 import io.github.saneea.dvh.FeatureContext;
 import io.github.saneea.dvh.FeatureProvider;
 import io.github.saneea.dvh.FeatureRunner;
-import io.github.saneea.dvh.textfunction.Utils;
-import io.github.saneea.dvh.textfunction.Utils.DefaultHelpPrinter;
+import io.github.saneea.dvh.utils.Utils;
+import io.github.saneea.dvh.utils.Utils.DefaultHelpPrinter;
 
 public abstract class MultiFeature implements Feature {
 

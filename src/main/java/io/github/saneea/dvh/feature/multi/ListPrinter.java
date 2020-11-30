@@ -5,7 +5,7 @@ import java.util.Set;
 
 import io.github.saneea.dvh.FeatureContext;
 import io.github.saneea.dvh.FeatureProvider;
-import io.github.saneea.dvh.textfunction.Utils;
+import io.github.saneea.dvh.utils.Utils;
 
 public class ListPrinter extends FeatureCatalogPrinter {
 

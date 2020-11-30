@@ -1,4 +1,4 @@
-package io.github.saneea.dvh.textfunction;
+package io.github.saneea.dvh.utils;
 
 import java.util.Collection;
 import java.util.List;

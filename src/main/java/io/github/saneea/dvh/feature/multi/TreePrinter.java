@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 import io.github.saneea.dvh.FeatureContext;
 import io.github.saneea.dvh.FeatureProvider;
-import io.github.saneea.dvh.textfunction.Utils;
+import io.github.saneea.dvh.utils.Utils;
 
 public class TreePrinter extends FeatureCatalogPrinter {
 

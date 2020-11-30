@@ -24,7 +24,7 @@ import org.apache.commons.cli.Options;
 
 import io.github.saneea.dvh.Feature.CLI.CommonOptions;
 import io.github.saneea.dvh.Feature.Util.IOConsumer;
-import io.github.saneea.dvh.textfunction.Utils;
+import io.github.saneea.dvh.utils.Utils;
 
 public class FeatureResources implements AutoCloseable {
 

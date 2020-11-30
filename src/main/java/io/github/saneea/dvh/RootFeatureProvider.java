@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import io.github.saneea.dvh.textfunction.Utils;
+import io.github.saneea.dvh.utils.Utils;
 
 public class RootFeatureProvider implements FeatureProvider {
 	private final Map<String, String> featureAliases;
