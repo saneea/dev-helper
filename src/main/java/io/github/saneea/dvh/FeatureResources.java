@@ -159,11 +159,12 @@ public class FeatureResources implements AutoCloseable {
 		return buf.toString();
 	}
 
-	public Reader getInTextReader() {
+	public Reader getInTextReader() throws IOException {
 		if (inTextReader == null) {
-			inTextReader = new InputStreamReader(//
-					getInBinStream(), //
-					getEncoding(CommonOptions.INPUT_ENCODING));
+			inTextReader = Utils.skipBom(//
+					new InputStreamReader(//
+							getInBinStream(), //
+							getEncoding(CommonOptions.INPUT_ENCODING)));
 			closeables.add(inTextReader);
 		}
 		return inTextReader;
