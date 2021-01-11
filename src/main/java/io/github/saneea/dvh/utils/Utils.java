@@ -1,5 +1,8 @@
 package io.github.saneea.dvh.utils;
 
+import java.io.IOException;
+import java.io.PushbackReader;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,19 @@ public class Utils {
 			sb.append(s);
 		}
 		return sb.toString();
+	}
+
+	public static Reader skipBom(Reader originalReader) throws IOException {
+		PushbackReader ret = new PushbackReader(originalReader);
+
+		int firstChar = ret.read();
+
+		if (firstChar != Const.BOM_CHAR && //
+				firstChar != Const.END_OF_STREAM) {
+			ret.unread(firstChar);
+		}
+
+		return ret;
 	}
 
 	public static CommandLine parseCli(String[] args, Options cliOptions, Feature feature, FeatureContext context) {
