@@ -1,5 +1,5 @@
 # dev-helper
-[![Build Status](https://api.travis-ci.com/saneea/dev-helper.svg?branch=master)](https://travis-ci.org/saneea/dev-helper)
+[![Build Status](https://api.travis-ci.com/saneea/dev-helper.svg?branch=master)](https://travis-ci.com/saneea/dev-helper)
 
 **dev-helper** is just simple tool for helping developer with daily routines.
 It is written with pure-Java.
