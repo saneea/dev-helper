@@ -32,6 +32,7 @@ public class Binary extends MultiFeatureBase {
 								.feature("hex", ToHex::new)//
 								.feature("base64", ToBase64::new)//
 								.feature("gzip", ToGzip::new)//
+								.feature("randomArt", ToRandomArt::new)//
 								.build())//
 				.multiFeature(//
 						"from", //
