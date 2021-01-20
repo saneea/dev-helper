@@ -14,12 +14,10 @@ public class ToRandomArt implements//
 
 	private static final int PICTURE_SIZE_X = 20;
 	private static final int PICTURE_SIZE_Y = 10;
+
 	private static final char[] PICTURE_ALPHABET = { //
-			' ', '.', '*', 'o', //
-			'+', 'X', '#', '$', //
-			'%', '@', '!', '-', //
-			'+', '~', '(', '}', //
-			'"', 'H' };
+			' ', '.', 'o', '+', 'X', '#', 'H'//
+	};
 
 	private InputStream in;
 	private PrintStream out;
@@ -36,31 +34,30 @@ public class ToRandomArt implements//
 
 	@Override
 	public void run(FeatureContext context) throws IOException {
-		run(in, out);
-	}
-
-	public void run(InputStream input, PrintStream out) throws IOException {
 		int byteCode;
-		while ((byteCode = input.read()) != -1) {
+		while ((byteCode = in.read()) != -1) {
 			handleInputByte(byteCode);
 		}
 
-		out.print('+');
-		for (int col = 0; col < PICTURE_SIZE_X; ++col) {
-			out.print('-');
-		}
-		out.print('+');
-		out.println();
+		printHorizontalBorder(out);
 
 		for (Picture.Row row : picture.rows) {
-			out.print('|');
+			printVerticalBorder(out);
 			for (int element : row.elements) {
 				out.print(intToAsciiPixel(element));
 			}
-			out.print('|');
+			printVerticalBorder(out);
 			out.println();
 		}
 
+		printHorizontalBorder(out);
+	}
+
+	private void printVerticalBorder(PrintStream out) {
+		out.print('|');
+	}
+
+	private void printHorizontalBorder(PrintStream out) {
 		out.print('+');
 		for (int col = 0; col < PICTURE_SIZE_X; ++col) {
 			out.print('-');
@@ -74,14 +71,19 @@ public class ToRandomArt implements//
 	}
 
 	private void handleInputByte(int byteCode) {
+		boolean[] bits = byteToBits(byteCode);
 		for (int i = 0; i < 4; ++i) {
-			boolean horizontal = (byteCode % 2) != 0;
-			byteCode >>= 1;
-			boolean direction = (byteCode % 2) != 0;
-			byteCode >>= 1;
-
-			handleDirection(horizontal, direction);
+			handleDirection(bits[i * 2], bits[i * 2 + 1]);
 		}
+	}
+
+	private boolean[] byteToBits(int byteCode) {
+		boolean[] out = new boolean[8];
+		for (int i = out.length - 1; i >= 0; --i) {
+			out[i] = (byteCode % 2) != 0;
+			byteCode >>= 1;
+		}
+		return out;
 	}
 
 	private void handleDirection(boolean horizontal, boolean direction) {
