@@ -75,19 +75,22 @@ public class ToRandomArt implements//
 
 	private void handleInputByte(int byteCode) {
 		for (int i = 0; i < 4; ++i) {
-			boolean directionX = (byteCode % 2) != 0;
+			boolean horizontal = (byteCode % 2) != 0;
 			byteCode >>= 1;
-			boolean directionY = (byteCode % 2) != 0;
+			boolean direction = (byteCode % 2) != 0;
 			byteCode >>= 1;
 
-			handleDirection(directionX, directionY);
+			handleDirection(horizontal, direction);
 		}
 	}
 
-	private void handleDirection(boolean directionX, boolean directionY) {
+	private void handleDirection(boolean horizontal, boolean direction) {
 
-		currentX = changeCurrentPos(currentX, directionX, PICTURE_SIZE_X);
-		currentY = changeCurrentPos(currentY, directionY, PICTURE_SIZE_Y);
+		if (horizontal) {
+			currentX = changeCurrentPos(currentX, direction, PICTURE_SIZE_X);
+		} else {
+			currentY = changeCurrentPos(currentY, direction, PICTURE_SIZE_Y);
+		}
 
 		picture.rows[currentY].elements[currentX]++;
 	}
