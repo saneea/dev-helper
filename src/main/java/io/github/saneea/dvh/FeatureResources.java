@@ -24,6 +24,8 @@ import org.apache.commons.cli.Options;
 
 import io.github.saneea.dvh.Feature.CLI.CommonOptions;
 import io.github.saneea.dvh.Feature.Util.IOConsumer;
+import io.github.saneea.dvh.utils.ByteSequenceRecognizer;
+import io.github.saneea.dvh.utils.EncodingRecognizer;
 import io.github.saneea.dvh.utils.Utils;
 
 public class FeatureResources implements AutoCloseable {
@@ -42,7 +44,8 @@ public class FeatureResources implements AutoCloseable {
 	private OutputStream errBinStream;
 	private Reader inTextReader;
 	private String inTextString;
-	private InputStream inBinStream;
+	private ByteSequenceRecognizer<Charset> inputEncodingRecognizer;
+	private Charset inputEncoding;
 
 	public FeatureResources(Feature feature, String[] args, FeatureContext context) {
 		this.feature = feature;
@@ -118,6 +121,18 @@ public class FeatureResources implements AutoCloseable {
 		return outTextPrintStream;
 	}
 
+	private Charset getInputEncoding() throws IOException {
+		if (inputEncoding == null) {
+			String encodingName = getCommandLine().getOptionValue(CommonOptions.INPUT_ENCODING);
+			inputEncoding = encodingName != null//
+					? Charset.forName(encodingName)//
+					: getEncodingRecognizer()//
+							.result()//
+							.orElseGet(Charset::defaultCharset);
+		}
+		return inputEncoding;
+	}
+
 	private Charset getEncoding(String encodingOptionName) {
 		String encodingName = getCommandLine().getOptionValue(encodingOptionName);
 		return encodingName != null//
@@ -164,21 +179,28 @@ public class FeatureResources implements AutoCloseable {
 			inTextReader = Utils.skipBom(//
 					new InputStreamReader(//
 							getInBinStream(), //
-							getEncoding(CommonOptions.INPUT_ENCODING)));
+							getInputEncoding()));
 			closeables.add(inTextReader);
 		}
 		return inTextReader;
 	}
 
-	public InputStream getInBinStream() {
-		if (inBinStream == null) {
-			inBinStream = new FileInputStream(FileDescriptor.in);
+	public InputStream getInBinStream() throws IOException {
+		return getEncodingRecognizer().stream();
+	}
 
-			if (useBufferedStreams()) {
-				inBinStream = new BufferedInputStream(inBinStream);
-			}
+	public ByteSequenceRecognizer<Charset> getEncodingRecognizer() throws IOException {
+		if (inputEncodingRecognizer == null) {
+			inputEncodingRecognizer = EncodingRecognizer.recognize(createInternalInBinStream());
+			closeables.add(inputEncodingRecognizer);
+		}
+		return inputEncodingRecognizer;
+	}
 
-			closeables.add(inBinStream);
+	private InputStream createInternalInBinStream() {
+		InputStream inBinStream = new FileInputStream(FileDescriptor.in);
+		if (useBufferedStreams()) {
+			inBinStream = new BufferedInputStream(inBinStream);
 		}
 		return inBinStream;
 	}
