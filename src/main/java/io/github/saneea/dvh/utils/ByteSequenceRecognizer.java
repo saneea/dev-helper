@@ -115,7 +115,8 @@ public class ByteSequenceRecognizer<T> implements Closeable {
 			return nextNodes//
 					.values().stream()//
 					.mapToInt(ByteNode::getDepth)//
-					.max().orElse(0) + 1;
+					.map(childDepth -> childDepth + 1)//
+					.max().orElse(0);
 		}
 
 	}
