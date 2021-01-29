@@ -19,6 +19,7 @@ public class File extends MultiFeatureBase {
 		return new AliasesBuilder()//
 				.feature("read", ReadFile::new)//
 				.feature("write", WriteFile::new)//
+				.feature("compare", Compare::new)//
 				.build();
 	}
 
