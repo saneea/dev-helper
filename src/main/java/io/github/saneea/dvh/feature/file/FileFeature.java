@@ -8,7 +8,7 @@ import org.apache.commons.cli.Option;
 import io.github.saneea.dvh.Feature;
 import io.github.saneea.dvh.FeatureContext;
 
-public abstract class FileContentTransfer implements//
+public abstract class FileFeature implements//
 		Feature, //
 		Feature.CLI, //
 		Feature.CLI.Options {

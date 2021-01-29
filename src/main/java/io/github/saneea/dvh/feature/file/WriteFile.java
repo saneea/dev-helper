@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import io.github.saneea.dvh.Feature;
 
 public class WriteFile//
-		extends FileContentTransfer//
+		extends FileFeature//
 		implements Feature.In.Bin.Stream {
 
 	private InputStream in;
