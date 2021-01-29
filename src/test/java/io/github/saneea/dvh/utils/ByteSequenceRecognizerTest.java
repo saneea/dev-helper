@@ -137,8 +137,6 @@ public class ByteSequenceRecognizerTest {
 				}
 			}
 		}
-
-		// Assert.fail("not implemented");
 	}
 
 	private static Iterable<Byte> allBytes() {
