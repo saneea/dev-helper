@@ -1,18 +1,17 @@
 package io.github.saneea.dvh.feature.binary;
 
+import io.github.saneea.dvh.Feature;
+import io.github.saneea.dvh.FeatureContext;
+import io.github.saneea.dvh.feature.binary.hex.ToHex;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
-
-import io.github.saneea.dvh.Feature;
-import io.github.saneea.dvh.FeatureContext;
-import io.github.saneea.dvh.feature.binary.hex.ToHex;
 
 public class Hash implements//
 		Feature, //
@@ -45,7 +44,7 @@ public class Hash implements//
 			md.update(buf, 0, len);
 		}
 
-		ToHex.run(new ByteArrayInputStream(md.digest()), out);
+		ToHex.Companion.run(new ByteArrayInputStream(md.digest()), out);
 	}
 
 	@Override
