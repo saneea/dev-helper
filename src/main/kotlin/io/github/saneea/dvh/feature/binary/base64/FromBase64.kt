@@ -8,21 +8,18 @@ import java.io.OutputStream
 import java.util.*
 
 class FromBase64 :
-        Feature,
-        Feature.In.Bin.Stream,
-        Feature.Out.Bin.Stream {
+    Feature,
+    Feature.In.Bin.Stream,
+    Feature.Out.Bin.Stream {
 
     private var outStream: OutputStream? = null
     private var inStream: InputStream? = null
 
     override fun meta(context: FeatureContext?) =
-            Meta.from("convert input Base64 sequence to binary")!!
+        Meta.from("convert input Base64 sequence to binary")!!
 
     override fun run(context: FeatureContext?) {
-        Base64.getDecoder().wrap(inStream)
-                .use { base64stream ->
-                    base64stream.transferTo(outStream)
-                }
+        Base64.getDecoder().wrap(inStream).use { it.transferTo(outStream) }
     }
 
     override fun setOut(outStream: OutputStream?) {
