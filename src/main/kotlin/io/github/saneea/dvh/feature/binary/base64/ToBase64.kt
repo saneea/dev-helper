@@ -12,22 +12,22 @@ class ToBase64 :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
-    private var `in`: InputStream? = null
-    private var out: OutputStream? = null
+    private lateinit var `in`: InputStream
+    private lateinit var out: OutputStream
 
-    override fun meta(context: FeatureContext?) =
+    override fun meta(context: FeatureContext) =
         Meta.from("convert input binary sequence to Base64")!!
 
 
-    override fun run(context: FeatureContext?) {
-        Base64.getEncoder().wrap(out).use(`in`!!::transferTo)
+    override fun run(context: FeatureContext) {
+        Base64.getEncoder().wrap(out).use(`in`::transferTo)
     }
 
-    override fun setOut(out: OutputStream?) {
+    override fun setOut(out: OutputStream) {
         this.out = out
     }
 
-    override fun setIn(`in`: InputStream?) {
+    override fun setIn(`in`: InputStream) {
         this.`in` = `in`
     }
 }
