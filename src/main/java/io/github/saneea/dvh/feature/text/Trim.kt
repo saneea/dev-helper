@@ -3,13 +3,23 @@ package io.github.saneea.dvh.feature.text
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
-import io.github.saneea.dvh.feature.text.Trim.TextConverter
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.Reader
 import java.io.Writer
 import java.util.*
-import java.util.function.Supplier
+
+private const val LEFT_TRIM = "leftTrim"
+private const val RIGHT_TRIM = "rightTrim"
+
+private typealias WriteCharFunc = (Int) -> Unit
+
+private typealias ConvertFunc = (Int, WriteCharFunc) -> Unit
+
+private val NO_CONVERSION: ConvertFunc = { charCode, writeFun -> writeFun(charCode) }
+
+private infix fun ConvertFunc.and(nextConverter: ConvertFunc): ConvertFunc =
+    { charCode, writeFun -> this(charCode) { nextConverter(it, writeFun) } }
 
 class Trim :
     Feature,
@@ -26,26 +36,26 @@ class Trim :
         Meta.from("trim leading and/or trailing whitespaces")!!
 
     override fun run(context: FeatureContext) {
-        var converter = TextConverter.orig()
-        converter = addTrimmer(LEFT_TRIM, converter, ::LeftTrimmer)
-        converter = addTrimmer(RIGHT_TRIM, converter, ::RightTrimmer)
+        val convertFunc = NO_CONVERSION
+            .and(LEFT_TRIM, ::leftTrimmer)
+            .and(RIGHT_TRIM, ::rightTrimmer)
+
         var charCode: Int
         while (`in`.read().also { charCode = it } != -1) {
-            converter.convertChar(charCode) { c: Int -> out.write(c) }
+            convertFunc(charCode, out::write)
         }
     }
 
-    private fun addTrimmer(
+    private fun ConvertFunc.and(
         optName: String,
-        currentConverter: TextConverter,
-        newConverterCtor: Supplier<TextConverter>
-    ): TextConverter {
+        newTrimmer: () -> ConvertFunc
+    ): ConvertFunc {
         val optValue = commandLine
             .getOptionValue(optName, "true")
             .toLowerCase()
         return when (optValue) {
-            "true" -> currentConverter.andThen(newConverterCtor.get())
-            "false" -> currentConverter
+            "false" -> this
+            "true" -> this and newTrimmer()
             else -> throw IllegalArgumentException("Invalid $optName value: $optValue")
         }
     }
@@ -79,61 +89,36 @@ class Trim :
             .desc("$description (default is 'true')")
             .build()
 
-    private class LeftTrimmer : TextConverter {
+    private fun leftTrimmer(): ConvertFunc {
         var trimming = true
 
-        override fun convertChar(charCode: Int, w: CharWriter) {
+        return { charCode, writeFun ->
             if (!trimming) {
-                w.write(charCode)
+                writeFun(charCode)
             } else if (!Character.isWhitespace(charCode)) {
-                w.write(charCode)
+                writeFun(charCode)
                 trimming = false
             }
         }
     }
 
-    private class RightTrimmer : TextConverter {
-        private val buffer: Queue<Int> = LinkedList()
+    private fun rightTrimmer(): ConvertFunc {
+        val buffer: Queue<Int> = LinkedList()
 
-        override fun convertChar(charCode: Int, w: CharWriter) {
+        fun flush(writeFun: WriteCharFunc) {
+            while (true) {
+                val fromBuff = buffer.poll() ?: break
+                writeFun(fromBuff)
+            }
+        }
+
+        return { charCode, writeFun ->
             if (Character.isWhitespace(charCode)) {
                 buffer.offer(charCode)
             } else {
-                flush(w)
-                w.write(charCode)
+                flush(writeFun)
+                writeFun(charCode)
             }
         }
-
-        private fun flush(w: CharWriter) {
-            var fromBuff: Int
-            while (buffer.poll().also { fromBuff = it } != null) {
-                w.write(fromBuff)
-            }
-        }
-    }
-
-    private fun interface CharWriter {
-        fun write(charCode: Int)
-    }
-
-    private fun interface TextConverter {
-        fun convertChar(charCode: Int, w: CharWriter)
-        fun andThen(nextConverter: TextConverter): TextConverter {
-            return TextConverter { charCode: Int, w: CharWriter ->  //
-                convertChar(charCode) { charCodeConverted: Int ->  //
-                    nextConverter.convertChar(charCodeConverted, w)
-                }
-            }
-        }
-
-        companion object {
-            fun orig(): TextConverter =
-                TextConverter { charCode: Int, w: CharWriter -> w.write(charCode) }
-        }
-    }
-
-    companion object {
-        private const val LEFT_TRIM = "leftTrim"
-        private const val RIGHT_TRIM = "rightTrim"
     }
 }
