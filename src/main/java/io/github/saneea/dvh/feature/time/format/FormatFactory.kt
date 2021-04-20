@@ -31,13 +31,13 @@ class FormatFactory {
         val f: MutableMap<String, Format> = LinkedHashMap()
 
         f[FORMAT_UNIX] = EpochFormat(
-            { epochSecond: Long -> Instant.ofEpochSecond(epochSecond) },
-            { obj: Instant -> obj.epochSecond }
+            { epochSecond -> Instant.ofEpochSecond(epochSecond) },
+            { instant -> instant.epochSecond }
         )
 
         f[FORMAT_JAVA] = EpochFormat(
-            { epochMilli: Long -> Instant.ofEpochMilli(epochMilli) },
-            { obj: Instant -> obj.toEpochMilli() }
+            { epochMilli -> Instant.ofEpochMilli(epochMilli) },
+            { instant -> instant.toEpochMilli() }
         )
 
         f[FORMAT_HUMAN] = DateTimeFormatterFormat(DateTimeFormatter.RFC_1123_DATE_TIME)
