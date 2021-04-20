@@ -4,6 +4,7 @@ import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.FeatureContext
+import io.github.saneea.dvh.feature.time.format.FORMAT_HUMAN
 import io.github.saneea.dvh.feature.time.format.FormatFactory
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
@@ -42,7 +43,7 @@ class Now :
     }
 
     override fun run(context: FeatureContext) {
-        val formatNameOrPattern = commandLine.getOptionValue(FORMAT, FormatFactory.FORMAT_HUMAN)
+        val formatNameOrPattern = commandLine.getOptionValue(FORMAT, FORMAT_HUMAN)
         val format = formatFactory.createFormat(formatNameOrPattern)
         val formattedTime = format.render(ZonedDateTime.now())
         out.accept(formattedTime)
