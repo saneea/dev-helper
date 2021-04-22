@@ -1,25 +1,19 @@
 package io.github.saneea.dvh.feature;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.util.List;
-
+import io.github.saneea.dvh.TestUtils;
+import io.github.saneea.dvh.feature.xml.XmlPrettyPrint;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import io.github.saneea.dvh.TestUtils;
-import io.github.saneea.dvh.feature.xml.XmlPrettyPrint;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(value = Parameterized.class)
 public class XmlReformTest {
@@ -51,7 +45,7 @@ public class XmlReformTest {
 						new FileInputStream(inputFilePath)), //
 				StandardCharsets.UTF_8); //
 				Writer outputWriter = new StringWriter()) {
-			XmlPrettyPrint.run(inputStream, outputWriter, false);
+			XmlPrettyPrint.Companion.run(inputStream, outputWriter, false);
 			return outputWriter.toString();
 		}
 	}

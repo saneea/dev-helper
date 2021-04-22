@@ -1,21 +1,12 @@
 package io.github.saneea.dvh.feature.xml;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-
+import io.github.saneea.dvh.Feature;
+import io.github.saneea.dvh.FeatureContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import io.github.saneea.dvh.Feature;
-import io.github.saneea.dvh.FeatureContext;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class FilteredComparison implements//
 		Feature, //
@@ -68,7 +59,7 @@ public class FilteredComparison implements//
 										outputFile)), //
 						StandardCharsets.UTF_8);//
 		) {
-			XmlPrettyPrint.run(in, out, false);
+			XmlPrettyPrint.Companion.run(in, out, false);
 		}
 		return outputFileName;
 	}
