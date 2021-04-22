@@ -17,7 +17,7 @@ import javax.xml.transform.stream.StreamSource
 
 private const val NON_TO_LINE_BEFORE = "nonToLineBefore"
 
-private fun transform(`in`: Reader?, out: Writer?) {
+private fun transform(`in`: Reader, out: Writer) {
     val transformerFactory = TransformerFactory.newInstance()
     transformerFactory.setAttribute("indent-number", 4) // pretty-print gap
     val transformer = transformerFactory.newTransformer()
@@ -67,7 +67,7 @@ class XmlPrettyPrint :
 
     companion object {
 
-        fun run(`in`: Reader?, out: Writer?, nonToLineBefore: Boolean) {
+        fun run(`in`: Reader, out: Writer, nonToLineBefore: Boolean) {
             val indentsIn = if (nonToLineBefore)
                 `in`
             else
