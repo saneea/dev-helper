@@ -12,7 +12,7 @@ class File : MultiFeatureBase() {
         Meta.from("file utils")!!
 
     //TODO: change "Supplier<Feature>" to "() -> Feature"
-    override fun getFeatureAliases(): MutableMap<String, Supplier<Feature>> =
+    override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()
             .feature("read", ::ReadFile)
             .feature("write", ::WriteFile)

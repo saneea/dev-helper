@@ -12,7 +12,7 @@ class Json : MultiFeatureBase() {
     override fun meta(context: FeatureContext) =
         Meta.from("json processing")!!
 
-    override fun getFeatureAliases(): MutableMap<String, Supplier<Feature>> =
+    override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()
             .multiFeature(
                 Const.FORMAT,
