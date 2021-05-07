@@ -8,7 +8,8 @@ import java.util.function.Supplier
 
 abstract class MultiFeatureBase : MultiFeature() {
 
-    override fun getFeatureProvider(): FeatureProvider = MultiFeatureProvider(getFeatureAliases())
+    override val featureProvider: FeatureProvider
+        get() = MultiFeatureProvider(getFeatureAliases())
 
     abstract fun getFeatureAliases(): Map<String, Supplier<Feature>>
 

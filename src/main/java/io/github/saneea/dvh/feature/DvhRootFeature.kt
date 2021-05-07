@@ -7,9 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeature
 
 class DvhRootFeature : MultiFeature() {
 
-    private val featureProvider = RootFeatureProvider()
+    override val featureProvider = RootFeatureProvider()
 
     override fun meta(context: FeatureContext) = Meta.from("developer helper")!!
-
-    override fun getFeatureProvider() = featureProvider
 }
