@@ -5,9 +5,9 @@ import io.github.saneea.dvh.FeatureProvider
 import io.github.saneea.dvh.utils.Utils
 import java.io.PrintStream
 
-class ListPrinter(out: PrintStream?) : FeatureCatalogPrinter(out) {
+class ListPrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
 
-    public override fun print(featureProvider: FeatureProvider, context: FeatureContext) {
+    override fun print(featureProvider: FeatureProvider, context: FeatureContext) {
         val featuresNames = featureProvider.featuresNames()
         val maxFeatureNameSize = Utils.getMaxStringLength(featuresNames)
         for (featureName in featuresNames) {

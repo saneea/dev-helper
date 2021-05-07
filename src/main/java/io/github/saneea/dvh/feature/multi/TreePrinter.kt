@@ -8,9 +8,9 @@ import java.util.function.ToIntFunction
 import java.util.stream.Collectors
 import java.util.stream.IntStream
 
-class TreePrinter(out: PrintStream?) : FeatureCatalogPrinter(out) {
+class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
 
-    public override fun print(featureProvider: FeatureProvider, context: FeatureContext) {
+    override fun print(featureProvider: FeatureProvider, context: FeatureContext) {
         val featuresChain = context.featuresChain
             .map { featureName: String? -> FeatureTree(featureName, "") }
             .collect(Collectors.toList())
