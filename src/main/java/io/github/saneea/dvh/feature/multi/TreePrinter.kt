@@ -12,7 +12,7 @@ class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
 
     override fun print(featureProvider: FeatureProvider, context: FeatureContext) {
         val featuresChain = context.featuresChain
-            .map { featureName: String? -> FeatureTree(featureName, "") }
+            .map { featureName: String -> FeatureTree(featureName, "") }
             .collect(Collectors.toList())
 
         for (i in 0 until featuresChain.size - 1) {
