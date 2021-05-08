@@ -20,6 +20,8 @@ class FeatureResources(
     private val context: FeatureContext
 ) : AutoCloseable {
 
+    //TODO many fields should be refactored as "lazy" properties
+
     private val closeables: Deque<AutoCloseable?> = ArrayDeque()
     private var cliOptions: Options? = null
 
@@ -38,7 +40,7 @@ class FeatureResources(
                 field = PrintStream(
                     outBinStream,
                     false,
-                    getEncoding(CommonOptions.OUTPUT_ENCODING)
+                    getOutputEncoding()
                 )
                 closeables.add(field)
             }
@@ -50,8 +52,8 @@ class FeatureResources(
         get() {
             if (field == null) {
                 field = OutputStreamWriter(
-                    outBinStream,
-                    getEncoding(CommonOptions.OUTPUT_ENCODING)
+                    outBinStream!!,
+                    getOutputEncoding()
                 )
                 closeables.add(field)
             }
@@ -64,7 +66,7 @@ class FeatureResources(
             if (field == null) {
                 field = FileOutputStream(FileDescriptor.out)
                 if (useBufferedStreams()) {
-                    field = BufferedOutputStream(field)
+                    field = BufferedOutputStream(field!!)
                 }
                 closeables.add(field)
             }
@@ -82,14 +84,13 @@ class FeatureResources(
         }
         private set
 
-    @get:Throws(IOException::class)
     var inTextReader: Reader? = null
         get() {
             if (field == null) {
                 field = Utils.skipBom(
                     InputStreamReader(
                         inBinStream,
-                        inputEncoding
+                        inputEncoding!!
                     )
                 )
                 closeables.add(field)
@@ -98,20 +99,19 @@ class FeatureResources(
         }
         private set
 
-    @get:Throws(IOException::class)
     var inTextString: String? = null
         get() {
             if (field == null) {
-                field = readAll(inTextReader)
+                field = inTextReader!!.readText()
             }
             return field
         }
         private set
+
     private var inputEncodingRecognizer: ByteSequenceRecognizer<Charset>? = null
 
-    @get:Throws(IOException::class)
     private var inputEncoding: Charset? = null
-        private get() {
+        get() {
             if (field == null) {
                 val encodingName = commandLine!!.getOptionValue(CommonOptions.INPUT_ENCODING)
                 field = if (encodingName != null
@@ -123,7 +123,7 @@ class FeatureResources(
             return field
         }
 
-    fun getCliOptions(): Options {
+    private fun getCliOptions(): Options {
         if (cliOptions == null) {
             cliOptions = Options()
             if (feature is CLI.Options) {
@@ -156,21 +156,17 @@ class FeatureResources(
     }
 
     val outTextString: IOConsumer<String>
-        get() = IOConsumer { str: String? -> outTextWriter!!.write(str) }
+        get() = IOConsumer { str: String -> outTextWriter!!.write(str) }
 
-    private fun getEncoding(encodingOptionName: String): Charset {
-        val encodingName = commandLine!!.getOptionValue(encodingOptionName)
-        return if (encodingName != null
-        ) Charset.forName(encodingName)
-        else Charset.defaultCharset()
-    }
+    private fun getOutputEncoding() = commandLine!!
+        .getOptionValue(CommonOptions.OUTPUT_ENCODING)
+        ?.let(Charset::forName)
+        ?: Charset.defaultCharset()
 
-    @get:Throws(IOException::class)
     val inBinStream: InputStream
-        get() = encodingRecognizer!!.stream()
+        get() = encodingRecognizer.stream()
 
-    @get:Throws(IOException::class)
-    val encodingRecognizer: ByteSequenceRecognizer<Charset>
+    private val encodingRecognizer: ByteSequenceRecognizer<Charset>
         get() {
             if (inputEncodingRecognizer == null) {
                 inputEncodingRecognizer = EncodingRecognizer.recognize(createInternalInBinStream())
@@ -187,11 +183,8 @@ class FeatureResources(
         return inBinStream
     }
 
-    private fun useBufferedStreams(): Boolean {
-        return !commandLine!!.hasOption(CommonOptions.NON_BUFFERED_STREAMS)
-    }
+    private fun useBufferedStreams() = !commandLine!!.hasOption(CommonOptions.NON_BUFFERED_STREAMS)
 
-    @Throws(Exception::class)
     override fun close() {
         var onCloseException: Exception? = null
         while (!closeables.isEmpty()) {
@@ -207,15 +200,6 @@ class FeatureResources(
         }
         if (onCloseException != null) {
             throw onCloseException
-        }
-    }
-
-    companion object {
-        @Throws(IOException::class)
-        private fun readAll(reader: Reader?): String {
-            val buf = StringWriter()
-            reader!!.transferTo(buf)
-            return buf.toString()
         }
     }
 }
