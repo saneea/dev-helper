@@ -1,7 +1,10 @@
 package io.github.saneea.dvh.feature;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import io.github.saneea.dvh.FeatureContext;
+import io.github.saneea.dvh.TestUtils;
+import io.github.saneea.dvh.feature.binary.base64.FromBase64;
+import io.github.saneea.dvh.feature.binary.base64.ToBase64;
+import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,12 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Test;
-
-import io.github.saneea.dvh.FeatureContext;
-import io.github.saneea.dvh.TestUtils;
-import io.github.saneea.dvh.feature.binary.base64.FromBase64;
-import io.github.saneea.dvh.feature.binary.base64.ToBase64;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class Base64Test {
 
@@ -47,7 +46,7 @@ public class Base64Test {
 			FromBase64 fromBase64 = new FromBase64();
 			fromBase64.setIn(inputStream);
 			fromBase64.setOut(output);
-			fromBase64.run(new FeatureContext(null, null, new String[] {}));
+			fromBase64.run(new FeatureContext(null, "", new String[]{}));
 			return output.toByteArray();
 		}
 	}
@@ -58,8 +57,8 @@ public class Base64Test {
 			ToBase64 toBase64 = new ToBase64();
 			toBase64.setIn(inputStream);
 			toBase64.setOut(output);
-			toBase64.run(new FeatureContext(null, null, new String[] {}));
-			return new String(output.toByteArray(), StandardCharsets.UTF_8);
+			toBase64.run(new FeatureContext(null, "", new String[]{}));
+			return output.toString(StandardCharsets.UTF_8);
 		}
 	}
 

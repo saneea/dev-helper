@@ -1,25 +1,19 @@
 package io.github.saneea.dvh.feature;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import io.github.saneea.dvh.FeatureContext;
+import io.github.saneea.dvh.TestUtils;
+import io.github.saneea.dvh.feature.binary.hex.FromHex;
+import io.github.saneea.dvh.feature.binary.hex.ToHex;
+import org.junit.Test;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Test;
-
-import io.github.saneea.dvh.FeatureContext;
-import io.github.saneea.dvh.TestUtils;
-import io.github.saneea.dvh.feature.binary.hex.FromHex;
-import io.github.saneea.dvh.feature.binary.hex.ToHex;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class HexTest {
 
@@ -55,7 +49,7 @@ public class HexTest {
 			FromHex feature = new FromHex();
 			feature.setIn(reader);
 			feature.setOut(output);
-			feature.run(new FeatureContext(null, null, new String[] {}));
+			feature.run(new FeatureContext(null, "", new String[]{}));
 			return output.toByteArray();
 		}
 	}
@@ -69,10 +63,10 @@ public class HexTest {
 			try (PrintStream printStreamOut = new PrintStream(output, false, TEST_CHARSET)) {
 				feature.setIn(inputStream);
 				feature.setOut(printStreamOut);
-				feature.run(new FeatureContext(null, null, new String[] {}));
+				feature.run(new FeatureContext(null, "", new String[]{}));
 			}
 
-			return new String(output.toByteArray(), TEST_CHARSET);
+			return output.toString(TEST_CHARSET);
 		}
 	}
 

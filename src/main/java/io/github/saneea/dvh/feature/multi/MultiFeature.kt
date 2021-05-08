@@ -20,7 +20,7 @@ abstract class MultiFeature : Feature {
 
     override fun run(context: FeatureContext) {
         val args = context.args
-        if (args.isEmpty() || args[0]!!.startsWith("-")) {
+        if (args.isEmpty() || args[0].startsWith("-")) {
             runFeatureWithOptions(context, args)
         } else {
             runChildFeature(context, args)
@@ -34,7 +34,7 @@ abstract class MultiFeature : Feature {
         featureRunner.run(context, featureName, featureArgs)
     }
 
-    private fun runFeatureWithOptions(context: FeatureContext, args: Array<String?>) {
+    private fun runFeatureWithOptions(context: FeatureContext, args: Array<String>) {
         val cliOptions = Options()
             .addOption(CommonOptions.HELP_OPTION)
             .addOption(
