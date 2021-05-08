@@ -27,7 +27,7 @@ abstract class MultiFeature : Feature {
         }
     }
 
-    private fun runChildFeature(context: FeatureContext, args: Array<String?>) {
+    private fun runChildFeature(context: FeatureContext, args: Array<String>) {
         val featureName = args[0]
         val featureArgs = withoutFeatureName(args)
         val featureRunner = FeatureRunner(featureProvider)
@@ -91,15 +91,11 @@ abstract class MultiFeature : Feature {
         const val CATALOG = "catalog"
         const val CATALOG_LIST = "list"
         const val CATALOG_TREE = "tree"
-        private fun withoutFeatureName(args: Array<String?>): Array<String?> {
-            val newArgs: Array<String?>
-            if (args.isEmpty()) {
-                newArgs = args
-            } else {
-                newArgs = arrayOfNulls(args.size - 1)
-                System.arraycopy(args, 1, newArgs, 0, newArgs.size)
-            }
-            return newArgs
+
+        private fun withoutFeatureName(args: Array<String>) = if (args.isEmpty()) {
+            args
+        } else {
+            args.drop(1).toTypedArray()
         }
     }
 }
