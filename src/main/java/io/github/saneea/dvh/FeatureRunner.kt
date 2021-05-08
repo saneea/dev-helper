@@ -24,58 +24,34 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
         context: FeatureContext
     ): FeatureResources {
         val featureResources = FeatureResources(feature, args, context)
-        if (feature is Feature.CLI) {
-            (feature as Feature.CLI)
-                .setCommandLine(featureResources.commandLine)
-        }
-        if (feature is Feature.Out.Text.PrintStream) {
-            (feature as Feature.Out.Text.PrintStream)
-                .setOut(
-                    featureResources.outTextPrintStream
-                )
-        }
-        if (feature is Feature.Out.Text.Writer) {
-            (feature as Feature.Out.Text.Writer)
-                .setOut(
-                    featureResources.outTextWriter
-                )
-        }
-        if (feature is Feature.Out.Text.String) {
-            (feature as Feature.Out.Text.String)
-                .setOut(
-                    featureResources.outTextString
-                )
-        }
-        if (feature is Feature.Out.Bin.Stream) {
-            (feature as Feature.Out.Bin.Stream)
-                .setOut(
-                    featureResources.outBinStream
-                )
-        }
-        if (feature is Feature.Err.Bin.Stream) {
-            (feature as Feature.Err.Bin.Stream)
-                .setErr(
-                    featureResources.errBinStream
-                )
-        }
-        if (feature is Feature.In.Text.Reader) {
-            (feature as Feature.In.Text.Reader)
-                .setIn(
-                    featureResources.inTextReader
-                )
-        }
-        if (feature is Feature.In.Text.String) {
-            (feature as Feature.In.Text.String)
-                .setIn(
-                    featureResources.inTextString
-                )
-        }
-        if (feature is Feature.In.Bin.Stream) {
-            (feature as Feature.In.Bin.Stream)
-                .setIn(
-                    featureResources.inBinStream
-                )
-        }
+
+        (feature as? Feature.CLI)
+            ?.setCommandLine(featureResources.commandLine)
+
+        (feature as? Feature.Out.Text.PrintStream)
+            ?.setOut(featureResources.outTextPrintStream)
+
+        (feature as? Feature.Out.Text.Writer)
+            ?.setOut(featureResources.outTextWriter)
+
+        (feature as? Feature.Out.Text.String)
+            ?.setOut(featureResources.outTextString)
+
+        (feature as? Feature.Out.Bin.Stream)
+            ?.setOut(featureResources.outBinStream)
+
+        (feature as? Feature.Err.Bin.Stream)
+            ?.setErr(featureResources.errBinStream)
+
+        (feature as? Feature.In.Text.Reader)
+            ?.setIn(featureResources.inTextReader)
+
+        (feature as? Feature.In.Text.String)
+            ?.setIn(featureResources.inTextString)
+
+        (feature as? Feature.In.Bin.Stream)
+            ?.setIn(featureResources.inBinStream)
+
         return featureResources
     }
 }
