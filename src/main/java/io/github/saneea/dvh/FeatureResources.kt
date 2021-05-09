@@ -4,8 +4,8 @@ import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
 import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.utils.ByteSequenceRecognizer
-import io.github.saneea.dvh.utils.EncodingRecognizer
 import io.github.saneea.dvh.utils.Utils
+import io.github.saneea.dvh.utils.encodingRecognizer
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
@@ -169,7 +169,7 @@ class FeatureResources(
     private val encodingRecognizer: ByteSequenceRecognizer<Charset>
         get() {
             if (inputEncodingRecognizer == null) {
-                inputEncodingRecognizer = EncodingRecognizer.recognize(createInternalInBinStream())
+                inputEncodingRecognizer = encodingRecognizer(createInternalInBinStream())
                 closeables.add(inputEncodingRecognizer)
             }
             return inputEncodingRecognizer!!
