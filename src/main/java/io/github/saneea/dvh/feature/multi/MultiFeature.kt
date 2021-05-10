@@ -52,7 +52,7 @@ abstract class MultiFeature : Feature {
         helpPrinter.print(Optional.of(commandLine))
     }
 
-    private inner class MultiFeatureHelpPrinter(options: Options?, context: FeatureContext?) :
+    private inner class MultiFeatureHelpPrinter(options: Options, context: FeatureContext) :
         DefaultHelpPrinter(options, this@MultiFeature, context) {
         override fun print(commandLine: Optional<CommandLine>) {
             printDescription()
