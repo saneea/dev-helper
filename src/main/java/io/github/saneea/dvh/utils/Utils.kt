@@ -4,6 +4,8 @@ import io.github.saneea.dvh.AppExitException
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
 import io.github.saneea.dvh.FeatureContext
+import io.github.saneea.dvh.utils.const.BOM_CHAR
+import io.github.saneea.dvh.utils.const.END_OF_STREAM
 import org.apache.commons.cli.*
 import java.io.PushbackReader
 import java.io.Reader
@@ -47,8 +49,8 @@ object Utils {
     fun skipBom(originalReader: Reader): Reader {
         val ret = PushbackReader(originalReader)
         val firstChar = ret.read()
-        if (firstChar != Const.BOM_CHAR.toInt() &&
-            firstChar != Const.END_OF_STREAM
+        if (firstChar != BOM_CHAR.toInt() &&
+            firstChar != END_OF_STREAM
         ) {
             ret.unread(firstChar)
         }
