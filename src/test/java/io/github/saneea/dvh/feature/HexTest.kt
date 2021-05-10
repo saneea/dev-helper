@@ -1,9 +1,10 @@
 package io.github.saneea.dvh.feature
 
 import io.github.saneea.dvh.FeatureContext
-import io.github.saneea.dvh.TestUtils
+import io.github.saneea.dvh.TESTS_RESOURCES
 import io.github.saneea.dvh.feature.binary.hex.FromHex
 import io.github.saneea.dvh.feature.binary.hex.ToHex
+import io.github.saneea.dvh.readFile
 import org.junit.Assert
 import org.junit.Test
 import java.io.BufferedInputStream
@@ -15,9 +16,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 private val TEST_CHARSET = StandardCharsets.UTF_8
-private val TEST_CASES_ROOT = TestUtils.TESTS_RESOURCES.resolve("hex")
+private val TEST_CASES_ROOT = TESTS_RESOURCES.resolve("hex")
 private val HEX_FULL_SET_FILE = TEST_CASES_ROOT.resolve("full-bytes-set.hex")
-val BYTES_FULL_SET_FILE: Path = TestUtils.TESTS_RESOURCES.resolve("full-bytes-set.dat")
+val BYTES_FULL_SET_FILE: Path = TESTS_RESOURCES.resolve("full-bytes-set.dat")
 
 class HexTest {
 
@@ -31,7 +32,7 @@ class HexTest {
     @Test
     fun testToHexFullSet() {
         val actual = toHex(BYTES_FULL_SET_FILE)
-        val expected = TestUtils.readFile(HEX_FULL_SET_FILE)
+        val expected = readFile(HEX_FULL_SET_FILE)
         Assert.assertEquals(expected, actual)
     }
 

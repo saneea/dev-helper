@@ -1,7 +1,8 @@
 package io.github.saneea.dvh.feature
 
-import io.github.saneea.dvh.TestUtils
+import io.github.saneea.dvh.TESTS_RESOURCES
 import io.github.saneea.dvh.feature.xml.XmlPrettyPrint.Companion.run
+import io.github.saneea.dvh.readFile
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +23,7 @@ class XmlReformTest {
     fun test() {
         val testRootDir = TEST_CASES_ROOT.resolve(testId)
         val actual = prettyPrint(testRootDir.resolve("input.xml").toString())
-        val expected = TestUtils.readFile(testRootDir.resolve("expected.xml"))
+        val expected = readFile(testRootDir.resolve("expected.xml"))
         Assert.assertEquals(expected, actual)
     }
 
@@ -41,12 +42,12 @@ class XmlReformTest {
     }
 
     companion object {
-        private val TEST_CASES_ROOT = TestUtils.TESTS_RESOURCES.resolve("xml_pretty_print")
+        private val TEST_CASES_ROOT = TESTS_RESOURCES.resolve("xml_pretty_print")
 
         @Parameterized.Parameters(name = "{0}")
         @JvmStatic
         fun testIds(): List<Array<String>> {
-            return TestUtils.testIds(TEST_CASES_ROOT)
+            return io.github.saneea.dvh.testIds(TEST_CASES_ROOT)
         }
     }
 }
