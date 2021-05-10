@@ -20,13 +20,13 @@ class Base64Test {
     @Test
     fun testFromBase64FullSet() {
         val actual = fromBase64(BASE64_FULL_SET_FILE)
-        val expected = Files.readAllBytes(HexTest.BYTES_FULL_SET_FILE)
+        val expected = Files.readAllBytes(BYTES_FULL_SET_FILE)
         Assert.assertArrayEquals(expected, actual)
     }
 
     @Test
     fun testToBase64FullSet() {
-        val actual = toBase64(HexTest.BYTES_FULL_SET_FILE)
+        val actual = toBase64(BYTES_FULL_SET_FILE)
         val expected = TestUtils.readFile(BASE64_FULL_SET_FILE)
         Assert.assertEquals(expected, actual)
     }
