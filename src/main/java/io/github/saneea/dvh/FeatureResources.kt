@@ -6,12 +6,10 @@ import io.github.saneea.dvh.utils.ByteSequenceRecognizer
 import io.github.saneea.dvh.utils.Utils
 import io.github.saneea.dvh.utils.encodingRecognizer
 import org.apache.commons.cli.CommandLine
-import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 import java.io.*
 import java.nio.charset.Charset
 import java.util.*
-import java.util.stream.Stream
 
 class FeatureResources(
     private val feature: Feature,
@@ -19,160 +17,83 @@ class FeatureResources(
     private val context: FeatureContext
 ) : AutoCloseable {
 
-    //TODO many fields should be refactored as "lazy" properties
+    private val closeables: Deque<AutoCloseable> = ArrayDeque()
 
-    private val closeables: Deque<AutoCloseable?> = ArrayDeque()
-    private var cliOptions: Options? = null
+    val commandLine: CommandLine by lazy {
+        Utils.parseCli(args, cliOptions, feature, context)
+    }
 
-    private var _commandLine: CommandLine? = null
-    var commandLine: CommandLine
-        get() {
-            if (_commandLine == null) {
-                _commandLine = Utils.parseCli(args, getCliOptions(), feature, context)
-            }
-            return _commandLine!!
-        }
-        private set(value) {
-            _commandLine = value
-        }
+    val outTextPrintStream: PrintStream by lazy {
+        PrintStream(outBinStream, false, getOutputEncoding())
+            .also(closeables::add)
+    }
 
-    private var _outTextPrintStream: PrintStream? = null
-    var outTextPrintStream: PrintStream
-        get() {
-            if (_outTextPrintStream == null) {
-                _outTextPrintStream = PrintStream(
-                    outBinStream,
-                    false,
-                    getOutputEncoding()
-                )
-                closeables.add(_outTextPrintStream)
-            }
-            return _outTextPrintStream!!
-        }
-        private set(value) {
-            _outTextPrintStream = value
-        }
+    val outTextWriter: Writer by lazy {
+        OutputStreamWriter(outBinStream, getOutputEncoding())
+            .also(closeables::add)
+    }
 
-    private var _outTextWriter: Writer? = null
-    var outTextWriter: Writer
-        get() {
-            if (_outTextWriter == null) {
-                _outTextWriter = OutputStreamWriter(
-                    outBinStream,
-                    getOutputEncoding()
-                )
-                closeables.add(_outTextWriter)
-            }
-            return _outTextWriter!!
+    val outBinStream: OutputStream by lazy {
+        var stream: OutputStream = FileOutputStream(FileDescriptor.out)
+        if (useBufferedStreams()) {
+            stream = BufferedOutputStream(stream)
         }
-        private set(value) {
-            _outTextWriter = value
-        }
+        closeables.add(stream)
+        stream
+    }
 
-    private var _outBinStream: OutputStream? = null
-    var outBinStream: OutputStream
-        get() {
-            if (_outBinStream == null) {
-                _outBinStream = FileOutputStream(FileDescriptor.out)
-                if (useBufferedStreams()) {
-                    _outBinStream = BufferedOutputStream(_outBinStream!!)
-                }
-                closeables.add(_outBinStream)
-            }
-            return _outBinStream!!
-        }
-        private set(value) {
-            _outBinStream = value
-        }
+    val errBinStream: OutputStream by lazy {
+        FileOutputStream(FileDescriptor.err)
+            .also(closeables::add)
+    }
 
-    private var _errBinStream: OutputStream? = null
-    var errBinStream: OutputStream
-        get() {
-            if (_errBinStream == null) {
-                _errBinStream = FileOutputStream(FileDescriptor.err)
-                closeables.add(_errBinStream)
-            }
-            return _errBinStream!!
-        }
-        private set(value) {
-            _errBinStream = value
-        }
+    val inTextReader: Reader by lazy {
+        Utils.skipBom(InputStreamReader(inBinStream, inputEncoding))
+            .also(closeables::add)
+    }
 
-    private var _inTextReader: Reader? = null
-    var inTextReader: Reader
-        get() {
-            if (_inTextReader == null) {
-                _inTextReader = Utils.skipBom(
-                    InputStreamReader(
-                        inBinStream,
-                        inputEncoding!!
-                    )
-                )
-                closeables.add(_inTextReader)
-            }
-            return _inTextReader!!
-        }
-        private set(value) {
-            _inTextReader = value
-        }
+    val inTextString: String by lazy {
+        inTextReader.readText()
+    }
 
-    private var _inTextString: String? = null
-    var inTextString: String
-        get() {
-            if (_inTextString == null) {
-                _inTextString = inTextReader.readText()
-            }
-            return _inTextString!!
-        }
-        private set(value) {
-            _inTextString = value
-        }
+    private val inputEncoding: Charset by lazy {
+        val encodingName = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
+        if (encodingName != null)
+            Charset.forName(encodingName)
+        else
+            encodingRecognizer
+                .result()
+                .orElseGet { Charset.defaultCharset() }
+    }
 
-    private var inputEncodingRecognizer: ByteSequenceRecognizer<Charset>? = null
+    private val cliOptions: Options by lazy {
+        Options().also {
 
-    private var inputEncoding: Charset? = null
-        get() {
-            if (field == null) {
-                val encodingName = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
-                field = if (encodingName != null
-                ) Charset.forName(encodingName)
-                else encodingRecognizer
-                    .result()
-                    .orElseGet { Charset.defaultCharset() }
-            }
-            return field
-        }
-
-    private fun getCliOptions(): Options {
-        if (cliOptions == null) {
-            cliOptions = Options()
             if (feature is CLI.Options) {
-                Stream
-                    .of(
-                        *(feature as CLI.Options)
-                            .getOptions()
-                    )
-                    .forEach { opt: Option? -> cliOptions!!.addOption(opt) }
+                feature.getOptions().forEach(it::addOption)
             }
-            cliOptions!!.addOption(CommonOptions.HELP_OPTION)
-            if (feature is Feature.Out.Text.PrintStream
-                || feature is Feature.Out.Text.Writer
-                || feature is Feature.Out.Text.String
-            ) {
-                cliOptions!!.addOption(CommonOptions.OUTPUT_ENCODING_OPTION)
+
+            it.addOption(CommonOptions.HELP_OPTION)
+
+            when (feature) {
+                is Feature.Out.Text.PrintStream,
+                is Feature.Out.Text.Writer,
+                is Feature.Out.Text.String ->
+                    it.addOption(CommonOptions.OUTPUT_ENCODING_OPTION)
             }
-            if (feature is Feature.In.Text.Reader
-                || feature is Feature.In.Text.String
-            ) {
-                cliOptions!!.addOption(CommonOptions.INPUT_ENCODING_OPTION)
+
+            when (feature) {
+                is Feature.In.Text.Reader,
+                is Feature.In.Text.String ->
+                    it.addOption(CommonOptions.INPUT_ENCODING_OPTION)
             }
-            if (feature is Feature.In.Bin.Stream
-                || feature is Feature.Out.Bin.Stream
-            ) {
-                cliOptions!!.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION)
+
+            when (feature) {
+                is Feature.In.Bin.Stream,
+                is Feature.Out.Bin.Stream ->
+                    it.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION)
             }
         }
-        return cliOptions!!
     }
 
     val outTextString: StringConsumer
@@ -186,14 +107,10 @@ class FeatureResources(
     val inBinStream: InputStream
         get() = encodingRecognizer.stream()
 
-    private val encodingRecognizer: ByteSequenceRecognizer<Charset>
-        get() {
-            if (inputEncodingRecognizer == null) {
-                inputEncodingRecognizer = encodingRecognizer(createInternalInBinStream())
-                closeables.add(inputEncodingRecognizer)
-            }
-            return inputEncodingRecognizer!!
-        }
+    private val encodingRecognizer: ByteSequenceRecognizer<Charset> by lazy {
+        encodingRecognizer(createInternalInBinStream())
+            .also(closeables::add)
+    }
 
     private fun createInternalInBinStream(): InputStream {
         var inBinStream: InputStream = FileInputStream(FileDescriptor.`in`)
@@ -210,7 +127,7 @@ class FeatureResources(
         while (!closeables.isEmpty()) {
             val closeable = closeables.pollLast()
             try {
-                closeable!!.close()
+                closeable.close()
             } catch (e: Exception) {
                 if (onCloseException != null) {
                     e.addSuppressed(onCloseException)
