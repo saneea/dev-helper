@@ -9,7 +9,7 @@ import java.util.function.Supplier
 class File : MultiFeatureBase() {
 
     override fun meta(context: FeatureContext) =
-        Meta.from("file utils")!!
+        Meta.from("file utils")
 
     //TODO: change "Supplier<Feature>" to "() -> Feature"
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =

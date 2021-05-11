@@ -7,7 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 import java.util.function.Supplier
 
 class Time : MultiFeatureBase() {
-    override fun meta(context: FeatureContext) = Meta.from("time utils")!!
+    override fun meta(context: FeatureContext) = Meta.from("time utils")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

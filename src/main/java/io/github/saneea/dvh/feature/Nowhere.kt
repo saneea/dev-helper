@@ -12,7 +12,7 @@ class Nowhere :
 
     private lateinit var `in`: InputStream
 
-    override fun meta(context: FeatureContext) = Meta.from("read all input data and do nothing")!!
+    override fun meta(context: FeatureContext) = Meta.from("read all input data and do nothing")
 
     override fun run(context: FeatureContext) {
         `in`.transferTo(OutputStream.nullOutputStream())

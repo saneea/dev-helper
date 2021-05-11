@@ -2,24 +2,23 @@ package io.github.saneea.dvh.feature.random
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.FeatureContext
+import io.github.saneea.dvh.StringConsumer
 import java.util.UUID
 
 class UUID :
     Feature,
     Feature.Out.Text.String {
 
-    private lateinit var out: IOConsumer<String>
+    private lateinit var out: StringConsumer
 
     override fun meta(context: FeatureContext) =
-        Meta.from("generate new UUID")!!
+        Meta.from("generate new UUID")
 
-    override fun run(context: FeatureContext) {
-        out.accept(UUID.randomUUID().toString())
-    }
+    override fun run(context: FeatureContext) =
+        out(UUID.randomUUID().toString())
 
-    override fun setOut(out: IOConsumer<String>) {
+    override fun setOut(out: StringConsumer) {
         this.out = out
     }
 }

@@ -8,7 +8,7 @@ import java.util.function.Supplier
 
 class Proc : MultiFeatureBase() {
     override fun meta(context: FeatureContext) =
-        Meta.from("fork process")!!
+        Meta.from("fork process")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

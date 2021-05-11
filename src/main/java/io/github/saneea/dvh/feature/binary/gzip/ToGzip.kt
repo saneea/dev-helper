@@ -16,7 +16,7 @@ class ToGzip :
     private lateinit var out: OutputStream
 
     override fun meta(context: FeatureContext) =
-        Meta.from("compress to GZIP")!!
+        Meta.from("compress to GZIP")
 
     override fun run(context: FeatureContext) {
         GZIPOutputStream(out).use(`in`::transferTo)

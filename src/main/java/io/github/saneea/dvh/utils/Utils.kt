@@ -103,7 +103,7 @@ object Utils {
                     println("" + (i + 1) + ". " + example.name())
                     println("run command:")
                     println("\t" + example.body())
-                    example.result().ifPresent { result: String ->
+                    example.result()?.let { result: String ->
                         println("output:")
                         println("\t" + result)
                     }

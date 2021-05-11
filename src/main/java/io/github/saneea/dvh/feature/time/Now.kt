@@ -2,8 +2,8 @@ package io.github.saneea.dvh.feature.time
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.FeatureContext
+import io.github.saneea.dvh.StringConsumer
 import io.github.saneea.dvh.feature.time.format.FORMAT_HUMAN
 import io.github.saneea.dvh.feature.time.format.FormatFactory
 import org.apache.commons.cli.CommandLine
@@ -16,7 +16,7 @@ class Now :
     Feature.CLI.Options,
     Feature.Out.Text.String {
 
-    private lateinit var out: IOConsumer<String>
+    private lateinit var out: StringConsumer
     private lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
@@ -46,10 +46,10 @@ class Now :
         val formatNameOrPattern = commandLine.getOptionValue(FORMAT, FORMAT_HUMAN)
         val format = formatFactory.createFormat(formatNameOrPattern)
         val formattedTime = format.render(ZonedDateTime.now())
-        out.accept(formattedTime)
+        out(formattedTime)
     }
 
-    override fun setOut(out: IOConsumer<String>) {
+    override fun setOut(out: StringConsumer) {
         this.out = out
     }
 

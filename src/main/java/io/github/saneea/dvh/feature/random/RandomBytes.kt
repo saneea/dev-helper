@@ -18,7 +18,7 @@ class RandomBytes :
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
-        Meta.from("generates random binary data")!!
+        Meta.from("generates random binary data")
 
     override fun run(context: FeatureContext) {
         val count = commandLine.getOptionValue(SIZE).toLong()

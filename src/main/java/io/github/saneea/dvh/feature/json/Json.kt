@@ -12,7 +12,7 @@ import java.util.function.Supplier
 class Json : MultiFeatureBase() {
 
     override fun meta(context: FeatureContext) =
-        Meta.from("json processing")!!
+        Meta.from("json processing")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

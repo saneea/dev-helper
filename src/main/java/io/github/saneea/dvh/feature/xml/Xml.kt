@@ -11,7 +11,7 @@ import java.util.function.Supplier
 
 class Xml : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) = Meta.from("xml processing")!!
+    override fun meta(context: FeatureContext) = Meta.from("xml processing")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

@@ -21,7 +21,7 @@ class SlowPipe :
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
-        Meta.from("transfer bytes with delay")!!
+        Meta.from("transfer bytes with delay")
 
     override fun run(context: FeatureContext) {
         val delay = commandLine.getOptionValue(DELAY).toLong()

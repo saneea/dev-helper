@@ -8,7 +8,7 @@ import java.util.function.Supplier
 
 class Print : MultiFeatureBase() {
     override fun meta(context: FeatureContext) =
-        Meta.from("just print text from CLI args")!!
+        Meta.from("just print text from CLI args")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

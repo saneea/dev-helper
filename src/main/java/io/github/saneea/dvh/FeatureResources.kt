@@ -2,7 +2,6 @@ package io.github.saneea.dvh
 
 import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
-import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.utils.ByteSequenceRecognizer
 import io.github.saneea.dvh.utils.Utils
 import io.github.saneea.dvh.utils.encodingRecognizer
@@ -25,95 +24,116 @@ class FeatureResources(
     private val closeables: Deque<AutoCloseable?> = ArrayDeque()
     private var cliOptions: Options? = null
 
-    var commandLine: CommandLine? = null
+    private var _commandLine: CommandLine? = null
+    var commandLine: CommandLine
         get() {
-            if (field == null) {
-                field = Utils.parseCli(args, getCliOptions(), feature, context)
+            if (_commandLine == null) {
+                _commandLine = Utils.parseCli(args, getCliOptions(), feature, context)
             }
-            return field
+            return _commandLine!!
         }
-        private set
+        private set(value) {
+            _commandLine = value
+        }
 
-    var outTextPrintStream: PrintStream? = null
+    private var _outTextPrintStream: PrintStream? = null
+    var outTextPrintStream: PrintStream
         get() {
-            if (field == null) {
-                field = PrintStream(
+            if (_outTextPrintStream == null) {
+                _outTextPrintStream = PrintStream(
                     outBinStream,
                     false,
                     getOutputEncoding()
                 )
-                closeables.add(field)
+                closeables.add(_outTextPrintStream)
             }
-            return field
+            return _outTextPrintStream!!
         }
-        private set
+        private set(value) {
+            _outTextPrintStream = value
+        }
 
-    var outTextWriter: Writer? = null
+    private var _outTextWriter: Writer? = null
+    var outTextWriter: Writer
         get() {
-            if (field == null) {
-                field = OutputStreamWriter(
-                    outBinStream!!,
+            if (_outTextWriter == null) {
+                _outTextWriter = OutputStreamWriter(
+                    outBinStream,
                     getOutputEncoding()
                 )
-                closeables.add(field)
+                closeables.add(_outTextWriter)
             }
-            return field
+            return _outTextWriter!!
         }
-        private set
+        private set(value) {
+            _outTextWriter = value
+        }
 
-    var outBinStream: OutputStream? = null
+    private var _outBinStream: OutputStream? = null
+    var outBinStream: OutputStream
         get() {
-            if (field == null) {
-                field = FileOutputStream(FileDescriptor.out)
+            if (_outBinStream == null) {
+                _outBinStream = FileOutputStream(FileDescriptor.out)
                 if (useBufferedStreams()) {
-                    field = BufferedOutputStream(field!!)
+                    _outBinStream = BufferedOutputStream(_outBinStream!!)
                 }
-                closeables.add(field)
+                closeables.add(_outBinStream)
             }
-            return field
+            return _outBinStream!!
         }
-        private set
+        private set(value) {
+            _outBinStream = value
+        }
 
-    var errBinStream: OutputStream? = null
+    private var _errBinStream: OutputStream? = null
+    var errBinStream: OutputStream
         get() {
-            if (field == null) {
-                field = FileOutputStream(FileDescriptor.err)
-                closeables.add(field)
+            if (_errBinStream == null) {
+                _errBinStream = FileOutputStream(FileDescriptor.err)
+                closeables.add(_errBinStream)
             }
-            return field
+            return _errBinStream!!
         }
-        private set
+        private set(value) {
+            _errBinStream = value
+        }
 
-    var inTextReader: Reader? = null
+    private var _inTextReader: Reader? = null
+    var inTextReader: Reader
         get() {
-            if (field == null) {
-                field = Utils.skipBom(
+            if (_inTextReader == null) {
+                _inTextReader = Utils.skipBom(
                     InputStreamReader(
                         inBinStream,
                         inputEncoding!!
                     )
                 )
-                closeables.add(field)
+                closeables.add(_inTextReader)
             }
-            return field
+            return _inTextReader!!
         }
-        private set
+        private set(value) {
+            _inTextReader = value
+        }
 
-    var inTextString: String? = null
+    private var _inTextString: String? = null
+    var inTextString: String
         get() {
-            if (field == null) {
-                field = inTextReader!!.readText()
+            if (_inTextString == null) {
+                _inTextString = inTextReader.readText()
             }
-            return field
+            return _inTextString!!
         }
-        private set
+        private set(value) {
+            _inTextString = value
+        }
 
     private var inputEncodingRecognizer: ByteSequenceRecognizer<Charset>? = null
 
     private var inputEncoding: Charset? = null
         get() {
             if (field == null) {
-                val encodingName = commandLine!!.getOptionValue(CommonOptions.INPUT_ENCODING)
+                val encodingName = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
                 field = if (encodingName != null
                 ) Charset.forName(encodingName)
                 else encodingRecognizer
@@ -130,7 +150,7 @@ class FeatureResources(
                 Stream
                     .of(
                         *(feature as CLI.Options)
-                            .options
+                            .getOptions()
                     )
                     .forEach { opt: Option? -> cliOptions!!.addOption(opt) }
             }
@@ -155,10 +175,10 @@ class FeatureResources(
         return cliOptions!!
     }
 
-    val outTextString: IOConsumer<String>
-        get() = IOConsumer { str: String -> outTextWriter!!.write(str) }
+    val outTextString: StringConsumer
+        get() = outTextWriter::write
 
-    private fun getOutputEncoding() = commandLine!!
+    private fun getOutputEncoding() = commandLine
         .getOptionValue(CommonOptions.OUTPUT_ENCODING)
         ?.let(Charset::forName)
         ?: Charset.defaultCharset()
@@ -183,7 +203,7 @@ class FeatureResources(
         return inBinStream
     }
 
-    private fun useBufferedStreams() = !commandLine!!.hasOption(CommonOptions.NON_BUFFERED_STREAMS)
+    private fun useBufferedStreams() = !commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)
 
     override fun close() {
         var onCloseException: Exception? = null

@@ -5,7 +5,6 @@ import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
 import java.io.OutputStream
 import java.io.Reader
-import java.util.*
 
 private const val HEX_DIGITS_IN_BYTE = 2
 
@@ -18,7 +17,7 @@ class FromHex :
     private lateinit var output: OutputStream
 
     override fun meta(context: FeatureContext) =
-        Meta.from("convert input hex sequence to binary")!!
+        Meta.from("convert input hex sequence to binary")
 
 
     override fun run(context: FeatureContext) {
@@ -50,11 +49,11 @@ class FromHex :
         return outChars
     }
 
-    override fun setIn(reader: Reader) {
-        this.reader = reader
+    override fun setIn(`in`: Reader) {
+        this.reader = `in`
     }
 
-    override fun setOut(output: OutputStream) {
-        this.output = output
+    override fun setOut(out: OutputStream) {
+        this.output = out
     }
 }

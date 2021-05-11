@@ -33,7 +33,7 @@ class Trim :
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
-        Meta.from("trim leading and/or trailing whitespaces")!!
+        Meta.from("trim leading and/or trailing whitespaces")
 
     override fun run(context: FeatureContext) {
         val convertFunc = NO_CONVERSION

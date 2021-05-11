@@ -16,7 +16,7 @@ class ToBase64 :
     private lateinit var out: OutputStream
 
     override fun meta(context: FeatureContext) =
-        Meta.from("convert input binary sequence to Base64")!!
+        Meta.from("convert input binary sequence to Base64")
 
 
     override fun run(context: FeatureContext) {

@@ -24,7 +24,7 @@ class Hash :
     private lateinit var out: PrintStream
 
     override fun meta(context: FeatureContext) =
-        Meta.from("calc hash (md5, sha-* etc.)")!!
+        Meta.from("calc hash (md5, sha-* etc.)")
 
     override fun run(context: FeatureContext) {
         val alg = commandLine.getOptionValue(Params.ALGORITHM)

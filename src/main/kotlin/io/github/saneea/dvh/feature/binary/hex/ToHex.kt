@@ -14,7 +14,7 @@ class ToHex :
     private lateinit var out: PrintStream
 
     override fun meta(context: FeatureContext) =
-        Feature.Meta.from("convert input binary sequence to hex")!!
+        Feature.Meta.from("convert input binary sequence to hex")
 
     override fun run(context: FeatureContext) {
         run(`in`, out)

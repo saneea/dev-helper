@@ -12,14 +12,14 @@ class JsonFormatting {
 
     class Pretty : Base() {
         override fun meta(context: FeatureContext) =
-            Meta.from("format JSON with indents")!!
+            Meta.from("format JSON with indents")
 
         override val gsonBuilder: GsonBuilder = GsonBuilder().setPrettyPrinting()
     }
 
     class Line : Base() {
         override fun meta(context: FeatureContext) =
-            Meta.from("format JSON to line")!!
+            Meta.from("format JSON to line")
 
         override val gsonBuilder = GsonBuilder()
     }

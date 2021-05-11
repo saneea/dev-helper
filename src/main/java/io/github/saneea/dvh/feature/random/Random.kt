@@ -8,7 +8,7 @@ import java.util.function.Supplier
 
 class Random : MultiFeatureBase() {
     override fun meta(context: FeatureContext) =
-        Meta.from("generate random data")!!
+        Meta.from("generate random data")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

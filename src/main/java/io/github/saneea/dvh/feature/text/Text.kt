@@ -9,7 +9,7 @@ import java.util.function.Supplier
 class Text : MultiFeatureBase() {
 
     override fun meta(context: FeatureContext) =
-        Meta.from("plain text processing")!!
+        Meta.from("plain text processing")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> =
         AliasesBuilder()

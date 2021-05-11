@@ -12,7 +12,7 @@ class PrintArgsFeature :
     private lateinit var out: PrintStream
 
     override fun meta(context: FeatureContext) =
-        Meta.from("print CLI args")!!
+        Meta.from("print CLI args")
 
     override fun run(context: FeatureContext) =
         context.args.forEach(out::println)

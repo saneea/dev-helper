@@ -1,7 +1,7 @@
 package io.github.saneea.dvh.feature.file
 
 import io.github.saneea.dvh.Feature
-import io.github.saneea.dvh.Feature.Util.IOConsumer
+import io.github.saneea.dvh.StringConsumer
 import java.io.File
 import java.io.InputStream
 
@@ -11,14 +11,14 @@ class Compare :
     Feature.Out.Text.String {
 
     private lateinit var `in`: InputStream
-    private lateinit var out: IOConsumer<String>
+    private lateinit var out: StringConsumer
 
     override val description = "compare file with standard input (full binary comparison)"
 
     override fun handleFile(file: File) {
         file.inputStream().buffered()
             .use {
-                out.accept(
+                out(
                     if (compareStreams(it, `in`))
                         "=="
                     else
@@ -44,7 +44,7 @@ class Compare :
         this.`in` = `in`
     }
 
-    override fun setOut(out: IOConsumer<String>) {
+    override fun setOut(out: StringConsumer) {
         this.out = out
     }
 }

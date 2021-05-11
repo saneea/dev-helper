@@ -9,7 +9,7 @@ import java.util.function.Supplier
 class Clipboard : MultiFeatureBase() {
 
     override fun meta(context: FeatureContext) =
-        Meta.from("read/write clipboard (text only)")!!
+        Meta.from("read/write clipboard (text only)")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> {
         return AliasesBuilder()

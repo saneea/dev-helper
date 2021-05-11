@@ -2,8 +2,8 @@ package io.github.saneea.dvh.feature.time
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.Feature.Util.IOConsumer
 import io.github.saneea.dvh.FeatureContext
+import io.github.saneea.dvh.StringConsumer
 import io.github.saneea.dvh.feature.time.format.FormatFactory
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
@@ -19,19 +19,19 @@ class Converter :
     Feature.Out.Text.String {
 
     private lateinit var `in`: String
-    private lateinit var out: IOConsumer<String>
+    private lateinit var out: StringConsumer
     private lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
     override fun meta(context: FeatureContext) =
-        Meta.from("convert time from original format to another one")!!
+        Meta.from("convert time from original format to another one")
 
     override fun run(context: FeatureContext) {
         val inFormat = getFormatFromCLI(IN_FORMAT)
         val outFormat = getFormatFromCLI(OUT_FORMAT)
         val timeAsZoned = inFormat.parse(`in`)
         val converted = outFormat.render(timeAsZoned)
-        out.accept(converted)
+        out(converted)
     }
 
     private fun getFormatFromCLI(cliOptionName: String) =
@@ -41,7 +41,7 @@ class Converter :
         this.`in` = `in`
     }
 
-    override fun setOut(out: IOConsumer<String>) {
+    override fun setOut(out: StringConsumer) {
         this.out = out
     }
 

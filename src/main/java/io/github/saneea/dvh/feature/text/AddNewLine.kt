@@ -15,7 +15,7 @@ class AddNewLine :
     private lateinit var out: Writer
 
     override fun meta(context: FeatureContext) =
-        Meta.from("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end")!!
+        Meta.from("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end")
 
     override fun run(context: FeatureContext) {
         `in`.transferTo(out)

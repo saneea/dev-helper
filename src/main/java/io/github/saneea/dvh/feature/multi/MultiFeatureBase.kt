@@ -22,7 +22,7 @@ abstract class MultiFeatureBase : MultiFeature() {
 
         fun multiFeature( //
             featureAlias: String,  //
-            shortDescription: String?,  //
+            shortDescription: String,  //
             children: Map<String, Supplier<Feature>>
         ): AliasesBuilder {
 

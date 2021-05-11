@@ -18,7 +18,7 @@ class InspectProcess :
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
-        Meta.from("print statistic about process")!!
+        Meta.from("print statistic about process")
 
     override fun run(context: FeatureContext) {
         val command = commandLine.getOptionValue(COMMAND)

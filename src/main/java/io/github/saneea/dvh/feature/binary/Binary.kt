@@ -14,7 +14,7 @@ import java.util.function.Supplier
 
 class Binary : MultiFeatureBase() {
     override fun meta(context: FeatureContext) =
-        Meta.from("binary data processing (decoding/encoding, hash, etc)")!!
+        Meta.from("binary data processing (decoding/encoding, hash, etc)")
 
     override fun getFeatureAliases(): Map<String, Supplier<Feature>> {
         return AliasesBuilder()

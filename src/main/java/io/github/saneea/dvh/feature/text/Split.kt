@@ -20,7 +20,7 @@ class Split :
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
-        Meta.from("split text as lines")!!
+        Meta.from("split text as lines")
 
     override fun run(context: FeatureContext) {
         val size = lineSize
