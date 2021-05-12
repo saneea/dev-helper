@@ -8,7 +8,7 @@ class ByteSequenceRecognizer<T>(stream: InputStream, sequencesTree: ByteNode<T>)
 
     interface ByteNode<T> {
         fun getNextNode(byteCode: Int): ByteNode<T>?
-        fun getResult(): T?
+        val result: T?
         val depth: Int
     }
 
@@ -24,7 +24,7 @@ private fun <T> detectSequence(stream: PushbackInputStream, sequencesTree: ByteS
         return null
     }
 
-    val result: T? = sequencesTree.getResult()
+    val result: T? = sequencesTree.result
     if (result != null) {
         return result
     }
@@ -49,27 +49,25 @@ fun <T> byteNodeFromMap(sequencesMap: Map<IntArray, T>): ByteSequenceRecognizer.
 
 private fun <T> buildBranch(
     sequencesTree: ByteNodeImpl<T>,
-    sequenceBytes: IntArray, sequenceBytesOffset: Int, result: T
+    sequenceBytes: IntArray,
+    sequenceBytesOffset: Int,
+    result: T
 ) {
-    if (sequenceBytesOffset < sequenceBytes.size) {
-        buildBranch<T>(
+    if (sequenceBytesOffset >= sequenceBytes.size) {
+        sequencesTree.result = result
+    } else {
+        buildBranch(
             sequencesTree.getNextOrCreate(sequenceBytes[sequenceBytesOffset]),
             sequenceBytes, sequenceBytesOffset + 1,
             result
         )
-    } else {
-        sequencesTree._result = result
     }
 }
 
 private class ByteNodeImpl<T> : ByteSequenceRecognizer.ByteNode<T> {
     private val nextNodes: MutableMap<Int, ByteNodeImpl<T>> = HashMap()
 
-    var _result: T? = null
-
-    override fun getResult(): T? {
-        return _result
-    }
+    override var result: T? = null
 
     fun getNextOrCreate(byteCode: Int): ByteNodeImpl<T> {
         var nextNode = nextNodes[byteCode]
