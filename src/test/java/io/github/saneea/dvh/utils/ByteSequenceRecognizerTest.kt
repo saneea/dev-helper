@@ -79,7 +79,7 @@ class ByteSequenceRecognizerTest {
     private fun testDepthInternal(vararg sequences: String) {
         val sequencesList = sequences.toList()
 
-        val node = sequencesMap(sequencesList).byteNode()
+        val node = sequencesMap(sequencesList).byteNode
 
         val expectedDepth = sequencesList
             .map(String::length)
@@ -94,7 +94,7 @@ class ByteSequenceRecognizerTest {
         for (branchByte in allBytes()) {
             val sequence = intArrayOf(branchByte.toInt() and 0xff)
 
-            val sequencesTree = mapOf(sequence to branchId).byteNode()
+            val sequencesTree = mapOf(sequence to branchId).byteNode
             for (inputByte in allBytes()) {
                 val inputData = byteArrayOf(inputByte)
                 ByteSequenceRecognizer(
@@ -117,7 +117,7 @@ class ByteSequenceRecognizerTest {
     private fun test(inputStr: String, expectedResult: Int?, sequences: List<String>) {
         recognizer(
             inputStr,
-            sequencesMap(sequences).byteNode()
+            sequencesMap(sequences).byteNode
         ).use { bsr ->
             val actualText = bsr.stream.readAllBytes().string
             Assert.assertEquals(inputStr, actualText)

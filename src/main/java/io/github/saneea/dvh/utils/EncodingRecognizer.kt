@@ -7,7 +7,7 @@ private val BOM_TREE = mapOf(
     intArrayOf(0xFE, 0xFF) to StandardCharsets.UTF_16BE,
     intArrayOf(0xFF, 0xFE) to StandardCharsets.UTF_16LE,
     intArrayOf(0xEF, 0xBB, 0xBF) to StandardCharsets.UTF_8
-).byteNode()
+).byteNode
 
 
 fun encodingRecognizer(inBinStream: InputStream) = ByteSequenceRecognizer(inBinStream, BOM_TREE)
