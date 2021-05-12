@@ -1,7 +1,6 @@
 package io.github.saneea.dvh.utils
 
 import io.github.saneea.dvh.utils.ByteSequenceRecognizer.ByteNode
-import io.github.saneea.dvh.utils.ByteSequenceRecognizer.ByteNode.Companion.fromMap
 import org.junit.Assert
 import org.junit.Test
 import java.io.ByteArrayInputStream
@@ -80,7 +79,7 @@ class ByteSequenceRecognizerTest {
     private fun testDepthInternal(vararg sequences: String) {
         val sequencesList = sequences.toList()
 
-        val node = fromMap(sequencesMap(sequencesList))
+        val node = byteNodeFromMap(sequencesMap(sequencesList))
 
         val expectedDepth = sequencesList
             .map(String::length)
@@ -94,16 +93,16 @@ class ByteSequenceRecognizerTest {
         val branchId = 1
         for (branchByte in allBytes()) {
             val sequence = intArrayOf(branchByte.toInt() and 0xff)
-            val sequencesTree = fromMap(java.util.Map.of(sequence, branchId))
+            val sequencesTree = byteNodeFromMap(java.util.Map.of(sequence, branchId))
             for (inputByte in allBytes()) {
                 val inputData = byteArrayOf(inputByte)
                 ByteSequenceRecognizer(
                     ByteArrayInputStream(inputData),
                     sequencesTree
                 ).use { bsr ->
-                    val actualBytes = bsr.stream().readAllBytes()
+                    val actualBytes = bsr.stream.readAllBytes()
                     Assert.assertArrayEquals(inputData, actualBytes)
-                    val actualResult = bsr.result()
+                    val actualResult = bsr.result
                     val expectedResult = if (branchByte == inputByte)
                         branchId
                     else
@@ -117,11 +116,11 @@ class ByteSequenceRecognizerTest {
     private fun test(inputStr: String, expectedResult: Int?, sequences: List<String>) {
         recognizer(
             inputStr,
-            fromMap(sequencesMap(sequences))
+            byteNodeFromMap(sequencesMap(sequences))
         ).use { bsr ->
-            val actualText = bsr.stream().readAllBytes().string
+            val actualText = bsr.stream.readAllBytes().string
             Assert.assertEquals(inputStr, actualText)
-            val actualResult = bsr.result()
+            val actualResult = bsr.result
             Assert.assertEquals(expectedResult, actualResult)
         }
     }

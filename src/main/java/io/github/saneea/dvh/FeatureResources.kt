@@ -59,7 +59,7 @@ class FeatureResources(
     private val inputEncoding: Charset by lazy {
         commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
             ?.let(Charset::forName)
-            ?: encodingRecognizer.result()
+            ?: encodingRecognizer.result
             ?: Charset.defaultCharset()
     }
 
@@ -93,16 +93,18 @@ class FeatureResources(
         }
     }
 
-    val outTextString: StringConsumer
-        get() = outTextWriter::write
+    val outTextString: StringConsumer by lazy {
+        { str: String -> outTextWriter.write(str) }
+    }
 
     private fun getOutputEncoding() = commandLine
         .getOptionValue(CommonOptions.OUTPUT_ENCODING)
         ?.let(Charset::forName)
         ?: Charset.defaultCharset()
 
-    val inBinStream: InputStream
-        get() = encodingRecognizer.stream()
+    val inBinStream: InputStream by lazy {
+        encodingRecognizer.stream
+    }
 
     private val encodingRecognizer: ByteSequenceRecognizer<Charset> by lazy {
         encodingRecognizer(createInternalInBinStream())

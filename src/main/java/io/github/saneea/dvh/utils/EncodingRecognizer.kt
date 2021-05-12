@@ -1,10 +1,9 @@
 package io.github.saneea.dvh.utils
 
-import io.github.saneea.dvh.utils.ByteSequenceRecognizer.ByteNode.Companion.fromMap
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
-private val BOM_TREE = fromMap(
+private val BOM_TREE = byteNodeFromMap(
     mapOf(
         intArrayOf(0xFE, 0xFF) to StandardCharsets.UTF_16BE,
         intArrayOf(0xFF, 0xFE) to StandardCharsets.UTF_16LE,
