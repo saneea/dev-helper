@@ -39,9 +39,9 @@ private fun <T> detectSequence(stream: PushbackInputStream, sequencesTree: ByteS
     }
 }
 
-fun <T> byteNodeFromMap(sequencesMap: Map<IntArray, T>): ByteSequenceRecognizer.ByteNode<T> {
+fun <T> Map<IntArray, T>.byteNode(): ByteSequenceRecognizer.ByteNode<T> {
     val root = ByteNodeImpl<T>()
-    sequencesMap.forEach { (bomBytes: IntArray, charset: T) ->
+    this.forEach { (bomBytes: IntArray, charset: T) ->
         buildBranch(root, bomBytes, 0, charset)
     }
     return root
