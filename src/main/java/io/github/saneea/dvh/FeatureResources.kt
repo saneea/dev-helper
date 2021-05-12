@@ -57,13 +57,10 @@ class FeatureResources(
     }
 
     private val inputEncoding: Charset by lazy {
-        val encodingName = commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
-        if (encodingName != null)
-            Charset.forName(encodingName)
-        else
-            encodingRecognizer
-                .result()
-                .orElseGet { Charset.defaultCharset() }
+        commandLine.getOptionValue(CommonOptions.INPUT_ENCODING)
+            ?.let(Charset::forName)
+            ?: encodingRecognizer.result()
+            ?: Charset.defaultCharset()
     }
 
     private val cliOptions: Options by lazy {

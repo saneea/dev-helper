@@ -5,61 +5,60 @@ import io.github.saneea.dvh.utils.ByteSequenceRecognizer.ByteNode.Companion.from
 import org.junit.Assert
 import org.junit.Test
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import java.nio.charset.StandardCharsets
-import java.util.*
-import java.util.stream.Stream
+
+private val TEST_CHARSET = StandardCharsets.US_ASCII
 
 class ByteSequenceRecognizerTest {
 
     @Test
     fun testTwoBranches() {
-        val sequences = arrayOf("123", "124")
-        test("123", Optional.of(0), *sequences)
-        test("124", Optional.of(1), *sequences)
-        test("12345678", Optional.of(0), *sequences)
-        test("12456789", Optional.of(1), *sequences)
-        test("12", Optional.empty(), *sequences)
-        test("12X", Optional.empty(), *sequences)
-        test("12X", Optional.empty(), *sequences)
-        test("", Optional.empty(), *sequences)
+        val sequences = listOf("123", "124")
+        test("123", 0, sequences)
+        test("124", 1, sequences)
+        test("12345678", 0, sequences)
+        test("12456789", 1, sequences)
+        test("12", null, sequences)
+        test("12X", null, sequences)
+        test("12X", null, sequences)
+        test("", null, sequences)
     }
 
     @Test
     fun testDifferentSize() {
-        val sequences = arrayOf("123", "1234")
-        test("123", Optional.of(0), *sequences)
-        test("1234", Optional.of(0), *sequences)
+        val sequences = listOf("123", "1234")
+        test("123", 0, sequences)
+        test("1234", 0, sequences)
     }
 
     @Test
     fun testEmpty() {
-        val sequences = arrayOf("", "123")
-        test("123", Optional.of(0), *sequences)
-        test("1234", Optional.of(0), *sequences)
-        test("", Optional.of(0), *sequences)
+        val sequences = listOf("", "123")
+        test("123", 0, sequences)
+        test("1234", 0, sequences)
+        test("", 0, sequences)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun testNoSequences() {
-        val sequences = arrayOf<String>()
-        test("123", Optional.empty(), *sequences)
-        test("1234", Optional.empty(), *sequences)
-        test("", Optional.empty(), *sequences)
+        val sequences = emptyList<String>()
+        test("123", null, sequences)
+        test("1234", null, sequences)
+        test("", null, sequences)
     }
 
     @Test
     fun testTwoBranchesLong() {
-        val sequences = arrayOf("123abcdef", "124abcdef")
-        test("123abcdef", Optional.of(0), *sequences)
-        test("124abcdef", Optional.of(1), *sequences)
-        test("123abcdefXYZ", Optional.of(0), *sequences)
-        test("124abcdefXYZ", Optional.of(1), *sequences)
-        test("123abcde", Optional.empty(), *sequences)
-        test("124abcde", Optional.empty(), *sequences)
-        test("123abcdeX", Optional.empty(), *sequences)
-        test("124abcdeX", Optional.empty(), *sequences)
-        test("", Optional.empty(), *sequences)
+        val sequences = listOf("123abcdef", "124abcdef")
+        test("123abcdef", 0, sequences)
+        test("124abcdef", 1, sequences)
+        test("123abcdefXYZ", 0, sequences)
+        test("124abcdefXYZ", 1, sequences)
+        test("123abcde", null, sequences)
+        test("124abcde", null, sequences)
+        test("123abcdeX", null, sequences)
+        test("124abcdeX", null, sequences)
+        test("", null, sequences)
     }
 
     @Test
@@ -79,16 +78,15 @@ class ByteSequenceRecognizerTest {
     }
 
     private fun testDepthInternal(vararg sequences: String) {
-        val node = fromMap( //
-            sequencesMap( //
-                *sequences
-            )
-        )
-        val expectedDepth = Stream //
-            .of(*sequences) //
-            .mapToInt { obj: String -> obj.length } //
-            .max().orElse(0)
-        Assert.assertEquals(expectedDepth.toLong(), node.depth.toLong())
+        val sequencesList = sequences.toList()
+
+        val node = fromMap(sequencesMap(sequencesList))
+
+        val expectedDepth = sequencesList
+            .map(String::length)
+            .maxOrNull() ?: 0
+
+        Assert.assertEquals(expectedDepth, node.depth)
     }
 
     @Test
@@ -99,32 +97,29 @@ class ByteSequenceRecognizerTest {
             val sequencesTree = fromMap(java.util.Map.of(sequence, branchId))
             for (inputByte in allBytes()) {
                 val inputData = byteArrayOf(inputByte)
-                ByteSequenceRecognizer( //
-                    ByteArrayInputStream(inputData),  //
+                ByteSequenceRecognizer(
+                    ByteArrayInputStream(inputData),
                     sequencesTree
                 ).use { bsr ->
                     val actualBytes = bsr.stream().readAllBytes()
                     Assert.assertArrayEquals(inputData, actualBytes)
                     val actualResult = bsr.result()
-                    val expectedResult = if (branchByte == inputByte //
-                    ) Optional.of(branchId) //
-                    else Optional.empty()
+                    val expectedResult = if (branchByte == inputByte)
+                        branchId
+                    else
+                        null
                     Assert.assertEquals(expectedResult, actualResult)
                 }
             }
         }
     }
 
-    private fun test(inputStr: String, expectedResult: Optional<Int>, vararg sequences: String) {
-        recognizer( //
-            inputStr,  //
-            fromMap( //
-                sequencesMap( //
-                    *sequences
-                )
-            )
+    private fun test(inputStr: String, expectedResult: Int?, sequences: List<String>) {
+        recognizer(
+            inputStr,
+            fromMap(sequencesMap(sequences))
         ).use { bsr ->
-            val actualText = asString(bsr.stream().readAllBytes())
+            val actualText = bsr.stream().readAllBytes().string
             Assert.assertEquals(inputStr, actualText)
             val actualResult = bsr.result()
             Assert.assertEquals(expectedResult, actualResult)
@@ -132,64 +127,47 @@ class ByteSequenceRecognizerTest {
     }
 
     companion object {
-        private val TEST_CHARSET = StandardCharsets.US_ASCII
+
         private fun allBytes(): Iterable<Byte> {
             return Iterable {
                 object : Iterator<Byte> {
                     var next: Byte? = Byte.MIN_VALUE
+
                     override fun hasNext(): Boolean {
                         return next != null
                     }
 
                     override fun next(): Byte {
                         val ret = next
-                        if (next == Byte.MAX_VALUE) {
-                            next = null
+                        next = if (next == Byte.MAX_VALUE) {
+                            null
                         } else {
-                            next = (next!! + 1).toByte()
+                            (next!! + 1).toByte()
                         }
                         return ret!!
                     }
                 }
             }
         }
-
-        private fun asString(bytes: ByteArray): String {
-            return String(bytes, TEST_CHARSET)
-        }
-
-        private fun sequencesMap(vararg sequences: String): Map<IntArray, Int> {
-            val r: MutableMap<IntArray, Int> = HashMap()
-            for (i in 0 until sequences.size) {
-                r[intArray(sequences[i])] = i
-            }
-            return r
-        }
-
-        private fun intArray(s: String): IntArray {
-            return intArray(bytes(s))
-        }
-
-        private fun intArray(byteArray: ByteArray): IntArray {
-            val r = IntArray(byteArray.size)
-            for (i in byteArray.indices) {
-                r[i] = byteArray[i].toInt()
-            }
-            return r
-        }
-
-        private fun recognizer( //
-            s: String, sequencesTree: ByteNode<Int>
-        ): ByteSequenceRecognizer<Int> {
-            return ByteSequenceRecognizer(stream(s), sequencesTree)
-        }
-
-        private fun stream(s: String): InputStream {
-            return ByteArrayInputStream(bytes(s))
-        }
-
-        private fun bytes(s: String): ByteArray {
-            return s.toByteArray(TEST_CHARSET)
-        }
     }
+}
+
+private val String.intArray
+    get() = this.bytes.map(Byte::toInt).toIntArray()
+
+private fun recognizer(s: String, sequencesTree: ByteNode<Int>) =
+    ByteSequenceRecognizer(s.bytes.inputStream(), sequencesTree)
+
+private val String.bytes
+    get() = this.toByteArray(TEST_CHARSET)
+
+private val ByteArray.string
+    get() = String(this, TEST_CHARSET)
+
+private fun sequencesMap(sequences: List<String>): Map<IntArray, Int> {
+    val r: MutableMap<IntArray, Int> = HashMap()
+    for (i in sequences.indices) {
+        r[sequences[i].intArray] = i
+    }
+    return r
 }

@@ -4,7 +4,6 @@ import java.io.Closeable
 import java.io.IOException
 import java.io.InputStream
 import java.io.PushbackInputStream
-import java.util.*
 
 class ByteSequenceRecognizer<T>(stream: InputStream?, sequencesTree: ByteNode<T>) : Closeable {
 
@@ -42,12 +41,12 @@ class ByteSequenceRecognizer<T>(stream: InputStream?, sequencesTree: ByteNode<T>
 
     private val stream: PushbackInputStream = PushbackInputStream(stream, sequencesTree.depth)
 
-    private val result: Optional<T> = Optional.ofNullable(detectSequence(this.stream, sequencesTree))
+    private val result: T? = detectSequence(this.stream, sequencesTree)
     fun stream(): InputStream {
         return stream
     }
 
-    fun result(): Optional<T> {
+    fun result(): T? {
         return result
     }
 
