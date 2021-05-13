@@ -10,8 +10,6 @@ import io.github.saneea.dvh.utils.Utils.DefaultHelpPrinter
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
-import java.util.*
-import java.util.function.Function
 
 abstract class MultiFeature : Feature {
 
@@ -47,14 +45,14 @@ abstract class MultiFeature : Feature {
                     .desc("features catalog show mode")
                     .build()
             )
-        val helpPrinter = MultiFeatureHelpPrinter(cliOptions, context)
-        val commandLine = Utils.parseCli(args, cliOptions, helpPrinter)
-        helpPrinter.print(Optional.of(commandLine))
+        val printHelp = MultiFeatureHelpPrinter(cliOptions, context)
+        val commandLine = Utils.parseCli(args, cliOptions, printHelp)
+        printHelp(commandLine)
     }
 
     private inner class MultiFeatureHelpPrinter(options: Options, context: FeatureContext) :
         DefaultHelpPrinter(options, this@MultiFeature, context) {
-        override fun print(commandLine: Optional<CommandLine>) {
+        override fun invoke(commandLine: CommandLine?) {
             printDescription()
             out.println(
                 "usage: "
@@ -67,12 +65,9 @@ abstract class MultiFeature : Feature {
         }
     }
 
-    private fun printFeaturesCatalog(context: FeatureContext, commandLine: Optional<CommandLine>) {
-        val catalogMode = commandLine
-            .map { cl: CommandLine -> cl.getOptionValue(CATALOG) }
-            .map { value: String? -> Optional.ofNullable(value) }
-            .flatMap(Function.identity())
-            .orElse(CATALOG_LIST)
+    private fun printFeaturesCatalog(context: FeatureContext, commandLine: CommandLine?) {
+        val catalogMode = commandLine?.getOptionValue(CATALOG) ?: CATALOG_LIST
+
         out.println()
         out.println("available features:")
         getCatalogPrinter(catalogMode)

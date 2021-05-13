@@ -14,6 +14,8 @@ import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
+typealias PrintHelpFunc = (commandLine: CommandLine?) -> Unit
+
 object Utils {
     val NO_ARGS = arrayOf<String>()
     fun toMap(properties: Properties): Map<String, String> {
@@ -60,33 +62,29 @@ object Utils {
     fun parseCli(args: Array<String>, cliOptions: Options, feature: Feature, context: FeatureContext) =
         parseCli(args, cliOptions, DefaultHelpPrinter(cliOptions, feature, context))
 
-    fun parseCli(args: Array<String>, cliOptions: Options, helpPrinter: HelpPrinter): CommandLine {
+    fun parseCli(args: Array<String>, cliOptions: Options, printHelp: PrintHelpFunc): CommandLine {
         val commandLineParser: CommandLineParser = DefaultParser()
         val commandLine = try {
             commandLineParser.parse(cliOptions, args)
         } catch (e: ParseException) {
             System.err.println(e.localizedMessage)
-            helpPrinter.print(Optional.empty())
+            printHelp(null)
             throw AppExitException(AppExitException.ExitCode.ERROR, e)
         }
         if (commandLine.hasOption(CommonOptions.HELP)) {
-            helpPrinter.print(Optional.of(commandLine))
+            printHelp(commandLine)
             throw AppExitException(AppExitException.ExitCode.OK)
         }
         return commandLine
-    }
-
-    interface HelpPrinter {
-        fun print(commandLine: Optional<CommandLine>)
     }
 
     open class DefaultHelpPrinter(
         protected val options: Options,
         protected val feature: Feature,
         protected val context: FeatureContext
-    ) : HelpPrinter {
+    ) : PrintHelpFunc {
         protected val cmdLineSyntax = context.featuresChainString
-        override fun print(commandLine: Optional<CommandLine>) {
+        override fun invoke(commandLine: CommandLine?) {
             printDescription()
             printCLI()
             printExamples()
