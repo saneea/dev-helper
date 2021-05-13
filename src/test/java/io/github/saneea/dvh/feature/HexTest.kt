@@ -37,7 +37,7 @@ class HexTest {
     }
 
     private fun fromHex(inputFilePath: Path): ByteArray {
-        InputStreamReader( //
+        InputStreamReader(
             BufferedInputStream(Files.newInputStream(inputFilePath))
         ).use { reader ->
             ByteArrayOutputStream().use { output ->

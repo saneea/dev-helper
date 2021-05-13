@@ -26,14 +26,14 @@ abstract class FileFeature :
     }
 
     override fun getOptions(): Array<Option> {
-        return arrayOf( //
-            Option //
-                .builder("f") //
-                .longOpt(FILE_NAME) //
-                .hasArg(true) //
-                .argName("file name") //
-                .required(true) //
-                .desc("path to file") //
+        return arrayOf(
+            Option
+                .builder("f")
+                .longOpt(FILE_NAME)
+                .hasArg(true)
+                .argName("file name")
+                .required(true)
+                .desc("path to file")
                 .build()
         )
     }

@@ -20,9 +20,9 @@ abstract class MultiFeatureBase : MultiFeature() {
             return this
         }
 
-        fun multiFeature( //
-            featureAlias: String,  //
-            shortDescription: String,  //
+        fun multiFeature(
+            featureAlias: String,
+            shortDescription: String,
             children: Map<String, Supplier<Feature>>
         ): AliasesBuilder {
 

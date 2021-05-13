@@ -114,8 +114,8 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
     }
 
     override fun getOptions(): Array<Option> {
-        return arrayOf( //
-            createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),  //
+        return arrayOf(
+            createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),
             createSizeOption("y", SIZE_Y, "height", DEFAULT_SIZE_Y)
         )
     }
@@ -126,13 +126,13 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         displayName: String,
         defaultValue: Int
     ): Option {
-        return Option //
-            .builder(shortOptionName) //
-            .longOpt(longOptionName) //
-            .hasArg(true) //
-            .argName(displayName) //
-            .required(false) //
-            .desc("picture $displayName (default $defaultValue)") //
+        return Option
+            .builder(shortOptionName)
+            .longOpt(longOptionName)
+            .hasArg(true)
+            .argName(displayName)
+            .required(false)
+            .desc("picture $displayName (default $defaultValue)")
             .build()
     }
 
@@ -154,8 +154,8 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         private const val SIZE_Y = "sizeY"
         private const val DEFAULT_SIZE_X = 20
         private const val DEFAULT_SIZE_Y = 10
-        private val PICTURE_ALPHABET = charArrayOf( //
-            ' ', '.', 'o', '+', 'X', '#', 'H' //
+        private val PICTURE_ALPHABET = charArrayOf(
+            ' ', '.', 'o', '+', 'X', '#', 'H'
         )
     }
 }

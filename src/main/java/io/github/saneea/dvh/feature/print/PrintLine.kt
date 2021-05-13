@@ -11,8 +11,8 @@ class PrintLine :
     Feature,
     Feature.CLI,
     Feature.CLI.Options,
-    Feature.Out.Text.PrintStream //
-{
+    Feature.Out.Text.PrintStream {
+
     private lateinit var out: PrintStream
     private lateinit var commandLine: CommandLine
 

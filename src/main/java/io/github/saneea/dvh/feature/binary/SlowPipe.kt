@@ -46,13 +46,13 @@ class SlowPipe :
 
     override fun getOptions(): Array<Option> {
         return arrayOf(
-            Option //
-                .builder("d") //
-                .longOpt(DELAY) //
-                .hasArg(true) //
-                .argName("millis") //
-                .required(true) //
-                .desc("delay before each byte") //
+            Option
+                .builder("d")
+                .longOpt(DELAY)
+                .hasArg(true)
+                .argName("millis")
+                .required(true)
+                .desc("delay before each byte")
                 .build()
         )
     }

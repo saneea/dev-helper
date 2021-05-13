@@ -12,8 +12,8 @@ class InspectProcess :
     Feature,
     Feature.CLI,
     Feature.CLI.Options,
-    Feature.Out.Text.PrintStream //
-{
+    Feature.Out.Text.PrintStream {
+
     private lateinit var out: PrintStream
     private lateinit var commandLine: CommandLine
 
@@ -23,8 +23,8 @@ class InspectProcess :
     override fun run(context: FeatureContext) {
         val command = commandLine.getOptionValue(COMMAND)
         val stat = execProcess(command)
-        val gson = GsonBuilder() //
-            .setPrettyPrinting() //
+        val gson = GsonBuilder()
+            .setPrettyPrinting()
             .create()
         gson.toJson(stat, out)
     }
