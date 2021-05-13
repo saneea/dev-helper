@@ -4,9 +4,7 @@ import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.FeatureProvider
 import io.github.saneea.dvh.utils.Utils
 import java.io.PrintStream
-import java.util.function.ToIntFunction
 import java.util.stream.Collectors
-import java.util.stream.IntStream
 
 class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
 
@@ -26,17 +24,12 @@ class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
     }
 
     private fun getMaxFeatureNameSize(featureTree: FeatureTree, level: Int): Int {
-        return IntStream.concat(
-            IntStream.of(
-                featureTree
-                    .alias
-                    .length + getLevelOffset(level)
-            ),
-            featureTree.children.stream()
-                .map { childBranch: FeatureTree -> getMaxFeatureNameSize(childBranch, level + 1) }
-                .mapToInt(identity()))
-            .max()
-            .asInt
+        val currentSize = featureTree.alias.length + getLevelOffset(level)
+
+        val childrenSize = featureTree.children
+            .map { getMaxFeatureNameSize(it, level + 1) }
+
+        return (childrenSize + currentSize).maxOrNull() ?: 0
     }
 
     private fun printCatalogTreeBranch(
@@ -69,7 +62,7 @@ class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
         featureLine.append(featureName)
         if (!isHub) {
             featureLine
-                .append(Utils.repeatString(" ", maxFeatureNameSize - featureName.length - getLevelOffset(level)))
+                .append(" ".repeat(maxFeatureNameSize - featureName.length - getLevelOffset(level)))
                 .append(" - ")
                 .append(featureShortDescription)
         }
@@ -102,15 +95,10 @@ class TreePrinter(out: PrintStream) : FeatureCatalogPrinter(out) {
             }
         }
     }
-
-    companion object {
-        private const val DASH_LENGTH = 3
-        private const val DASH_STRING = "-"
-        private const val SPACE_STRING = " "
-        private val DASH_FOR_NODE = Utils.repeatString(DASH_STRING, DASH_LENGTH)
-        private val SPACE_FOR_NODE = Utils.repeatString(SPACE_STRING, DASH_LENGTH)
-        private fun identity(): ToIntFunction<Int> {
-            return ToIntFunction { i: Int? -> i!! }
-        }
-    }
 }
+
+private const val DASH_LENGTH = 3
+private const val DASH_STRING = "-"
+private const val SPACE_STRING = " "
+private val DASH_FOR_NODE = DASH_STRING.repeat(DASH_LENGTH)
+private val SPACE_FOR_NODE = SPACE_STRING.repeat(DASH_LENGTH)

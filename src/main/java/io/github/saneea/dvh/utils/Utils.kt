@@ -40,14 +40,6 @@ object Utils {
             .orElse(0)
     }
 
-    fun repeatString(s: String, level: Int): String {
-        val sb = StringBuilder()
-        for (i in 0 until level) {
-            sb.append(s)
-        }
-        return sb.toString()
-    }
-
     fun skipBom(originalReader: Reader): Reader {
         val ret = PushbackReader(originalReader)
         val firstChar = ret.read()
