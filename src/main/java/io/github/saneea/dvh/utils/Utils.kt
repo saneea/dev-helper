@@ -10,35 +10,16 @@ import org.apache.commons.cli.*
 import java.io.PushbackReader
 import java.io.Reader
 import java.util.*
-import java.util.function.Function
-import java.util.stream.Collectors
-import java.util.stream.Stream
 
 typealias PrintHelpFunc = (commandLine: CommandLine?) -> Unit
 
 object Utils {
     val NO_ARGS = arrayOf<String>()
-    fun toMap(properties: Properties): Map<String, String> {
-        return properties
+
+    fun toMap(properties: Properties) =
+        properties
             .stringPropertyNames()
-            .stream()
-            .collect(
-                Collectors.toMap(
-                    Function.identity(), Function(properties::getProperty)
-                )
-            )
-    }
-
-    fun getMaxStringLength(strings: Collection<String>): Int {
-        return getMaxStringLength(strings.stream())
-    }
-
-    private fun getMaxStringLength(strings: Stream<String>): Int {
-        return strings
-            .mapToInt { obj: String -> obj.length }
-            .max()
-            .orElse(0)
-    }
+            .associateWith(properties::getProperty)
 
     fun skipBom(originalReader: Reader): Reader {
         val ret = PushbackReader(originalReader)
@@ -111,3 +92,6 @@ object Utils {
 
     }
 }
+
+val Iterable<String>.maxStringLength
+    get() = this.map(String::length).maxOrNull() ?: 0
