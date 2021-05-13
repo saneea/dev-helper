@@ -28,12 +28,12 @@ class SlashReplacer :
                 "replace slashes (/) or backslashes (\\) to specified string"
             ),
             listOf(
-                Meta.Example.from(
+                Meta.Example(
                     "replace to slashes",
                     echoPipeFeature,
                     "some/path/to/file.txt"
                 ),
-                Meta.Example.from(
+                Meta.Example(
                     "replace to custom string",
                     "$echoPipeFeature -$NEW_SLASH_SHORT \\",
                     "some\\path\\to\\file.txt"

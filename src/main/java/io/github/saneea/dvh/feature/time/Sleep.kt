@@ -51,11 +51,11 @@ class Sleep :
                 "wait some time before exit"
             ),
             listOf(
-                Meta.Example.from(
+                Meta.Example(
                     "wait 5 seconds",
                     "$execWithD 5"
                 ),
-                Meta.Example.from(
+                Meta.Example(
                     "wait 5000 milliseconds (5 seconds)",
                     "$execWithD 5000 -$UNITS_SHORT ${Units.MS.cli}"
                 )

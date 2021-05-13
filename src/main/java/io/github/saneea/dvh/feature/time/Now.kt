@@ -28,12 +28,12 @@ class Now :
                 "print current date and/or time in one of format"
             ),
             listOf(
-                Meta.Example.from(
+                Meta.Example(
                     "seconds from 1970-01-01 (known as Unix-time or Epoch-time)",
                     "$featuresChain -$FORMAT_SHORT unix",
                     "1606339702"
                 ),
-                Meta.Example.from(
+                Meta.Example(
                     "custom date/time pattern",
                     "$featuresChain -$FORMAT_SHORT yyyy-MM-dd--HH:mm:ss",
                     "2020-11-26--00:36:55"

@@ -71,10 +71,10 @@ object Utils {
                 println("Examples ($examplesCount):")
                 for (i in 0 until examplesCount) {
                     val example = examples[i]
-                    println("" + (i + 1) + ". " + example.name())
+                    println("" + (i + 1) + ". " + example.name)
                     println("run command:")
-                    println("\t" + example.body())
-                    example.result()?.let { result: String ->
+                    println("\t" + example.body)
+                    example.result?.let { result: String ->
                         println("output:")
                         println("\t" + result)
                     }

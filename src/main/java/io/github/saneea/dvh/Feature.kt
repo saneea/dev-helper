@@ -17,21 +17,11 @@ interface Feature {
         fun description(): Description
         fun examples(): List<Example>
 
-        interface Example {
-            fun name(): String
-            fun body(): String
-            fun result(): String?
-
-            companion object {
-                fun from(name: String, body: String, result: String? = null): Example {
-                    return object : Example {
-                        override fun name() = name
-                        override fun body() = body
-                        override fun result() = result
-                    }
-                }
-            }
-        }
+        data class Example(
+            val name: String,
+            val body: String,
+            val result: String? = null
+        )
 
         interface Description {
             fun brief(): String
