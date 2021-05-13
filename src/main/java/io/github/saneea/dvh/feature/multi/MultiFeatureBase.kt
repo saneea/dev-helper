@@ -4,18 +4,20 @@ import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.FeatureProvider
-import java.util.function.Supplier
+
+typealias FeatureCreator = () -> Feature
+typealias FeaturesCreators = Map<String, FeatureCreator>
 
 abstract class MultiFeatureBase : MultiFeature() {
 
     override val featureProvider: FeatureProvider
         get() = MultiFeatureProvider(getFeatureAliases())
 
-    abstract fun getFeatureAliases(): Map<String, Supplier<Feature>>
+    abstract fun getFeatureAliases(): FeaturesCreators
 
     class AliasesBuilder {
-        private val aliases: MutableMap<String, Supplier<Feature>> = LinkedHashMap()
-        fun feature(featureAlias: String, featureCtor: Supplier<Feature>): AliasesBuilder {
+        private val aliases: MutableMap<String, FeatureCreator> = LinkedHashMap()
+        fun feature(featureAlias: String, featureCtor: FeatureCreator): AliasesBuilder {
             aliases[featureAlias] = featureCtor
             return this
         }
@@ -23,7 +25,7 @@ abstract class MultiFeatureBase : MultiFeature() {
         fun multiFeature(
             featureAlias: String,
             shortDescription: String,
-            children: Map<String, Supplier<Feature>>
+            children: FeaturesCreators
         ): AliasesBuilder {
 
             return feature(featureAlias) {
@@ -37,16 +39,14 @@ abstract class MultiFeatureBase : MultiFeature() {
             }
         }
 
-        fun build(): Map<String, Supplier<Feature>> {
-            return aliases
-        }
+        fun build(): FeaturesCreators = aliases
     }
 
-    private class MultiFeatureProvider(private val featureAliases: Map<String, Supplier<Feature>>) : FeatureProvider {
+    private class MultiFeatureProvider(private val featureAliases: FeaturesCreators) : FeatureProvider {
         override fun featuresNames(): Set<String> {
             return featureAliases.keys
         }
 
-        override fun createFeature(featureName: String) = featureAliases[featureName]?.get()
+        override fun createFeature(featureName: String) = featureAliases[featureName]?.invoke()
     }
 }
