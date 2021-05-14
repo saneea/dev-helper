@@ -20,7 +20,7 @@ class TextToClipboard :
         clipboard.setContents(selection, selection)
     }
 
-    override fun setIn(`in`: String) {
+    override fun setInTextString(`in`: String) {
         this.`in` = `in`
     }
 }

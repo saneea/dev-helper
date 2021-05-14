@@ -48,7 +48,7 @@ class SlashReplacer :
         out(`in`.replace(regex, "\\$slash"))
     }
 
-    override fun setIn(`in`: String) {
+    override fun setInTextString(`in`: String) {
         this.`in` = `in`
     }
 

@@ -47,7 +47,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setInTextReader(featureResources.inTextReader)
 
         (feature as? Feature.In.Text.String)
-            ?.setIn(featureResources.inTextString)
+            ?.setInTextString(featureResources.inTextString)
 
         (feature as? Feature.In.Bin.Stream)
             ?.setInBinStream(featureResources.inBinStream)

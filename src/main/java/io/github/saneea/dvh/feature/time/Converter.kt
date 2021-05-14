@@ -36,7 +36,7 @@ class Converter :
     private fun getFormatFromCLI(cliOptionName: String) =
         formatFactory.createFormat(commandLine.getOptionValue(cliOptionName))
 
-    override fun setIn(`in`: String) {
+    override fun setInTextString(`in`: String) {
         this.`in` = `in`
     }
 
