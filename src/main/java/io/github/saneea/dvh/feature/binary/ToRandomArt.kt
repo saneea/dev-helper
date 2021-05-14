@@ -24,9 +24,7 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
 
     private lateinit var picture: Picture
 
-    override fun meta(context: FeatureContext): Meta {
-        return Meta.from("convert input binary sequence to random art picture")
-    }
+    override fun meta(context: FeatureContext) = Meta("convert input binary sequence to random art picture")
 
     @Throws(IOException::class)
     override fun run(context: FeatureContext) {

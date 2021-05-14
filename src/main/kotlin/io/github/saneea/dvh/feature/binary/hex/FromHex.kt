@@ -16,8 +16,7 @@ class FromHex :
     private lateinit var reader: Reader
     private lateinit var output: OutputStream
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("convert input hex sequence to binary")
+    override fun meta(context: FeatureContext) = Meta("convert input hex sequence to binary")
 
 
     override fun run(context: FeatureContext) {

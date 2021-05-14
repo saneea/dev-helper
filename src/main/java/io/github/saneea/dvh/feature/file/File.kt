@@ -7,8 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class File : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("file utils")
+    override fun meta(context: FeatureContext) = Meta("file utils")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

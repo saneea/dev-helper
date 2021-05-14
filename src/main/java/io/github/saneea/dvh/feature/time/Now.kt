@@ -22,7 +22,7 @@ class Now :
 
     override fun meta(context: FeatureContext): Meta {
         val featuresChain = context.featuresChainString
-        return Meta.from(
+        return Meta(
             Meta.Description(
                 "print current time",
                 "print current date and/or time in one of format"

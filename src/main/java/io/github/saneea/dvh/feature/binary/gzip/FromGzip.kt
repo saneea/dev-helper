@@ -16,8 +16,7 @@ class FromGzip :
     private lateinit var `in`: InputStream
     private lateinit var out: OutputStream
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("extract from GZIP")
+    override fun meta(context: FeatureContext) = Meta("extract from GZIP")
 
     override fun run(context: FeatureContext) {
         GZIPInputStream(`in`).use(out::transferFrom)

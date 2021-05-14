@@ -12,8 +12,7 @@ class TextToClipboard :
 
     private lateinit var `in`: String
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("write text to clipboard")
+    override fun meta(context: FeatureContext) = Meta("write text to clipboard")
 
     override fun run(context: FeatureContext) {
         val clipboard = Toolkit.getDefaultToolkit().systemClipboard

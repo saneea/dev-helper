@@ -16,8 +16,7 @@ class PrintLine :
     private lateinit var out: PrintStream
     private lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("print text to output")
+    override fun meta(context: FeatureContext) = Meta("print text to output")
 
     override fun run(context: FeatureContext) {
         val text = commandLine.getOptionValue(TEXT)

@@ -14,8 +14,7 @@ class JoinLines :
     private lateinit var `in`: Reader
     private lateinit var out: Writer
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("join lines to one line")
+    override fun meta(context: FeatureContext) = Meta("join lines to one line")
 
     override fun run(context: FeatureContext) {
         `in`.buffered().use {

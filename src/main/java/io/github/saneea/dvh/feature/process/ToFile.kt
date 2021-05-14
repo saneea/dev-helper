@@ -26,8 +26,7 @@ class ToFile :
     private lateinit var err: OutputStream
     private lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("save output of external process to file")
+    override fun meta(context: FeatureContext) = Meta("save output of external process to file")
 
     override fun run(context: FeatureContext) {
         val outFileName = commandLine.getOptionValue(OUTPUT)

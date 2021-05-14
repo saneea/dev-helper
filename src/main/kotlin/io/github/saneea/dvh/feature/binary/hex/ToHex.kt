@@ -1,6 +1,7 @@
 package io.github.saneea.dvh.feature.binary.hex
 
 import io.github.saneea.dvh.Feature
+import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
 import java.io.InputStream
 import java.io.PrintStream
@@ -13,8 +14,7 @@ class ToHex :
     private lateinit var `in`: InputStream
     private lateinit var out: PrintStream
 
-    override fun meta(context: FeatureContext) =
-        Feature.Meta.from("convert input binary sequence to hex")
+    override fun meta(context: FeatureContext) = Meta("convert input binary sequence to hex")
 
     override fun run(context: FeatureContext) {
         run(`in`, out)

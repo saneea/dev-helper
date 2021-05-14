@@ -13,9 +13,11 @@ interface Feature {
 
     fun meta(context: FeatureContext): Meta
 
-    interface Meta {
-        fun description(): Description
-        fun examples(): List<Example>
+    data class Meta(
+        val description: Description,
+        val examples: List<Example> = emptyList()
+    ) {
+        constructor(shortDescription: String) : this(Description(shortDescription))
 
         data class Example(
             val name: String,
@@ -27,16 +29,6 @@ interface Feature {
             val brief: String,
             val detailed: String = brief
         )
-
-        companion object {
-            fun from(shortDescription: String) = from(Description(shortDescription))
-
-            fun from(description: Description, examples: List<Example> = emptyList()) =
-                object : Meta {
-                    override fun description() = description
-                    override fun examples() = examples
-                }
-        }
     }
 
     interface Out {

@@ -14,8 +14,7 @@ class Pipe :
     private lateinit var `in`: Reader
     private lateinit var out: Writer
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("just transfer text from std_in to std_out")
+    override fun meta(context: FeatureContext) = Meta("just transfer text from std_in to std_out")
 
     override fun run(context: FeatureContext) {
         `in`.transferTo(out)

@@ -22,8 +22,7 @@ class XmlToLine :
     private lateinit var `in`: Reader
     private lateinit var out: Writer
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("format XML to line")
+    override fun meta(context: FeatureContext) = Meta("format XML to line")
 
     override fun run(context: FeatureContext) =
         transform(`in`, out)

@@ -11,7 +11,7 @@ interface FeatureProvider {
     fun featureInfo(context: FeatureContext): FeatureInfo {
         return try {
             val feature = createFeature(context.featureName)
-            FeatureInfo(feature, feature!!.meta(context).description().brief)
+            FeatureInfo(feature, feature!!.meta(context).description.brief)
         } catch (e: Exception) {
             FeatureInfo(null, e.toString())
         }

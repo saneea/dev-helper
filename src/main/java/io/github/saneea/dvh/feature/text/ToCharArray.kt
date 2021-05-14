@@ -14,8 +14,7 @@ class ToCharArray :
     private lateinit var `in`: Reader
     private lateinit var out: Writer
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("convert input string to char array")
+    override fun meta(context: FeatureContext) = Meta("convert input string to char array")
 
     override fun run(context: FeatureContext) {
         var charCode: Int

@@ -6,8 +6,7 @@ import io.github.saneea.dvh.feature.multi.FeaturesCreators
 import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Random : MultiFeatureBase() {
-    override fun meta(context: FeatureContext) =
-        Meta.from("generate random data")
+    override fun meta(context: FeatureContext) = Meta("generate random data")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

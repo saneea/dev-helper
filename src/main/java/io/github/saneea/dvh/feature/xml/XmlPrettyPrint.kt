@@ -39,8 +39,7 @@ class XmlPrettyPrint :
     private lateinit var out: Writer
     private lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("format XML with indents")
+    override fun meta(context: FeatureContext) = Meta("format XML with indents")
 
     override fun run(context: FeatureContext) =
         run(`in`, out, commandLine.hasOption(NON_TO_LINE_BEFORE))

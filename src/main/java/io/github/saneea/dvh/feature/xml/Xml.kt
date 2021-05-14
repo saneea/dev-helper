@@ -10,7 +10,7 @@ import io.github.saneea.dvh.utils.const.PRETTY
 
 class Xml : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) = Meta.from("xml processing")
+    override fun meta(context: FeatureContext) = Meta("xml processing")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

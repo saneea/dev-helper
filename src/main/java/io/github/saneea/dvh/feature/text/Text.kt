@@ -7,8 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Text : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("plain text processing")
+    override fun meta(context: FeatureContext) = Meta("plain text processing")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

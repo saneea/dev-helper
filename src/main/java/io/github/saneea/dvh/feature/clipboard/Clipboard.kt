@@ -7,8 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Clipboard : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("read/write clipboard (text only)")
+    override fun meta(context: FeatureContext) = Meta("read/write clipboard (text only)")
 
     override fun getFeatureAliases(): FeaturesCreators {
         return AliasesBuilder()

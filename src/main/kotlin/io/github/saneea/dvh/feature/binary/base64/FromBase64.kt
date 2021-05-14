@@ -15,8 +15,7 @@ class FromBase64 :
     private lateinit var outStream: OutputStream
     private lateinit var inStream: InputStream
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("convert input Base64 sequence to binary")
+    override fun meta(context: FeatureContext) = Meta("convert input Base64 sequence to binary")
 
     override fun run(context: FeatureContext) {
         Base64.getDecoder().wrap(inStream).use { it.transferTo(outStream) }

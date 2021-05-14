@@ -12,8 +12,7 @@ class UUID :
 
     private lateinit var out: StringConsumer
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("generate new UUID")
+    override fun meta(context: FeatureContext) = Meta("generate new UUID")
 
     override fun run(context: FeatureContext) =
         out(UUID.randomUUID().toString())

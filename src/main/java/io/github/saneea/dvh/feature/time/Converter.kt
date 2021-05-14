@@ -23,8 +23,7 @@ class Converter :
     private lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
-    override fun meta(context: FeatureContext) =
-        Meta.from("convert time from original format to another one")
+    override fun meta(context: FeatureContext) = Meta("convert time from original format to another one")
 
     override fun run(context: FeatureContext) {
         val inFormat = getFormatFromCLI(IN_FORMAT)

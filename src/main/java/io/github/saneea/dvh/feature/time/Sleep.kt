@@ -46,7 +46,7 @@ class Sleep :
 
     override fun meta(context: FeatureContext): Meta {
         val execWithD = "${context.featuresChainString} -$DURATION_SHORT"
-        return Meta.from(
+        return Meta(
             Meta.Description(
                 "wait some time before exit"
             ),

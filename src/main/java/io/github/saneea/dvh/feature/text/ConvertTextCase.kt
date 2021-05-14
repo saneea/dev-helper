@@ -16,8 +16,7 @@ class ConvertTextCase {
             Character::toUpperCase
         ) {
 
-        override fun meta(context: FeatureContext) =
-            Meta.from("convert text to upper case (aBcDe -> ABCDE)")
+        override fun meta(context: FeatureContext) = Meta("convert text to upper case (aBcDe -> ABCDE)")
     }
 
     class Lower :
@@ -26,8 +25,7 @@ class ConvertTextCase {
             Character::toLowerCase
         ) {
 
-        override fun meta(context: FeatureContext) =
-            Meta.from("convert text to lower case (aBcDe -> abcde)")
+        override fun meta(context: FeatureContext) = Meta("convert text to lower case (aBcDe -> abcde)")
     }
 }
 

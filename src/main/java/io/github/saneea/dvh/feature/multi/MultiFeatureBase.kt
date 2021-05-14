@@ -30,9 +30,7 @@ abstract class MultiFeatureBase : MultiFeature() {
 
             return feature(featureAlias) {
                 object : MultiFeatureBase() {
-                    override fun meta(context: FeatureContext): Meta {
-                        return Meta.from(shortDescription)
-                    }
+                    override fun meta(context: FeatureContext) = Meta(shortDescription)
 
                     override fun getFeatureAliases() = children
                 }
