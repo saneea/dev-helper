@@ -16,7 +16,7 @@ class PrintArgsFeature :
     override fun run(context: FeatureContext) =
         context.args.forEach(out::println)
 
-    override fun setOut(out: PrintStream) {
+    override fun setOutTextPrintStream(out: PrintStream) {
         this.out = out
     }
 }

@@ -54,7 +54,7 @@ class InspectProcess :
                 .build()
         )
 
-    override fun setOut(out: PrintStream) {
+    override fun setOutTextPrintStream(out: PrintStream) {
         this.out = out
     }
 

@@ -60,7 +60,7 @@ class Split :
         this.`in` = `in`
     }
 
-    override fun setOut(out: PrintStream) {
+    override fun setOutTextPrintStream(out: PrintStream) {
         this.out = out
     }
 

@@ -30,7 +30,7 @@ class PrintLine :
         printFunc(text)
     }
 
-    override fun setOut(out: PrintStream) {
+    override fun setOutTextPrintStream(out: PrintStream) {
         this.out = out
     }
 

@@ -56,7 +56,7 @@ class HexTest {
                 val feature = ToHex()
                 PrintStream(output, false, TEST_CHARSET).use { printStreamOut ->
                     feature.setIn(inputStream)
-                    feature.setOut(printStreamOut)
+                    feature.setOutTextPrintStream(printStreamOut)
                     feature.run(FeatureContext(null, "", arrayOf()))
                 }
                 return output.toString(TEST_CHARSET)
