@@ -19,7 +19,7 @@ class ReadFile :
             .use(out::transferFrom)
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.out = out
     }
 }

@@ -26,7 +26,7 @@ class FromGzip :
         this.`in` = `in`
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.out = out
     }
 }

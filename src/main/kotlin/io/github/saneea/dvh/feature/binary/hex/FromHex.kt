@@ -52,7 +52,7 @@ class FromHex :
         this.reader = `in`
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.output = out
     }
 }

@@ -38,7 +38,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setOut(featureResources.outTextString)
 
         (feature as? Feature.Out.Bin.Stream)
-            ?.setOut(featureResources.outBinStream)
+            ?.setOutBinStream(featureResources.outBinStream)
 
         (feature as? Feature.Err.Bin.Stream)
             ?.setErr(featureResources.errBinStream)

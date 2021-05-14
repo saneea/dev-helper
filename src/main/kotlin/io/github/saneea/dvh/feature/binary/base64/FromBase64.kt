@@ -21,7 +21,7 @@ class FromBase64 :
         Base64.getDecoder().wrap(inStream).use { it.transferTo(outStream) }
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.outStream = out
     }
 

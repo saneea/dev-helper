@@ -34,19 +34,19 @@ interface Feature {
     interface Out {
         interface Bin {
             interface Stream {
-                fun setOut(out: OutputStream)
+                fun setOutBinStream(out: OutputStream)
             }
         }
 
         interface Text {
             interface PrintStream : Bin.Stream {
                 fun setOut(out: java.io.PrintStream)
-                override fun setOut(out: OutputStream) {}
+                override fun setOutBinStream(out: OutputStream) {}
             }
 
             interface Writer : Bin.Stream {
                 fun setOut(out: java.io.Writer)
-                override fun setOut(out: OutputStream) {}
+                override fun setOutBinStream(out: OutputStream) {}
             }
 
             interface String {

@@ -37,7 +37,7 @@ class RandomBytes :
         }
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.out = out
     }
 

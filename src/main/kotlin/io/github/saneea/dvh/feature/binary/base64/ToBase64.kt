@@ -22,7 +22,7 @@ class ToBase64 :
         Base64.getEncoder().wrap(out).use(`in`::transferTo)
     }
 
-    override fun setOut(out: OutputStream) {
+    override fun setOutBinStream(out: OutputStream) {
         this.out = out
     }
 
