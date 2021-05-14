@@ -21,7 +21,7 @@ class ToGzip :
         GZIPOutputStream(out).use(`in`::transferTo)
     }
 
-    override fun setIn(`in`: InputStream) {
+    override fun setInBinStream(`in`: InputStream) {
         this.`in` = `in`
     }
 

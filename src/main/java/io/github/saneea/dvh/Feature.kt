@@ -58,14 +58,14 @@ interface Feature {
     interface In {
         interface Bin {
             interface Stream {
-                fun setIn(`in`: InputStream)
+                fun setInBinStream(`in`: InputStream)
             }
         }
 
         interface Text {
             interface Reader : Bin.Stream {
                 fun setIn(`in`: java.io.Reader)
-                override fun setIn(`in`: InputStream) {}
+                override fun setInBinStream(`in`: InputStream) {}
             }
 
             interface String {

@@ -25,7 +25,7 @@ class FromBase64 :
         this.outStream = out
     }
 
-    override fun setIn(`in`: InputStream) {
+    override fun setInBinStream(`in`: InputStream) {
         this.inStream = `in`
     }
 }

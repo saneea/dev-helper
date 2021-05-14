@@ -103,7 +103,7 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         return ret
     }
 
-    override fun setIn(`in`: InputStream) {
+    override fun setInBinStream(`in`: InputStream) {
         this.`in` = `in`
     }
 

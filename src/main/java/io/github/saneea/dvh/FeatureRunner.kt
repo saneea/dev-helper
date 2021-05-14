@@ -50,7 +50,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setIn(featureResources.inTextString)
 
         (feature as? Feature.In.Bin.Stream)
-            ?.setIn(featureResources.inBinStream)
+            ?.setInBinStream(featureResources.inBinStream)
 
         return featureResources
     }

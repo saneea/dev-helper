@@ -20,7 +20,7 @@ class ToHex :
         run(`in`, out)
     }
 
-    override fun setIn(`in`: InputStream) {
+    override fun setInBinStream(`in`: InputStream) {
         this.`in` = `in`
     }
 

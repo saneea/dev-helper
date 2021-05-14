@@ -36,7 +36,7 @@ class Base64Test {
         BufferedInputStream(Files.newInputStream(inputFilePath)).use { inputStream ->
             ByteArrayOutputStream().use { output ->
                 val fromBase64 = FromBase64()
-                fromBase64.setIn(inputStream)
+                fromBase64.setInBinStream(inputStream)
                 fromBase64.setOutBinStream(output)
                 fromBase64.run(FeatureContext(null, "", arrayOf()))
                 return output.toByteArray()
@@ -48,7 +48,7 @@ class Base64Test {
         BufferedInputStream(Files.newInputStream(inputFilePath)).use { inputStream ->
             ByteArrayOutputStream().use { output ->
                 val toBase64 = ToBase64()
-                toBase64.setIn(inputStream)
+                toBase64.setInBinStream(inputStream)
                 toBase64.setOutBinStream(output)
                 toBase64.run(FeatureContext(null, "", arrayOf()))
                 return output.toString(StandardCharsets.UTF_8)
