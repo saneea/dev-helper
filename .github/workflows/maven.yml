@@ -27,6 +27,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: binary-packages
-        path:
-        - target/*.zip
-        - target/*.tar.gz
+        path: |
+          target/*.zip
+          target/*.tar.gz
