@@ -67,7 +67,7 @@ class FeatureResources(
         Options().also {
 
             if (feature is CLI.Options) {
-                feature.getOptions().forEach(it::addOption)
+                feature.options.forEach(it::addOption)
             }
 
             it.addOption(CommonOptions.HELP_OPTION)

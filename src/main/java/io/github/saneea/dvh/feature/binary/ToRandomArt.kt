@@ -111,12 +111,13 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         this.out = out
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),
-            createSizeOption("y", SIZE_Y, "height", DEFAULT_SIZE_Y)
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),
+                createSizeOption("y", SIZE_Y, "height", DEFAULT_SIZE_Y)
+            )
+        }
 
     private fun createSizeOption(
         shortOptionName: String,

@@ -71,8 +71,8 @@ class Sleep :
         timeUnit.sleep(duration)
     }
 
-    override fun getOptions() =
-        arrayOf(
+    override val options
+        get() = arrayOf(
             Option
                 .builder(DURATION_SHORT)
                 .longOpt(DURATION)

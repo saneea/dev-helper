@@ -30,7 +30,7 @@ class Hash :
         execute(`in`, out, alg)
     }
 
-    override fun getOptions() = Params.createOptions()
+    override val options get() = Params.createOptions()
 
     override fun setCommandLine(commandLine: CommandLine) {
         this.commandLine = commandLine

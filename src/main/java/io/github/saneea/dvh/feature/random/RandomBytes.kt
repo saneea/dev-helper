@@ -45,26 +45,27 @@ class RandomBytes :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            Option
-                .builder("s")
-                .longOpt(SIZE)
-                .hasArg(true)
-                .argName("bytes count")
-                .required(true)
-                .desc("size of generated data in bytes")
-                .build(),
-            Option
-                .builder()
-                .longOpt(SEED)
-                .hasArg(true)
-                .argName("seed number")
-                .required(false)
-                .desc("seed for random generator")
-                .build()
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                Option
+                    .builder("s")
+                    .longOpt(SIZE)
+                    .hasArg(true)
+                    .argName("bytes count")
+                    .required(true)
+                    .desc("size of generated data in bytes")
+                    .build(),
+                Option
+                    .builder()
+                    .longOpt(SEED)
+                    .hasArg(true)
+                    .argName("seed number")
+                    .required(false)
+                    .desc("seed for random generator")
+                    .build()
+            )
+        }
 
     companion object {
         private const val SIZE = "size"

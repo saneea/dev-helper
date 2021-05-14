@@ -60,18 +60,19 @@ class SlashReplacer :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            Option
-                .builder(NEW_SLASH_SHORT)
-                .longOpt(NEW_SLASH)
-                .hasArg(true)
-                .argName("slash string")
-                .required(false)
-                .desc("set new slash string")
-                .build()
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                Option
+                    .builder(NEW_SLASH_SHORT)
+                    .longOpt(NEW_SLASH)
+                    .hasArg(true)
+                    .argName("slash string")
+                    .required(false)
+                    .desc("set new slash string")
+                    .build()
+            )
+        }
 
     companion object {
         private const val NEW_SLASH = "newSlash"

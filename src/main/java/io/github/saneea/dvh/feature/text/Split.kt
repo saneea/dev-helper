@@ -68,18 +68,19 @@ class Split :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            Option
-                .builder("s")
-                .longOpt(SIZE_OPT)
-                .hasArg(true)
-                .argName("line size")
-                .required(false)
-                .desc("size limit for each line (default: $SIZE_OPT_DEFAULT)")
-                .build()
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                Option
+                    .builder("s")
+                    .longOpt(SIZE_OPT)
+                    .hasArg(true)
+                    .argName("line size")
+                    .required(false)
+                    .desc("size limit for each line (default: $SIZE_OPT_DEFAULT)")
+                    .build()
+            )
+        }
 
     companion object {
         private const val SIZE_OPT_DEFAULT = 60L

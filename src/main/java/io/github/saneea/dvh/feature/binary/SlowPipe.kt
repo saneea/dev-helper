@@ -43,18 +43,19 @@ class SlowPipe :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            Option
-                .builder("d")
-                .longOpt(DELAY)
-                .hasArg(true)
-                .argName("millis")
-                .required(true)
-                .desc("delay before each byte")
-                .build()
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                Option
+                    .builder("d")
+                    .longOpt(DELAY)
+                    .hasArg(true)
+                    .argName("millis")
+                    .required(true)
+                    .desc("delay before each byte")
+                    .build()
+            )
+        }
 
     companion object {
         private const val DELAY = "delay"

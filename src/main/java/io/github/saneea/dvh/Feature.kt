@@ -86,7 +86,7 @@ interface Feature {
         fun setCommandLine(commandLine: CommandLine)
 
         interface Options {
-            fun getOptions(): Array<Option>
+            val options: Array<Option>
         }
 
         interface CommonOptions {

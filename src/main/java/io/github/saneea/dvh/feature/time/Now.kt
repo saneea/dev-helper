@@ -57,8 +57,8 @@ class Now :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> =
-        arrayOf(
+    override val options: Array<Option>
+        get() = arrayOf(
             Option
                 .builder(FORMAT_SHORT)
                 .longOpt(FORMAT)

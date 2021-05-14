@@ -71,12 +71,13 @@ class Trim :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            createTrimCliOption("l", LEFT_TRIM, "trim leading whitespaces"),
-            createTrimCliOption("r", RIGHT_TRIM, "trim trailing whitespaces")
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                createTrimCliOption("l", LEFT_TRIM, "trim leading whitespaces"),
+                createTrimCliOption("r", RIGHT_TRIM, "trim trailing whitespaces")
+            )
+        }
 
     private fun createTrimCliOption(shortName: String, longName: String, description: String): Option =
         Option

@@ -42,8 +42,8 @@ class InspectProcess :
         this.commandLine = commandLine
     }
 
-    override fun getOptions() =
-        arrayOf(
+    override val options
+        get() = arrayOf(
             Option
                 .builder("c")
                 .longOpt(COMMAND)

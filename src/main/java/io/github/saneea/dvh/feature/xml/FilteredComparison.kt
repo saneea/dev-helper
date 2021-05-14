@@ -77,7 +77,7 @@ class FilteredComparison :
         this.commandLine = commandLine
     }
 
-    override fun getOptions() = Params.createOptions()
+    override val options get() = Params.createOptions()
 
     private fun getFilteredFile(inputFileName: String): String {
         val outputFile = File.createTempFile("filtered", null)

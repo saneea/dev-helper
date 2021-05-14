@@ -24,18 +24,19 @@ abstract class FileFeature :
         handleFile(File(commandLine.getOptionValue(FILE_NAME)))
     }
 
-    override fun getOptions(): Array<Option> {
-        return arrayOf(
-            Option
-                .builder("f")
-                .longOpt(FILE_NAME)
-                .hasArg(true)
-                .argName("file name")
-                .required(true)
-                .desc("path to file")
-                .build()
-        )
-    }
+    override val options: Array<Option>
+        get() {
+            return arrayOf(
+                Option
+                    .builder("f")
+                    .longOpt(FILE_NAME)
+                    .hasArg(true)
+                    .argName("file name")
+                    .required(true)
+                    .desc("path to file")
+                    .build()
+            )
+        }
 
     override fun setCommandLine(commandLine: CommandLine) {
         this.commandLine = commandLine

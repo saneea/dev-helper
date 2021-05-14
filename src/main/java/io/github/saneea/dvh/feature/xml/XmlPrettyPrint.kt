@@ -56,13 +56,14 @@ class XmlPrettyPrint :
         this.commandLine = commandLine
     }
 
-    override fun getOptions(): Array<Option> = arrayOf(
-        Option
-            .builder("ntlb")
-            .longOpt(NON_TO_LINE_BEFORE)
-            .desc("do not remove whitespaces between tags before add indents")
-            .build()
-    )
+    override val options: Array<Option>
+        get() = arrayOf(
+            Option
+                .builder("ntlb")
+                .longOpt(NON_TO_LINE_BEFORE)
+                .desc("do not remove whitespaces between tags before add indents")
+                .build()
+        )
 
     companion object {
 

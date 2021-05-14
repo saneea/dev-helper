@@ -48,10 +48,11 @@ class Converter :
         this.commandLine = commandLine
     }
 
-    override fun getOptions() = arrayOf(
-        createFormatCliOption("if", IN_FORMAT, "input time format"),
-        createFormatCliOption("of", OUT_FORMAT, "output time format")
-    )
+    override val options
+        get() = arrayOf(
+            createFormatCliOption("if", IN_FORMAT, "input time format"),
+            createFormatCliOption("of", OUT_FORMAT, "output time format")
+        )
 
     private fun createFormatCliOption(shortName: String, longName: String, description: String) =
         Option

@@ -34,8 +34,8 @@ class PrintLine :
         this.out = out
     }
 
-    override fun getOptions() =
-        arrayOf(
+    override val options
+        get() = arrayOf(
             Option
                 .builder("t")
                 .longOpt(TEXT)
