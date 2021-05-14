@@ -45,7 +45,7 @@ interface Feature {
             }
 
             interface Writer : Bin.Stream {
-                fun setOut(out: java.io.Writer)
+                fun setOutTextWriter(out: java.io.Writer)
                 override fun setOutBinStream(out: OutputStream) {}
             }
 

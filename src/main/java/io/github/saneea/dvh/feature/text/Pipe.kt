@@ -24,7 +24,7 @@ class Pipe :
         this.`in` = `in`
     }
 
-    override fun setOut(out: Writer) {
+    override fun setOutTextWriter(out: Writer) {
         this.out = out
     }
 }

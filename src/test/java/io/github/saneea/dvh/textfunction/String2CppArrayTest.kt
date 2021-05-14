@@ -22,7 +22,7 @@ class String2CppArrayTest {
         val toCharArray = ToCharArray()
         toCharArray.setIn(StringReader(input))
         val out = StringWriter()
-        toCharArray.setOut(out)
+        toCharArray.setOutTextWriter(out)
 
         val featureContext = FeatureContext(null, "any", emptyArray())
         toCharArray.run(featureContext)
