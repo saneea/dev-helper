@@ -86,7 +86,7 @@ object Utils {
         protected fun printCLI() = HelpFormatter().printHelp(cmdLineSyntax, options, true)
 
         protected fun printDescription() {
-            println(feature.meta(context).description().detailed())
+            println(feature.meta(context).description().detailed)
             println()
         }
 

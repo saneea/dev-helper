@@ -23,7 +23,7 @@ class SlashReplacer :
         val echoPipeFeature = "echo some////path\\\\to\\\\file.txt | " + context.featuresChainString
 
         return Meta.from(
-            Meta.Description.from(
+            Meta.Description(
                 "replace slashes (/) or backslashes (\\)",
                 "replace slashes (/) or backslashes (\\) to specified string"
             ),

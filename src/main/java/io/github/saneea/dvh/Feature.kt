@@ -23,22 +23,13 @@ interface Feature {
             val result: String? = null
         )
 
-        interface Description {
-            fun brief(): String
-            fun detailed(): String
-
-            companion object {
-                fun from(brief: String, detailed: String = brief): Description {
-                    return object : Description {
-                        override fun brief() = brief
-                        override fun detailed() = detailed
-                    }
-                }
-            }
-        }
+        data class Description(
+            val brief: String,
+            val detailed: String = brief
+        )
 
         companion object {
-            fun from(shortDescription: String) = from(Description.from(shortDescription))
+            fun from(shortDescription: String) = from(Description(shortDescription))
 
             fun from(description: Description, examples: List<Example> = emptyList()) =
                 object : Meta {
