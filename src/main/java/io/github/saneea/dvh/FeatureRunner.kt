@@ -44,7 +44,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setErr(featureResources.errBinStream)
 
         (feature as? Feature.In.Text.Reader)
-            ?.setIn(featureResources.inTextReader)
+            ?.setInTextReader(featureResources.inTextReader)
 
         (feature as? Feature.In.Text.String)
             ?.setIn(featureResources.inTextString)

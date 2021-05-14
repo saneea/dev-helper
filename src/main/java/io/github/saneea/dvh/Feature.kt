@@ -64,7 +64,7 @@ interface Feature {
 
         interface Text {
             interface Reader : Bin.Stream {
-                fun setIn(`in`: java.io.Reader)
+                fun setInTextReader(`in`: java.io.Reader)
                 override fun setInBinStream(`in`: InputStream) {}
             }
 

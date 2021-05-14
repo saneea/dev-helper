@@ -22,7 +22,7 @@ class AddNewLine :
         out.append(System.lineSeparator())
     }
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

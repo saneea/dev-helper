@@ -48,7 +48,7 @@ class FromHex :
         return outChars
     }
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.reader = `in`
     }
 

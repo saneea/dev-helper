@@ -27,7 +27,7 @@ class XmlToLine :
     override fun run(context: FeatureContext) =
         transform(`in`, out)
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

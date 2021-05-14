@@ -38,7 +38,7 @@ class JsonFormatting {
             gson.toJson(jsonElement, out)
         }
 
-        override fun setIn(`in`: Reader) {
+        override fun setInTextReader(`in`: Reader) {
             this.`in` = `in`
         }
 

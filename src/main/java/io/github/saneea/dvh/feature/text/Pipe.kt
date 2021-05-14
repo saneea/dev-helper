@@ -20,7 +20,7 @@ class Pipe :
         `in`.transferTo(out)
     }
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

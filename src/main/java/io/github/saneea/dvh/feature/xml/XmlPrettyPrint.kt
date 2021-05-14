@@ -44,7 +44,7 @@ class XmlPrettyPrint :
     override fun run(context: FeatureContext) =
         run(`in`, out, commandLine.hasOption(NON_TO_LINE_BEFORE))
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

@@ -65,7 +65,7 @@ abstract class ConvertTextCaseBase(
         }
     }
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

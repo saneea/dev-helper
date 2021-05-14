@@ -56,7 +56,7 @@ class Split :
             return size
         }
 
-    override fun setIn(`in`: Reader) {
+    override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
     }
 

@@ -42,7 +42,7 @@ class HexTest {
         ).use { reader ->
             ByteArrayOutputStream().use { output ->
                 val feature = FromHex()
-                feature.setIn(reader)
+                feature.setInTextReader(reader)
                 feature.setOutBinStream(output)
                 feature.run(FeatureContext(null, "", arrayOf()))
                 return output.toByteArray()
