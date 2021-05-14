@@ -23,11 +23,10 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Archive Windows artifacts
+    - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
-        path: target/*.zip
-    - name: Archive Unix artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        path: target/*.tar.gz
+        name: binary-packages
+        path:
+        - target/*.zip
+        - target/*.tar.gz
