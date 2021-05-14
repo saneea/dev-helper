@@ -30,3 +30,7 @@ jobs:
         path: |
           target/*.zip
           target/*.tar.gz
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: binary-packages
