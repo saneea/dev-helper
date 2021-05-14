@@ -88,7 +88,7 @@ class ToFile :
         }
     }
 
-    override fun setErr(err: OutputStream) {
+    override fun setErrBinStream(err: OutputStream) {
         this.err = err
     }
 
