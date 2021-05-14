@@ -35,7 +35,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setOutTextWriter(featureResources.outTextWriter)
 
         (feature as? Feature.Out.Text.String)
-            ?.setOut(featureResources.outTextString)
+            ?.setOutTextString(featureResources.outTextString)
 
         (feature as? Feature.Out.Bin.Stream)
             ?.setOutBinStream(featureResources.outBinStream)

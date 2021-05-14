@@ -40,7 +40,7 @@ class Converter :
         this.`in` = `in`
     }
 
-    override fun setOut(out: StringConsumer) {
+    override fun setOutTextString(out: StringConsumer) {
         this.out = out
     }
 

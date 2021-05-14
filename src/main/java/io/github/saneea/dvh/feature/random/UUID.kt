@@ -17,7 +17,7 @@ class UUID :
     override fun run(context: FeatureContext) =
         out(UUID.randomUUID().toString())
 
-    override fun setOut(out: StringConsumer) {
+    override fun setOutTextString(out: StringConsumer) {
         this.out = out
     }
 }

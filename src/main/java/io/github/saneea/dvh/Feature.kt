@@ -50,7 +50,7 @@ interface Feature {
             }
 
             interface String {
-                fun setOut(out: StringConsumer)
+                fun setOutTextString(out: StringConsumer)
             }
         }
     }

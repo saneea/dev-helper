@@ -21,7 +21,7 @@ class TextFromClipboard :
         out(clipboardText)
     }
 
-    override fun setOut(out: StringConsumer) {
+    override fun setOutTextString(out: StringConsumer) {
         this.out = out
     }
 }

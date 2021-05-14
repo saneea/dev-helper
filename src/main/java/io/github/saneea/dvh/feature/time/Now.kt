@@ -49,7 +49,7 @@ class Now :
         out(formattedTime)
     }
 
-    override fun setOut(out: StringConsumer) {
+    override fun setOutTextString(out: StringConsumer) {
         this.out = out
     }
 
