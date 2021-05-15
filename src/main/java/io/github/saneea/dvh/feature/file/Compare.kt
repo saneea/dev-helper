@@ -10,7 +10,7 @@ class Compare :
     Feature.In.Bin.Stream,
     Feature.Out.Text.String {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
     override lateinit var outTextString: StringConsumer
 
     override val description = "compare file with standard input (full binary comparison)"
@@ -19,7 +19,7 @@ class Compare :
         file.inputStream().buffered()
             .use {
                 outTextString(
-                    if (compareStreams(it, `in`))
+                    if (compareStreams(it, inBinStream))
                         "=="
                     else
                         "!="
@@ -38,9 +38,5 @@ class Compare :
                 return true
             }
         }
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
     }
 }

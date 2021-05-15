@@ -8,17 +8,13 @@ class WriteFile :
     FileFeature(),
     Feature.In.Bin.Stream {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
 
     override val description = "transfer bytes from standard input to file"
 
     override fun handleFile(file: File) {
         file
             .outputStream().buffered()
-            .use(`in`::transferTo)
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
+            .use(inBinStream::transferTo)
     }
 }

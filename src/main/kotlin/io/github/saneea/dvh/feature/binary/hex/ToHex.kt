@@ -11,17 +11,13 @@ class ToHex :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
 
     override fun meta(context: FeatureContext) = Meta("convert input binary sequence to hex")
 
     override fun run(context: FeatureContext) {
-        run(`in`, outTextPrintStream)
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
+        run(inBinStream, outTextPrintStream)
     }
 
     companion object {

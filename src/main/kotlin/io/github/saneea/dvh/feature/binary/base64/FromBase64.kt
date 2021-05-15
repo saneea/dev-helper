@@ -12,16 +12,12 @@ class FromBase64 :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
+    override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
-    private lateinit var inStream: InputStream
 
     override fun meta(context: FeatureContext) = Meta("convert input Base64 sequence to binary")
 
     override fun run(context: FeatureContext) {
-        Base64.getDecoder().wrap(inStream).use { it.transferTo(outBinStream) }
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.inStream = `in`
+        Base64.getDecoder().wrap(inBinStream).use { it.transferTo(outBinStream) }
     }
 }

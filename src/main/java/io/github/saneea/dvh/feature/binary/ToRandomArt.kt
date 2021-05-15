@@ -6,13 +6,12 @@ import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
-import java.io.IOException
 import java.io.InputStream
 import java.io.PrintStream
 
 class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
     private lateinit var commandLine: CommandLine
 
@@ -26,7 +25,6 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
 
     override fun meta(context: FeatureContext) = Meta("convert input binary sequence to random art picture")
 
-    @Throws(IOException::class)
     override fun run(context: FeatureContext) {
         sizeX = commandLine.getOptionValue(SIZE_X, DEFAULT_SIZE_X.toString()).toInt()
         sizeY = commandLine.getOptionValue(SIZE_Y, DEFAULT_SIZE_Y.toString()).toInt()
@@ -34,7 +32,7 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         currentY = sizeY / 2
         picture = Picture(sizeX, sizeY)
         var byteCode: Int
-        while (`in`.read().also { byteCode = it } != -1) {
+        while (inBinStream.read().also { byteCode = it } != -1) {
             handleInputByte(byteCode)
         }
         printHorizontalBorder(outTextPrintStream)
@@ -101,10 +99,6 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
             ret = pictureSize - 1
         }
         return ret
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
     }
 
     override val options: Array<Option>

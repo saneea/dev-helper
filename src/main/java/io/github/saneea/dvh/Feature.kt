@@ -56,7 +56,7 @@ interface Feature {
     interface In {
         interface Bin {
             interface Stream {
-                fun setInBinStream(`in`: InputStream)
+                var inBinStream: InputStream
             }
         }
 

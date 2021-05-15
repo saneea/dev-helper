@@ -16,7 +16,7 @@ class SlowPipe :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
     private lateinit var commandLine: CommandLine
 
@@ -25,14 +25,10 @@ class SlowPipe :
     override fun run(context: FeatureContext) {
         val delay = commandLine.getOptionValue(DELAY).toLong()
         var byteCode: Int
-        while (`in`.read().also { byteCode = it } != -1) {
+        while (inBinStream.read().also { byteCode = it } != -1) {
             Thread.sleep(delay)
             outBinStream.write(byteCode)
         }
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

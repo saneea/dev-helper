@@ -13,16 +13,12 @@ class FromGzip :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
-    private lateinit var `in`: InputStream
+    override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
 
     override fun meta(context: FeatureContext) = Meta("extract from GZIP")
 
     override fun run(context: FeatureContext) {
-        GZIPInputStream(`in`).use(outBinStream::transferFrom)
-    }
-
-    override fun setInBinStream(`in`: InputStream) {
-        this.`in` = `in`
+        GZIPInputStream(inBinStream).use(outBinStream::transferFrom)
     }
 }
