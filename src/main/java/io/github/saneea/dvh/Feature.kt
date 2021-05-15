@@ -40,7 +40,7 @@ interface Feature {
 
         interface Text {
             interface PrintStream : Bin.Stream {
-                fun setOutTextPrintStream(out: java.io.PrintStream)
+                var outTextPrintStream: java.io.PrintStream
                 override fun setOutBinStream(out: OutputStream) {}
             }
 

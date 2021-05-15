@@ -14,7 +14,7 @@ class InspectProcess :
     Feature.CLI.Options,
     Feature.Out.Text.PrintStream {
 
-    private lateinit var out: PrintStream
+    override lateinit var outTextPrintStream: PrintStream
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("print statistic about process")
@@ -25,7 +25,7 @@ class InspectProcess :
         val gson = GsonBuilder()
             .setPrettyPrinting()
             .create()
-        gson.toJson(stat, out)
+        gson.toJson(stat, outTextPrintStream)
     }
 
     private fun execProcess(command: String): ProcessExecutionInfo {
@@ -53,10 +53,6 @@ class InspectProcess :
                 .desc("e.g. 'dvh --help'")
                 .build()
         )
-
-    override fun setOutTextPrintStream(out: PrintStream) {
-        this.out = out
-    }
 
     data class ProcessExecutionInfo(
         var exitCode: Int = 0,

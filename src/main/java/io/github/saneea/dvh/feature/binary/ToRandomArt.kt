@@ -13,7 +13,7 @@ import java.io.PrintStream
 class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
 
     private lateinit var `in`: InputStream
-    private lateinit var out: PrintStream
+    override lateinit var outTextPrintStream: PrintStream
     private lateinit var commandLine: CommandLine
 
     private var sizeX = 0
@@ -37,16 +37,16 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
         while (`in`.read().also { byteCode = it } != -1) {
             handleInputByte(byteCode)
         }
-        printHorizontalBorder(out)
+        printHorizontalBorder(outTextPrintStream)
         for (row in picture.rows) {
-            printVerticalBorder(out)
+            printVerticalBorder(outTextPrintStream)
             for (element in row.elements) {
-                out.print(intToAsciiPixel(element))
+                outTextPrintStream.print(intToAsciiPixel(element))
             }
-            printVerticalBorder(out)
-            out.println()
+            printVerticalBorder(outTextPrintStream)
+            outTextPrintStream.println()
         }
-        printHorizontalBorder(out)
+        printHorizontalBorder(outTextPrintStream)
     }
 
     private fun printVerticalBorder(out: PrintStream) {
@@ -105,10 +105,6 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
 
     override fun setInBinStream(`in`: InputStream) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextPrintStream(out: PrintStream) {
-        this.out = out
     }
 
     override val options: Array<Option>

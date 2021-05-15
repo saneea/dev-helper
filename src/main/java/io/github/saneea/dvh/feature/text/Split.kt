@@ -16,7 +16,7 @@ class Split :
     Feature.Out.Text.PrintStream {
 
     private lateinit var `in`: Reader
-    private lateinit var out: PrintStream
+    override lateinit var outTextPrintStream: PrintStream
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("split text as lines")
@@ -33,13 +33,13 @@ class Split :
             val charCode = `in`.read()
             if (charCode == -1) {
                 if (i != 0L) {
-                    out.println()
+                    outTextPrintStream.println()
                 }
                 return false
             }
-            out.print(charCode.toChar())
+            outTextPrintStream.print(charCode.toChar())
         }
-        out.println()
+        outTextPrintStream.println()
         return true
     }
 
@@ -58,10 +58,6 @@ class Split :
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextPrintStream(out: PrintStream) {
-        this.out = out
     }
 
     override fun setCommandLine(commandLine: CommandLine) {
