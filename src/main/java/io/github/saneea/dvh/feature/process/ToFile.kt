@@ -23,7 +23,7 @@ class ToFile :
         }
     }
 
-    private lateinit var err: OutputStream
+    override lateinit var errBinStream: OutputStream
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("save output of external process to file")
@@ -32,7 +32,7 @@ class ToFile :
         val outFileName = commandLine.getOptionValue(OUTPUT)
         val command = commandLine.getOptionValue(COMMAND)
         val forkProc = Runtime.getRuntime().exec(command)
-        getStdOutFromProc(forkProc, err)
+        getStdOutFromProc(forkProc, errBinStream)
             .use { stdOutBuffer ->
                 val exitCode = forkProc.waitFor()
                 if (exitCode == ExitCode.OK) {
@@ -86,10 +86,6 @@ class ToFile :
                 }
             }
         }
-    }
-
-    override fun setErrBinStream(err: OutputStream) {
-        this.err = err
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

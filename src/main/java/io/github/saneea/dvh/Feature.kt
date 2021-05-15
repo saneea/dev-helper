@@ -74,7 +74,7 @@ interface Feature {
     interface Err {
         interface Bin {
             interface Stream {
-                fun setErrBinStream(err: OutputStream)
+                var errBinStream: OutputStream
             }
         }
     }

@@ -41,7 +41,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.outBinStream = featureResources.outBinStream
 
         (feature as? Feature.Err.Bin.Stream)
-            ?.setErrBinStream(featureResources.errBinStream)
+            ?.errBinStream = featureResources.errBinStream
 
         (feature as? Feature.In.Text.Reader)
             ?.inTextReader = featureResources.inTextReader
