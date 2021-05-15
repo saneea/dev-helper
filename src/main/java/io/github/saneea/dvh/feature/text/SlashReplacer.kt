@@ -14,7 +14,7 @@ class SlashReplacer :
     Feature.In.Text.String,
     Feature.Out.Text.String {
 
-    private lateinit var `in`: String
+    override lateinit var inTextString: String
     override lateinit var outTextString: StringConsumer
     private lateinit var commandLine: CommandLine
 
@@ -45,11 +45,7 @@ class SlashReplacer :
     override fun run(context: FeatureContext) {
         val slash = commandLine.getOptionValue(NEW_SLASH, "/")
         val regex = """([\\/])+""".toRegex()
-        outTextString(`in`.replace(regex, "\\$slash"))
-    }
-
-    override fun setInTextString(`in`: String) {
-        this.`in` = `in`
+        outTextString(inTextString.replace(regex, "\\$slash"))
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

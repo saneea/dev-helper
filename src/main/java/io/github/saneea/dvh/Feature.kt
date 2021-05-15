@@ -66,7 +66,7 @@ interface Feature {
             }
 
             interface String {
-                fun setInTextString(`in`: kotlin.String)
+                var inTextString: kotlin.String
             }
         }
     }

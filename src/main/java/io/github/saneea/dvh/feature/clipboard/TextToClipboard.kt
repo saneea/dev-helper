@@ -10,17 +10,13 @@ class TextToClipboard :
     Feature,
     Feature.In.Text.String {
 
-    private lateinit var `in`: String
+    override lateinit var inTextString: String
 
     override fun meta(context: FeatureContext) = Meta("write text to clipboard")
 
     override fun run(context: FeatureContext) {
         val clipboard = Toolkit.getDefaultToolkit().systemClipboard
-        val selection = StringSelection(`in`)
+        val selection = StringSelection(inTextString)
         clipboard.setContents(selection, selection)
-    }
-
-    override fun setInTextString(`in`: String) {
-        this.`in` = `in`
     }
 }
