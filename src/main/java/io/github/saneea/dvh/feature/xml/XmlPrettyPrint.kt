@@ -35,18 +35,14 @@ class XmlPrettyPrint :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    private lateinit var `in`: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("format XML with indents")
 
     override fun run(context: FeatureContext) =
-        run(`in`, outTextWriter, commandLine.hasOption(NON_TO_LINE_BEFORE))
-
-    override fun setInTextReader(`in`: Reader) {
-        this.`in` = `in`
-    }
+        run(inTextReader, outTextWriter, commandLine.hasOption(NON_TO_LINE_BEFORE))
 
     override fun setCommandLine(commandLine: CommandLine) {
         this.commandLine = commandLine

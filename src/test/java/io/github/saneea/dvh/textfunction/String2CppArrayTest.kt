@@ -20,7 +20,7 @@ class String2CppArrayTest {
 
     private fun test(input: String, expected: String) {
         val toCharArray = ToCharArray()
-        toCharArray.setInTextReader(StringReader(input))
+        toCharArray.inTextReader = StringReader(input)
         val out = StringWriter()
         toCharArray.outTextWriter = out
 

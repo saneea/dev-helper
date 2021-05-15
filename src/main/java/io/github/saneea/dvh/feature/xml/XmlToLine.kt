@@ -19,17 +19,13 @@ class XmlToLine :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    private lateinit var `in`: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
     override fun meta(context: FeatureContext) = Meta("format XML to line")
 
     override fun run(context: FeatureContext) =
-        transform(`in`, outTextWriter)
-
-    override fun setInTextReader(`in`: Reader) {
-        this.`in` = `in`
-    }
+        transform(inTextReader, outTextWriter)
 
     private class XmlHandler(writer: Writer) : DefaultHandler(), Closeable {
 

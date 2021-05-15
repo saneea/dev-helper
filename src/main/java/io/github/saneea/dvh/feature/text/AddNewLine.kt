@@ -11,18 +11,14 @@ class AddNewLine :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    private lateinit var `in`: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
     override fun meta(context: FeatureContext) =
         Meta("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end")
 
     override fun run(context: FeatureContext) {
-        `in`.transferTo(outTextWriter)
+        inTextReader.transferTo(outTextWriter)
         outTextWriter.append(System.lineSeparator())
-    }
-
-    override fun setInTextReader(`in`: Reader) {
-        this.`in` = `in`
     }
 }

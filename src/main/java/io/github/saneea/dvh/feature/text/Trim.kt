@@ -28,7 +28,7 @@ class Trim :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    private lateinit var `in`: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
     private lateinit var commandLine: CommandLine
 
@@ -40,7 +40,7 @@ class Trim :
             .and(RIGHT_TRIM, ::rightTrimmer)
 
         var charCode: Int
-        while (`in`.read().also { charCode = it } != -1) {
+        while (inTextReader.read().also { charCode = it } != -1) {
             convertFunc(charCode, outTextWriter::write)
         }
     }
@@ -57,10 +57,6 @@ class Trim :
             "true" -> this and newTrimmer()
             else -> throw IllegalArgumentException("Invalid $optName value: $optValue")
         }
-    }
-
-    override fun setInTextReader(`in`: Reader) {
-        this.`in` = `in`
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

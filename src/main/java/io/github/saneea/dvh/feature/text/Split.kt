@@ -15,7 +15,7 @@ class Split :
     Feature.In.Text.Reader,
     Feature.Out.Text.PrintStream {
 
-    private lateinit var `in`: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outTextPrintStream: PrintStream
     private lateinit var commandLine: CommandLine
 
@@ -30,7 +30,7 @@ class Split :
 
     private fun transferLine(size: Long): Boolean {
         for (i in 0 until size) {
-            val charCode = `in`.read()
+            val charCode = inTextReader.read()
             if (charCode == -1) {
                 if (i != 0L) {
                     outTextPrintStream.println()
@@ -55,10 +55,6 @@ class Split :
             }
             return size
         }
-
-    override fun setInTextReader(`in`: Reader) {
-        this.`in` = `in`
-    }
 
     override fun setCommandLine(commandLine: CommandLine) {
         this.commandLine = commandLine

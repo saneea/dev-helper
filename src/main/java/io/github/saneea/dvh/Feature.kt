@@ -62,7 +62,7 @@ interface Feature {
 
         interface Text {
             interface Reader {
-                fun setInTextReader(`in`: java.io.Reader)
+                var inTextReader: java.io.Reader
             }
 
             interface String {

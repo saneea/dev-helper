@@ -27,19 +27,15 @@ class JsonFormatting {
         Feature.In.Text.Reader,
         Feature.Out.Text.Writer {
 
-        private lateinit var `in`: Reader
+        override lateinit var inTextReader: Reader
         override lateinit var outTextWriter: Writer
 
         protected abstract val gsonBuilder: GsonBuilder
 
         override fun run(context: FeatureContext) {
             val gson = gsonBuilder.create()
-            val jsonElement = gson.fromJson(`in`, JsonElement::class.java)
+            val jsonElement = gson.fromJson(inTextReader, JsonElement::class.java)
             gson.toJson(jsonElement, outTextWriter)
-        }
-
-        override fun setInTextReader(`in`: Reader) {
-            this.`in` = `in`
         }
     }
 }

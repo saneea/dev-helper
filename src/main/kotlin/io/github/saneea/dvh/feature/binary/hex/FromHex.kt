@@ -13,15 +13,14 @@ class FromHex :
     Feature.In.Text.Reader,
     Feature.Out.Bin.Stream {
 
-    private lateinit var reader: Reader
+    override lateinit var inTextReader: Reader
     override lateinit var outBinStream: OutputStream
 
     override fun meta(context: FeatureContext) = Meta("convert input hex sequence to binary")
 
-
     override fun run(context: FeatureContext) {
         while (true) {
-            val buf = readCharsFromStream(reader)
+            val buf = readCharsFromStream(inTextReader)
             if (buf.size < HEX_DIGITS_IN_BYTE) {
                 break
             }
@@ -46,9 +45,5 @@ class FromHex :
             }
         }
         return outChars
-    }
-
-    override fun setInTextReader(`in`: Reader) {
-        this.reader = `in`
     }
 }
