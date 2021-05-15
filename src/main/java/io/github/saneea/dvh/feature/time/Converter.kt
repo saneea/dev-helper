@@ -19,7 +19,7 @@ class Converter :
     Feature.Out.Text.String {
 
     private lateinit var `in`: String
-    private lateinit var out: StringConsumer
+    override lateinit var outTextString: StringConsumer
     private lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
@@ -30,7 +30,7 @@ class Converter :
         val outFormat = getFormatFromCLI(OUT_FORMAT)
         val timeAsZoned = inFormat.parse(`in`)
         val converted = outFormat.render(timeAsZoned)
-        out(converted)
+        outTextString(converted)
     }
 
     private fun getFormatFromCLI(cliOptionName: String) =
@@ -38,10 +38,6 @@ class Converter :
 
     override fun setInTextString(`in`: String) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextString(out: StringConsumer) {
-        this.out = out
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

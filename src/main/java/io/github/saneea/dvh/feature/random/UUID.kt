@@ -10,14 +10,10 @@ class UUID :
     Feature,
     Feature.Out.Text.String {
 
-    private lateinit var out: StringConsumer
+    override lateinit var outTextString: StringConsumer
 
     override fun meta(context: FeatureContext) = Meta("generate new UUID")
 
     override fun run(context: FeatureContext) =
-        out(UUID.randomUUID().toString())
-
-    override fun setOutTextString(out: StringConsumer) {
-        this.out = out
-    }
+        outTextString(UUID.randomUUID().toString())
 }
