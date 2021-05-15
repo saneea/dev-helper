@@ -21,27 +21,28 @@ class Now :
     override lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
-    override fun meta(): Meta {
-        val featuresChain = context.featuresChainString
-        return Meta(
-            Meta.Description(
-                "print current time",
-                "print current date and/or time in one of format"
-            ),
-            listOf(
-                Meta.Example(
-                    "seconds from 1970-01-01 (known as Unix-time or Epoch-time)",
-                    "$featuresChain -$FORMAT_SHORT unix",
-                    "1606339702"
+    override val meta: Meta
+        get() {
+            val featuresChain = context.featuresChainString
+            return Meta(
+                Meta.Description(
+                    "print current time",
+                    "print current date and/or time in one of format"
                 ),
-                Meta.Example(
-                    "custom date/time pattern",
-                    "$featuresChain -$FORMAT_SHORT yyyy-MM-dd--HH:mm:ss",
-                    "2020-11-26--00:36:55"
+                listOf(
+                    Meta.Example(
+                        "seconds from 1970-01-01 (known as Unix-time or Epoch-time)",
+                        "$featuresChain -$FORMAT_SHORT unix",
+                        "1606339702"
+                    ),
+                    Meta.Example(
+                        "custom date/time pattern",
+                        "$featuresChain -$FORMAT_SHORT yyyy-MM-dd--HH:mm:ss",
+                        "2020-11-26--00:36:55"
+                    )
                 )
             )
-        )
-    }
+        }
 
     override fun run() {
         val formatNameOrPattern = commandLine.getOptionValue(FORMAT, FORMAT_HUMAN)

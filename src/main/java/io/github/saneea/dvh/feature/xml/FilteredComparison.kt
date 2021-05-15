@@ -17,7 +17,7 @@ class FilteredComparison :
     override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
 
-    override fun meta() = Meta("run external comparison tool for 'pretty printed' xml files")
+    override val meta get() = Meta("run external comparison tool for 'pretty printed' xml files")
 
     override fun run() {
         val comparisonTool = commandLine.getOptionValue(Params.COMPARISON_TOOL)

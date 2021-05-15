@@ -28,7 +28,7 @@ class ToRandomArt :
 
     private lateinit var picture: Picture
 
-    override fun meta() = Meta("convert input binary sequence to random art picture")
+    override val meta get() = Meta("convert input binary sequence to random art picture")
 
     override fun run() {
         sizeX = commandLine.getOptionValue(SIZE_X, DEFAULT_SIZE_X.toString()).toInt()

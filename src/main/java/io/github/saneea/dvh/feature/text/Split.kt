@@ -20,7 +20,7 @@ class Split :
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta() = Meta("split text as lines")
+    override val meta get() = Meta("split text as lines")
 
     override fun run() {
         val size = lineSize

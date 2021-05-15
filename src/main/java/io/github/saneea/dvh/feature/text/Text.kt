@@ -7,7 +7,7 @@ import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Text : MultiFeatureBase() {
 
-    override fun meta() = Meta("plain text processing")
+    override val meta get() = Meta("plain text processing")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

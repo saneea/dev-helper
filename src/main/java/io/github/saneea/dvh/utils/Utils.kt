@@ -65,7 +65,7 @@ object Utils {
 
         protected open fun printExamples() {
             feature.context = context
-            val examples = feature.meta().examples
+            val examples = feature.meta.examples
             val examplesCount = examples.size
             if (examplesCount > 0) {
                 println()
@@ -88,7 +88,7 @@ object Utils {
 
         protected fun printDescription() {
             feature.context = context
-            println(feature.meta().description.detailed)
+            println(feature.meta.description.detailed)
             println()
         }
 

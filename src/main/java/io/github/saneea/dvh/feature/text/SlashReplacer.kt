@@ -19,29 +19,30 @@ class SlashReplacer :
     override lateinit var outTextString: StringConsumer
     override lateinit var commandLine: CommandLine
 
-    override fun meta(): Meta {
+    override val meta: Meta
+        get() {
 
-        val echoPipeFeature = "echo some////path\\\\to\\\\file.txt | " + context.featuresChainString
+            val echoPipeFeature = "echo some////path\\\\to\\\\file.txt | " + context.featuresChainString
 
-        return Meta(
-            Meta.Description(
-                "replace slashes (/) or backslashes (\\)",
-                "replace slashes (/) or backslashes (\\) to specified string"
-            ),
-            listOf(
-                Meta.Example(
-                    "replace to slashes",
-                    echoPipeFeature,
-                    "some/path/to/file.txt"
+            return Meta(
+                Meta.Description(
+                    "replace slashes (/) or backslashes (\\)",
+                    "replace slashes (/) or backslashes (\\) to specified string"
                 ),
-                Meta.Example(
-                    "replace to custom string",
-                    "$echoPipeFeature -$NEW_SLASH_SHORT \\",
-                    "some\\path\\to\\file.txt"
+                listOf(
+                    Meta.Example(
+                        "replace to slashes",
+                        echoPipeFeature,
+                        "some/path/to/file.txt"
+                    ),
+                    Meta.Example(
+                        "replace to custom string",
+                        "$echoPipeFeature -$NEW_SLASH_SHORT \\",
+                        "some\\path\\to\\file.txt"
+                    )
                 )
             )
-        )
-    }
+        }
 
     override fun run() {
         val slash = commandLine.getOptionValue(NEW_SLASH, "/")

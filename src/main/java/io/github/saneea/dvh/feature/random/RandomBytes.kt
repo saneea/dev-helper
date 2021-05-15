@@ -18,8 +18,7 @@ class RandomBytes :
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta() =
-        Meta("generates random binary data")
+    override val meta get() = Meta("generates random binary data")
 
     override fun run() {
         val count = commandLine.getOptionValue(SIZE).toLong()

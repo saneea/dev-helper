@@ -17,7 +17,7 @@ class FromGzip :
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
 
-    override fun meta() = Meta("extract from GZIP")
+    override val meta get() = Meta("extract from GZIP")
 
     override fun run() {
         GZIPInputStream(inBinStream).use(outBinStream::transferFrom)

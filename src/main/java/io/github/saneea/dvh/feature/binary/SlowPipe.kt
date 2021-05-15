@@ -21,7 +21,7 @@ class SlowPipe :
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta() = Meta("transfer bytes with delay")
+    override val meta get() = Meta("transfer bytes with delay")
 
     override fun run() {
         val delay = commandLine.getOptionValue(DELAY).toLong()

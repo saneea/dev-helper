@@ -45,24 +45,25 @@ class Sleep :
     override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
 
-    override fun meta(): Meta {
-        val execWithD = "${context.featuresChainString} -$DURATION_SHORT"
-        return Meta(
-            Meta.Description(
-                "wait some time before exit"
-            ),
-            listOf(
-                Meta.Example(
-                    "wait 5 seconds",
-                    "$execWithD 5"
+    override val meta: Meta
+        get() {
+            val execWithD = "${context.featuresChainString} -$DURATION_SHORT"
+            return Meta(
+                Meta.Description(
+                    "wait some time before exit"
                 ),
-                Meta.Example(
-                    "wait 5000 milliseconds (5 seconds)",
-                    "$execWithD 5000 -$UNITS_SHORT ${Units.MS.cli}"
+                listOf(
+                    Meta.Example(
+                        "wait 5 seconds",
+                        "$execWithD 5"
+                    ),
+                    Meta.Example(
+                        "wait 5000 milliseconds (5 seconds)",
+                        "$execWithD 5000 -$UNITS_SHORT ${Units.MS.cli}"
+                    )
                 )
             )
-        )
-    }
+        }
 
     override fun run() {
         val timeUnitStr: String = commandLine.getOptionValue(UNITS, Units.DEFAULT.cli)

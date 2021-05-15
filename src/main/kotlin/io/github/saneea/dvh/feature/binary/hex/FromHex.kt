@@ -17,7 +17,7 @@ class FromHex :
     override lateinit var inTextReader: Reader
     override lateinit var outBinStream: OutputStream
 
-    override fun meta() = Meta("convert input hex sequence to binary")
+    override val meta get() = Meta("convert input hex sequence to binary")
 
     override fun run() {
         while (true) {

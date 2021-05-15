@@ -15,7 +15,7 @@ class ToHex :
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
 
-    override fun meta() = Meta("convert input binary sequence to hex")
+    override val meta get() = Meta("convert input binary sequence to hex")
 
     override fun run() {
         run(inBinStream, outTextPrintStream)

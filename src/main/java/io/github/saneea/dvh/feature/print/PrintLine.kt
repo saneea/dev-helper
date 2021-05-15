@@ -17,7 +17,7 @@ class PrintLine :
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta() = Meta("print text to output")
+    override val meta get() = Meta("print text to output")
 
     override fun run() {
         val text = commandLine.getOptionValue(TEXT)

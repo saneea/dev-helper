@@ -8,7 +8,7 @@ class Stub : Feature {
 
     override lateinit var context: FeatureContext
 
-    override fun meta() = Meta("do nothing")
+    override val meta get() = Meta("do nothing")
 
     override fun run() = Unit
 }

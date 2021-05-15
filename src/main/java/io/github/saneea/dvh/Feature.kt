@@ -11,9 +11,9 @@ interface Feature {
 
     var context: FeatureContext
 
-    fun run()
+    val meta: Meta
 
-    fun meta(): Meta
+    fun run()
 
     data class Meta(
         val description: Description,

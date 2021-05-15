@@ -15,7 +15,7 @@ class Pipe :
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override fun meta() = Meta("just transfer text from std_in to std_out")
+    override val meta get() = Meta("just transfer text from std_in to std_out")
 
     override fun run() {
         inTextReader.transferTo(outTextWriter)

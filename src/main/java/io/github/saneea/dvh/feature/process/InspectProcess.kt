@@ -18,7 +18,7 @@ class InspectProcess :
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta() = Meta("print statistic about process")
+    override val meta get() = Meta("print statistic about process")
 
     override fun run() {
         val command = commandLine.getOptionValue(COMMAND)

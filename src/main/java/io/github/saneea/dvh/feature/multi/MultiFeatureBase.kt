@@ -30,7 +30,7 @@ abstract class MultiFeatureBase : MultiFeature() {
 
             return feature(featureAlias) {
                 object : MultiFeatureBase() {
-                    override fun meta() = Meta(shortDescription)
+                    override val meta get() = Meta(shortDescription)
 
                     override fun getFeatureAliases() = children
                 }
