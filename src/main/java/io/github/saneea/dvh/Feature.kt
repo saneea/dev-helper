@@ -39,14 +39,12 @@ interface Feature {
         }
 
         interface Text {
-            interface PrintStream : Bin.Stream {
+            interface PrintStream {
                 var outTextPrintStream: java.io.PrintStream
-                override fun setOutBinStream(out: OutputStream) {}
             }
 
-            interface Writer : Bin.Stream {
+            interface Writer {
                 var outTextWriter: java.io.Writer
-                override fun setOutBinStream(out: OutputStream) {}
             }
 
             interface String {
@@ -63,9 +61,8 @@ interface Feature {
         }
 
         interface Text {
-            interface Reader : Bin.Stream {
+            interface Reader {
                 fun setInTextReader(`in`: java.io.Reader)
-                override fun setInBinStream(`in`: InputStream) {}
             }
 
             interface String {

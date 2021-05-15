@@ -87,7 +87,10 @@ class FeatureResources(
 
             when (feature) {
                 is Feature.In.Bin.Stream,
-                is Feature.Out.Bin.Stream ->
+                is Feature.In.Text.Reader,
+                is Feature.Out.Bin.Stream,
+                is Feature.Out.Text.PrintStream,
+                is Feature.Out.Text.Writer ->
                     it.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION)
             }
         }
