@@ -12,7 +12,7 @@ class JoinLines :
     Feature.Out.Text.Writer {
 
     private lateinit var `in`: Reader
-    private lateinit var out: Writer
+    override lateinit var outTextWriter: Writer
 
     override fun meta(context: FeatureContext) = Meta("join lines to one line")
 
@@ -21,15 +21,11 @@ class JoinLines :
             it
                 .lines()
                 .map(String::trim)
-                .forEach(out::write)
+                .forEach(outTextWriter::write)
         }
     }
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextWriter(out: Writer) {
-        this.out = out
     }
 }

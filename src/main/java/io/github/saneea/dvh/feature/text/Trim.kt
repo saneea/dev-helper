@@ -29,7 +29,7 @@ class Trim :
     Feature.Out.Text.Writer {
 
     private lateinit var `in`: Reader
-    private lateinit var out: Writer
+    override lateinit var outTextWriter: Writer
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("trim leading and/or trailing whitespaces")
@@ -41,7 +41,7 @@ class Trim :
 
         var charCode: Int
         while (`in`.read().also { charCode = it } != -1) {
-            convertFunc(charCode, out::write)
+            convertFunc(charCode, outTextWriter::write)
         }
     }
 
@@ -61,10 +61,6 @@ class Trim :
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextWriter(out: Writer) {
-        this.out = out
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

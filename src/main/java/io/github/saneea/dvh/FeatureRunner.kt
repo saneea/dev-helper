@@ -32,7 +32,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
             ?.setOutTextPrintStream(featureResources.outTextPrintStream)
 
         (feature as? Feature.Out.Text.Writer)
-            ?.setOutTextWriter(featureResources.outTextWriter)
+            ?.outTextWriter = featureResources.outTextWriter
 
         (feature as? Feature.Out.Text.String)
             ?.setOutTextString(featureResources.outTextString)

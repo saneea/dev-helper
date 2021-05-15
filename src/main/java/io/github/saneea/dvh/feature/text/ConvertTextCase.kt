@@ -39,22 +39,22 @@ abstract class ConvertTextCaseBase(
     Feature.Out.Text.Writer {
 
     private lateinit var `in`: Reader
-    private lateinit var out: Writer
+    override lateinit var outTextWriter: Writer
     private lateinit var commandLine: CommandLine
 
     override fun run(context: FeatureContext) {
         if (commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)) {
             var codePoint: Int
             while (`in`.read().also { codePoint = it } != -1) {
-                out.write(intConverter(codePoint))
-                out.flush()
+                outTextWriter.write(intConverter(codePoint))
+                outTextWriter.flush()
             }
         } else {
             val buf = CharArray(4096)
             var wasRead: Int
             while (`in`.read(buf).also { wasRead = it } != -1) {
                 convertChars(buf, wasRead)
-                out.write(buf, 0, wasRead)
+                outTextWriter.write(buf, 0, wasRead)
             }
         }
     }
@@ -67,10 +67,6 @@ abstract class ConvertTextCaseBase(
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextWriter(out: Writer) {
-        this.out = out
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

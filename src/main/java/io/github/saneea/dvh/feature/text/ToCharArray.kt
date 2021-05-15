@@ -12,7 +12,7 @@ class ToCharArray :
     Feature.Out.Text.Writer {
 
     private lateinit var `in`: Reader
-    private lateinit var out: Writer
+    override lateinit var outTextWriter: Writer
 
     override fun meta(context: FeatureContext) = Meta("convert input string to char array")
 
@@ -23,9 +23,9 @@ class ToCharArray :
             if (first) {
                 first = false
             } else {
-                out.append(", ")
+                outTextWriter.append(", ")
             }
-            out.append(
+            outTextWriter.append(
                 wrapInQuotes(
                     wrapIfEscaped(
                         charCode.toChar()
@@ -52,9 +52,5 @@ class ToCharArray :
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextWriter(out: Writer) {
-        this.out = out
     }
 }

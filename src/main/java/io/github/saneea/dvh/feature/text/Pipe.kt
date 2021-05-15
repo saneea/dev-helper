@@ -12,19 +12,15 @@ class Pipe :
     Feature.Out.Text.Writer {
 
     private lateinit var `in`: Reader
-    private lateinit var out: Writer
+    override lateinit var outTextWriter: Writer
 
     override fun meta(context: FeatureContext) = Meta("just transfer text from std_in to std_out")
 
     override fun run(context: FeatureContext) {
-        `in`.transferTo(out)
+        `in`.transferTo(outTextWriter)
     }
 
     override fun setInTextReader(`in`: Reader) {
         this.`in` = `in`
-    }
-
-    override fun setOutTextWriter(out: Writer) {
-        this.out = out
     }
 }
