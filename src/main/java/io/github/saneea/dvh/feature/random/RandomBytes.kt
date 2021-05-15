@@ -15,7 +15,7 @@ class RandomBytes :
     Feature.Out.Bin.Stream {
 
     override lateinit var outBinStream: OutputStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
         Meta("generates random binary data")
@@ -35,10 +35,6 @@ class RandomBytes :
             r.nextBytes(bytes)
             outBinStream.write(bytes)
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options: Array<Option>

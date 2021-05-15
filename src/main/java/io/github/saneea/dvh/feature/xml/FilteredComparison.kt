@@ -14,7 +14,7 @@ class FilteredComparison :
     Feature.CLI,
     Feature.CLI.Options {
 
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("run external comparison tool for 'pretty printed' xml files")
 
@@ -71,10 +71,6 @@ class FilteredComparison :
                     .build()
             )
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options get() = Params.createOptions()

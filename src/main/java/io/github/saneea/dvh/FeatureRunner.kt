@@ -26,7 +26,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
         val featureResources = FeatureResources(feature, args, context)
 
         (feature as? Feature.CLI)
-            ?.setCommandLine(featureResources.commandLine)
+            ?.commandLine = featureResources.commandLine
 
         (feature as? Feature.Out.Text.PrintStream)
             ?.outTextPrintStream = featureResources.outTextPrintStream

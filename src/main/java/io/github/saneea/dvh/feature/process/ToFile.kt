@@ -24,7 +24,7 @@ class ToFile :
     }
 
     override lateinit var errBinStream: OutputStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("save output of external process to file")
 
@@ -86,10 +86,6 @@ class ToFile :
                 }
             }
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options: Array<Option>

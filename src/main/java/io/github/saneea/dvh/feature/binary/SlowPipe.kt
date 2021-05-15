@@ -18,7 +18,7 @@ class SlowPipe :
 
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("transfer bytes with delay")
 
@@ -29,10 +29,6 @@ class SlowPipe :
             Thread.sleep(delay)
             outBinStream.write(byteCode)
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options: Array<Option>

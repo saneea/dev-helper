@@ -17,7 +17,7 @@ class Now :
     Feature.Out.Text.String {
 
     override lateinit var outTextString: StringConsumer
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
     override fun meta(context: FeatureContext): Meta {
@@ -47,10 +47,6 @@ class Now :
         val format = formatFactory.createFormat(formatNameOrPattern)
         val formattedTime = format.render(ZonedDateTime.now())
         outTextString(formattedTime)
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options: Array<Option>

@@ -20,7 +20,7 @@ class Converter :
 
     override lateinit var inTextString: String
     override lateinit var outTextString: StringConsumer
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
     override fun meta(context: FeatureContext) = Meta("convert time from original format to another one")
@@ -35,10 +35,6 @@ class Converter :
 
     private fun getFormatFromCLI(cliOptionName: String) =
         formatFactory.createFormat(commandLine.getOptionValue(cliOptionName))
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     override val options
         get() = arrayOf(

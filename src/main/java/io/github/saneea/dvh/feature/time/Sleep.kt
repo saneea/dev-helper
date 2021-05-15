@@ -42,7 +42,7 @@ class Sleep :
         }
     }
 
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext): Meta {
         val execWithD = "${context.featuresChainString} -$DURATION_SHORT"
@@ -101,10 +101,6 @@ class Sleep :
                 )
                 .build()
         )
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     companion object {
         private const val DURATION = "duration"

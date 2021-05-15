@@ -30,7 +30,7 @@ class Trim :
 
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("trim leading and/or trailing whitespaces")
 
@@ -57,10 +57,6 @@ class Trim :
             "true" -> this and newTrimmer()
             else -> throw IllegalArgumentException("Invalid $optName value: $optValue")
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options: Array<Option>

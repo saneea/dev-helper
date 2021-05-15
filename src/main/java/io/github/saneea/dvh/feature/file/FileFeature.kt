@@ -13,7 +13,7 @@ abstract class FileFeature :
     CLI,
     CLI.Options {
 
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
     protected abstract val description: String
 
     protected abstract fun handleFile(file: File)
@@ -37,10 +37,6 @@ abstract class FileFeature :
                     .build()
             )
         }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     companion object {
         private const val FILE_NAME = "fileName"

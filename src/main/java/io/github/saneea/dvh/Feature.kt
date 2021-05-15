@@ -80,7 +80,7 @@ interface Feature {
     }
 
     interface CLI {
-        fun setCommandLine(commandLine: CommandLine)
+        var commandLine: CommandLine
 
         interface Options {
             val options: Array<Option>

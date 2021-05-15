@@ -17,7 +17,7 @@ class Split :
 
     override lateinit var inTextReader: Reader
     override lateinit var outTextPrintStream: PrintStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("split text as lines")
 
@@ -55,10 +55,6 @@ class Split :
             }
             return size
         }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     override val options: Array<Option>
         get() {

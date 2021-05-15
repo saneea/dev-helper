@@ -1,7 +1,6 @@
 package io.github.saneea.dvh.feature.binary
 
 import io.github.saneea.dvh.Feature
-import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.Meta
 import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
@@ -9,11 +8,16 @@ import org.apache.commons.cli.Option
 import java.io.InputStream
 import java.io.PrintStream
 
-class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Out.Text.PrintStream {
+class ToRandomArt :
+    Feature,
+    Feature.CLI,
+    Feature.CLI.Options,
+    Feature.In.Bin.Stream,
+    Feature.Out.Text.PrintStream {
 
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     private var sizeX = 0
     private var sizeY = 0
@@ -123,10 +127,6 @@ class ToRandomArt : Feature, CLI, CLI.Options, Feature.In.Bin.Stream, Feature.Ou
             .required(false)
             .desc("picture $displayName (default $defaultValue)")
             .build()
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     private class Picture(sizeX: Int, sizeY: Int) {

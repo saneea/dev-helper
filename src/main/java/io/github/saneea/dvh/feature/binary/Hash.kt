@@ -19,7 +19,7 @@ class Hash :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
 
@@ -31,10 +31,6 @@ class Hash :
     }
 
     override val options get() = Params.createOptions()
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     object Params {
         const val ALGORITHM = "algorithm"

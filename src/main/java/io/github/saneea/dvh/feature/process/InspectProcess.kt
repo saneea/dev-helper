@@ -15,7 +15,7 @@ class InspectProcess :
     Feature.Out.Text.PrintStream {
 
     override lateinit var outTextPrintStream: PrintStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("print statistic about process")
 
@@ -36,10 +36,6 @@ class InspectProcess :
         stat.finishTime = System.currentTimeMillis()
         stat.duration = stat.finishTime - stat.startTime
         return stat
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 
     override val options

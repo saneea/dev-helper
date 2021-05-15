@@ -14,7 +14,7 @@ class PrintLine :
     Feature.Out.Text.PrintStream {
 
     override lateinit var outTextPrintStream: PrintStream
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) = Meta("print text to output")
 
@@ -47,10 +47,6 @@ class PrintLine :
                 .desc("do not add new line at the end of output")
                 .build()
         )
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
-    }
 
     companion object {
         private const val TEXT = "text"

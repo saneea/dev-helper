@@ -40,7 +40,7 @@ abstract class ConvertTextCaseBase(
 
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
-    private lateinit var commandLine: CommandLine
+    override lateinit var commandLine: CommandLine
 
     override fun run(context: FeatureContext) {
         if (commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)) {
@@ -63,9 +63,5 @@ abstract class ConvertTextCaseBase(
         for (i in 0 until size) {
             buf[i] = charConverter(buf[i])
         }
-    }
-
-    override fun setCommandLine(commandLine: CommandLine) {
-        this.commandLine = commandLine
     }
 }
