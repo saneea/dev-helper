@@ -16,13 +16,14 @@ class SlowPipe :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
+    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("transfer bytes with delay")
+    override fun meta() = Meta("transfer bytes with delay")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val delay = commandLine.getOptionValue(DELAY).toLong()
         var byteCode: Int
         while (inBinStream.read().also { byteCode = it } != -1) {

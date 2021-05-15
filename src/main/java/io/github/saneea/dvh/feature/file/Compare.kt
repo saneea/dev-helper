@@ -1,6 +1,7 @@
 package io.github.saneea.dvh.feature.file
 
 import io.github.saneea.dvh.Feature
+import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.StringConsumer
 import java.io.File
 import java.io.InputStream
@@ -10,6 +11,7 @@ class Compare :
     Feature.In.Bin.Stream,
     Feature.Out.Text.String {
 
+    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outTextString: StringConsumer
 

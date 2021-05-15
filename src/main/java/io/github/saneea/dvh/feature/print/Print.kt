@@ -6,7 +6,7 @@ import io.github.saneea.dvh.feature.multi.FeaturesCreators
 import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Print : MultiFeatureBase() {
-    override fun meta(context: FeatureContext) = Meta("just print text from CLI args")
+    override fun meta() = Meta("just print text from CLI args")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

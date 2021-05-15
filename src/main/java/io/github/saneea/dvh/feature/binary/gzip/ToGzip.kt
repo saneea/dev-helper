@@ -12,12 +12,13 @@ class ToGzip :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
+    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
 
-    override fun meta(context: FeatureContext) = Meta("compress to GZIP")
+    override fun meta() = Meta("compress to GZIP")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         GZIPOutputStream(outBinStream).use(inBinStream::transferTo)
     }
 }

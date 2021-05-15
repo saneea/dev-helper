@@ -16,7 +16,7 @@ class ConvertTextCase {
             Character::toUpperCase
         ) {
 
-        override fun meta(context: FeatureContext) = Meta("convert text to upper case (aBcDe -> ABCDE)")
+        override fun meta() = Meta("convert text to upper case (aBcDe -> ABCDE)")
     }
 
     class Lower :
@@ -25,7 +25,7 @@ class ConvertTextCase {
             Character::toLowerCase
         ) {
 
-        override fun meta(context: FeatureContext) = Meta("convert text to lower case (aBcDe -> abcde)")
+        override fun meta() = Meta("convert text to lower case (aBcDe -> abcde)")
     }
 }
 
@@ -38,11 +38,12 @@ abstract class ConvertTextCaseBase(
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
     override lateinit var commandLine: CommandLine
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         if (commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)) {
             var codePoint: Int
             while (inTextReader.read().also { codePoint = it } != -1) {

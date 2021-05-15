@@ -14,12 +14,13 @@ class InspectProcess :
     Feature.CLI.Options,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("print statistic about process")
+    override fun meta() = Meta("print statistic about process")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val command = commandLine.getOptionValue(COMMAND)
         val stat = execProcess(command)
         val gson = GsonBuilder()

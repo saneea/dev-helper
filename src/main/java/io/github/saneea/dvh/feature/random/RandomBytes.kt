@@ -14,13 +14,14 @@ class RandomBytes :
     Feature.CLI.Options,
     Feature.Out.Bin.Stream {
 
+    override lateinit var context: FeatureContext
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) =
+    override fun meta() =
         Meta("generates random binary data")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val count = commandLine.getOptionValue(SIZE).toLong()
         val seed: String? = commandLine.getOptionValue(SEED)
 

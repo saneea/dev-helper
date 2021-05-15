@@ -11,12 +11,13 @@ class ToCharArray :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override fun meta(context: FeatureContext) = Meta("convert input string to char array")
+    override fun meta() = Meta("convert input string to char array")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         var charCode: Int
         var first = true
         while (inTextReader.read().also { charCode = it } != -1) {

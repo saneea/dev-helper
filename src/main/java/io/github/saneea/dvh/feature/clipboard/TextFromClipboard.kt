@@ -11,11 +11,12 @@ class TextFromClipboard :
     Feature,
     Feature.Out.Text.String {
 
+    override lateinit var context: FeatureContext
     override lateinit var outTextString: StringConsumer
 
-    override fun meta(context: FeatureContext) = Meta("read text from clipboard")
+    override fun meta() = Meta("read text from clipboard")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val clipboard = Toolkit.getDefaultToolkit().systemClipboard
         val clipboardText = clipboard.getData(DataFlavor.stringFlavor) as String
         outTextString(clipboardText)

@@ -10,11 +10,12 @@ class Nowhere :
     Feature,
     Feature.In.Bin.Stream {
 
+    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
 
-    override fun meta(context: FeatureContext) = Meta("read all input data and do nothing")
+    override fun meta() = Meta("read all input data and do nothing")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         inBinStream.transferTo(OutputStream.nullOutputStream())
     }
 }

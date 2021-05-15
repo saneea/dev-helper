@@ -28,13 +28,14 @@ class Trim :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("trim leading and/or trailing whitespaces")
+    override fun meta() = Meta("trim leading and/or trailing whitespaces")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val convertFunc = NO_CONVERSION
             .and(LEFT_TRIM, ::leftTrimmer)
             .and(RIGHT_TRIM, ::rightTrimmer)

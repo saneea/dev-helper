@@ -14,11 +14,12 @@ class SlashReplacer :
     Feature.In.Text.String,
     Feature.Out.Text.String {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextString: String
     override lateinit var outTextString: StringConsumer
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext): Meta {
+    override fun meta(): Meta {
 
         val echoPipeFeature = "echo some////path\\\\to\\\\file.txt | " + context.featuresChainString
 
@@ -42,7 +43,7 @@ class SlashReplacer :
         )
     }
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val slash = commandLine.getOptionValue(NEW_SLASH, "/")
         val regex = """([\\/])+""".toRegex()
         outTextString(inTextString.replace(regex, "\\$slash"))

@@ -15,6 +15,7 @@ class ToRandomArt :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
@@ -27,9 +28,9 @@ class ToRandomArt :
 
     private lateinit var picture: Picture
 
-    override fun meta(context: FeatureContext) = Meta("convert input binary sequence to random art picture")
+    override fun meta() = Meta("convert input binary sequence to random art picture")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         sizeX = commandLine.getOptionValue(SIZE_X, DEFAULT_SIZE_X.toString()).toInt()
         sizeY = commandLine.getOptionValue(SIZE_Y, DEFAULT_SIZE_Y.toString()).toInt()
         currentX = sizeX / 2

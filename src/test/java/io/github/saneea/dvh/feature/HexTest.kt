@@ -44,7 +44,8 @@ class HexTest {
                 val feature = FromHex()
                 feature.inTextReader = reader
                 feature.outBinStream = output
-                feature.run(FeatureContext(null, "", arrayOf()))
+                feature.context = FeatureContext(null, "", arrayOf())
+                feature.run()
                 return output.toByteArray()
             }
         }
@@ -57,7 +58,8 @@ class HexTest {
                 PrintStream(output, false, TEST_CHARSET).use { printStreamOut ->
                     feature.inBinStream = inputStream
                     feature.outTextPrintStream = printStreamOut
-                    feature.run(FeatureContext(null, "", arrayOf()))
+                    feature.context = FeatureContext(null, "", arrayOf())
+                    feature.run()
                 }
                 return output.toString(TEST_CHARSET)
             }

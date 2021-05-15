@@ -64,7 +64,8 @@ object Utils {
         }
 
         protected open fun printExamples() {
-            val examples = feature.meta(context).examples
+            feature.context = context
+            val examples = feature.meta().examples
             val examplesCount = examples.size
             if (examplesCount > 0) {
                 println()
@@ -86,7 +87,8 @@ object Utils {
         protected fun printCLI() = HelpFormatter().printHelp(cmdLineSyntax, options, true)
 
         protected fun printDescription() {
-            println(feature.meta(context).description.detailed)
+            feature.context = context
+            println(feature.meta().description.detailed)
             println()
         }
 

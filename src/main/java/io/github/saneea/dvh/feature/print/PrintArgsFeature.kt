@@ -9,10 +9,11 @@ class PrintArgsFeature :
     Feature,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var outTextPrintStream: PrintStream
 
-    override fun meta(context: FeatureContext) = Meta("print CLI args")
+    override fun meta() = Meta("print CLI args")
 
-    override fun run(context: FeatureContext) =
+    override fun run() =
         context.args.forEach(outTextPrintStream::println)
 }

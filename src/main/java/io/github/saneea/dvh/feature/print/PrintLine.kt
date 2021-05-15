@@ -13,12 +13,13 @@ class PrintLine :
     Feature.CLI.Options,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("print text to output")
+    override fun meta() = Meta("print text to output")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val text = commandLine.getOptionValue(TEXT)
 
         val printFunc: (String) -> Unit =

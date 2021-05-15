@@ -18,9 +18,9 @@ abstract class FileFeature :
 
     protected abstract fun handleFile(file: File)
 
-    override fun meta(context: FeatureContext) = Meta(description)
+    override fun meta() = Meta(description)
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         handleFile(File(commandLine.getOptionValue(FILE_NAME)))
     }
 

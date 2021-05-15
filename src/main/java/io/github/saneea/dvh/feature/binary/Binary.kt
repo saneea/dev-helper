@@ -12,7 +12,7 @@ import io.github.saneea.dvh.feature.multi.FeaturesCreators
 import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Binary : MultiFeatureBase() {
-    override fun meta(context: FeatureContext) = Meta("binary data processing (decoding/encoding, hash, etc)")
+    override fun meta() = Meta("binary data processing (decoding/encoding, hash, etc)")
 
     override fun getFeatureAliases(): FeaturesCreators {
         return AliasesBuilder()

@@ -15,7 +15,8 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
         args: Array<String>
     ) {
         val childContext = FeatureContext(context, featureName, args)
-        handleFeatureResources(feature, args, childContext).use { feature.run(childContext) }
+        feature.context = childContext
+        handleFeatureResources(feature, args, childContext).use { feature.run() }
     }
 
     private fun handleFeatureResources(

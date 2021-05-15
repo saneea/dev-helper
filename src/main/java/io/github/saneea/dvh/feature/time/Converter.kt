@@ -18,14 +18,15 @@ class Converter :
     Feature.In.Text.String,
     Feature.Out.Text.String {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextString: String
     override lateinit var outTextString: StringConsumer
     override lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
-    override fun meta(context: FeatureContext) = Meta("convert time from original format to another one")
+    override fun meta() = Meta("convert time from original format to another one")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val inFormat = getFormatFromCLI(IN_FORMAT)
         val outFormat = getFormatFromCLI(OUT_FORMAT)
         val timeAsZoned = inFormat.parse(inTextString)

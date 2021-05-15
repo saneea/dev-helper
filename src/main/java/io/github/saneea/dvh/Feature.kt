@@ -9,9 +9,11 @@ typealias StringConsumer = (String) -> Unit
 
 interface Feature {
 
-    fun run(context: FeatureContext)
+    var context: FeatureContext
 
-    fun meta(context: FeatureContext): Meta
+    fun run()
+
+    fun meta(): Meta
 
     data class Meta(
         val description: Description,

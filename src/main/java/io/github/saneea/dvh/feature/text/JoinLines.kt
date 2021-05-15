@@ -11,12 +11,13 @@ class JoinLines :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override fun meta(context: FeatureContext) = Meta("join lines to one line")
+    override fun meta() = Meta("join lines to one line")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         inTextReader.buffered().use {
             it
                 .lines()

@@ -19,13 +19,14 @@ class Hash :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
 
-    override fun meta(context: FeatureContext) = Meta("calc hash (md5, sha-* etc.)")
+    override fun meta() = Meta("calc hash (md5, sha-* etc.)")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val alg = commandLine.getOptionValue(Params.ALGORITHM)
         execute(inBinStream, outTextPrintStream, alg)
     }

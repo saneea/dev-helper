@@ -6,7 +6,9 @@ import io.github.saneea.dvh.FeatureContext
 
 class Stub : Feature {
 
-    override fun meta(context: FeatureContext) = Meta("do nothing")
+    override lateinit var context: FeatureContext
 
-    override fun run(context: FeatureContext) = Unit
+    override fun meta() = Meta("do nothing")
+
+    override fun run() = Unit
 }

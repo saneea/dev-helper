@@ -13,10 +13,11 @@ import org.apache.commons.cli.Options
 
 abstract class MultiFeature : Feature {
 
+    override lateinit var context: FeatureContext
     private val out = System.out
     abstract val featureProvider: FeatureProvider
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val args = context.args
         if (args.isEmpty() || args[0].startsWith("-")) {
             runFeatureWithOptions(context, args)

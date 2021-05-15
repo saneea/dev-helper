@@ -11,13 +11,13 @@ import java.io.Writer
 class JsonFormatting {
 
     class Pretty : Base() {
-        override fun meta(context: FeatureContext) = Meta("format JSON with indents")
+        override fun meta() = Meta("format JSON with indents")
 
         override val gsonBuilder: GsonBuilder = GsonBuilder().setPrettyPrinting()
     }
 
     class Line : Base() {
-        override fun meta(context: FeatureContext) = Meta("format JSON to line")
+        override fun meta() = Meta("format JSON to line")
 
         override val gsonBuilder = GsonBuilder()
     }
@@ -27,12 +27,13 @@ class JsonFormatting {
         Feature.In.Text.Reader,
         Feature.Out.Text.Writer {
 
+        override lateinit var context: FeatureContext
         override lateinit var inTextReader: Reader
         override lateinit var outTextWriter: Writer
 
         protected abstract val gsonBuilder: GsonBuilder
 
-        override fun run(context: FeatureContext) {
+        override fun run() {
             val gson = gsonBuilder.create()
             val jsonElement = gson.fromJson(inTextReader, JsonElement::class.java)
             gson.toJson(jsonElement, outTextWriter)

@@ -15,13 +15,14 @@ class Split :
     Feature.In.Text.Reader,
     Feature.Out.Text.PrintStream {
 
+    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("split text as lines")
+    override fun meta() = Meta("split text as lines")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val size = lineSize
         while (transferLine(size)) {
             // no code

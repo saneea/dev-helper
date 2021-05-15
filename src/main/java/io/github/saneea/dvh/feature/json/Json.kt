@@ -10,7 +10,7 @@ import io.github.saneea.dvh.utils.const.PRETTY
 
 class Json : MultiFeatureBase() {
 
-    override fun meta(context: FeatureContext) = Meta("json processing")
+    override fun meta() = Meta("json processing")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()

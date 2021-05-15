@@ -42,9 +42,10 @@ class Sleep :
         }
     }
 
+    override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext): Meta {
+    override fun meta(): Meta {
         val execWithD = "${context.featuresChainString} -$DURATION_SHORT"
         return Meta(
             Meta.Description(
@@ -63,7 +64,7 @@ class Sleep :
         )
     }
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val timeUnitStr: String = commandLine.getOptionValue(UNITS, Units.DEFAULT.cli)
         val timeUnit: TimeUnit = Units.fromCli(timeUnitStr).javaTimeUnit
         val durationStr: String = commandLine.getOptionValue(DURATION)

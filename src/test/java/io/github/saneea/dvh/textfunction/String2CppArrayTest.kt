@@ -25,7 +25,8 @@ class String2CppArrayTest {
         toCharArray.outTextWriter = out
 
         val featureContext = FeatureContext(null, "any", emptyArray())
-        toCharArray.run(featureContext)
+        toCharArray.context = featureContext
+        toCharArray.run()
         val actual = out.toString()
         Assert.assertEquals(expected, actual)
     }

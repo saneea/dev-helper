@@ -16,11 +16,12 @@ class Now :
     Feature.CLI.Options,
     Feature.Out.Text.String {
 
+    override lateinit var context: FeatureContext
     override lateinit var outTextString: StringConsumer
     override lateinit var commandLine: CommandLine
     private val formatFactory = FormatFactory()
 
-    override fun meta(context: FeatureContext): Meta {
+    override fun meta(): Meta {
         val featuresChain = context.featuresChainString
         return Meta(
             Meta.Description(
@@ -42,7 +43,7 @@ class Now :
         )
     }
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val formatNameOrPattern = commandLine.getOptionValue(FORMAT, FORMAT_HUMAN)
         val format = formatFactory.createFormat(formatNameOrPattern)
         val formattedTime = format.render(ZonedDateTime.now())

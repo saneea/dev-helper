@@ -23,12 +23,13 @@ class ToFile :
         }
     }
 
+    override lateinit var context: FeatureContext
     override lateinit var errBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override fun meta(context: FeatureContext) = Meta("save output of external process to file")
+    override fun meta() = Meta("save output of external process to file")
 
-    override fun run(context: FeatureContext) {
+    override fun run() {
         val outFileName = commandLine.getOptionValue(OUTPUT)
         val command = commandLine.getOptionValue(COMMAND)
         val forkProc = Runtime.getRuntime().exec(command)

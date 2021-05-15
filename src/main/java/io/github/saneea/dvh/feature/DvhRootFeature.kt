@@ -9,5 +9,5 @@ class DvhRootFeature : MultiFeature() {
 
     override val featureProvider = RootFeatureProvider()
 
-    override fun meta(context: FeatureContext) = Meta("developer helper")
+    override fun meta() = Meta("developer helper")
 }
