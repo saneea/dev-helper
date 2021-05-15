@@ -14,7 +14,7 @@ class FromHex :
     Feature.Out.Bin.Stream {
 
     private lateinit var reader: Reader
-    private lateinit var output: OutputStream
+    override lateinit var outBinStream: OutputStream
 
     override fun meta(context: FeatureContext) = Meta("convert input hex sequence to binary")
 
@@ -29,7 +29,7 @@ class FromHex :
             val digits = buf.map { Character.digit(it, 16) }
             val byteCode = (digits[0] shl 4) + digits[1]
 
-            output.write(byteCode)
+            outBinStream.write(byteCode)
         }
     }
 
@@ -50,9 +50,5 @@ class FromHex :
 
     override fun setInTextReader(`in`: Reader) {
         this.reader = `in`
-    }
-
-    override fun setOutBinStream(out: OutputStream) {
-        this.output = out
     }
 }

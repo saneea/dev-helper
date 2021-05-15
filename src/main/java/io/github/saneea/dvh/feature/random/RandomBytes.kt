@@ -14,7 +14,7 @@ class RandomBytes :
     Feature.CLI.Options,
     Feature.Out.Bin.Stream {
 
-    private lateinit var out: OutputStream
+    override lateinit var outBinStream: OutputStream
     private lateinit var commandLine: CommandLine
 
     override fun meta(context: FeatureContext) =
@@ -33,12 +33,8 @@ class RandomBytes :
 
         for (i in 0 until count) {
             r.nextBytes(bytes)
-            out.write(bytes)
+            outBinStream.write(bytes)
         }
-    }
-
-    override fun setOutBinStream(out: OutputStream) {
-        this.out = out
     }
 
     override fun setCommandLine(commandLine: CommandLine) {

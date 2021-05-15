@@ -13,17 +13,13 @@ class ToBase64 :
     Feature.Out.Bin.Stream {
 
     private lateinit var `in`: InputStream
-    private lateinit var out: OutputStream
+    override lateinit var outBinStream: OutputStream
 
     override fun meta(context: FeatureContext) = Meta("convert input binary sequence to Base64")
 
 
     override fun run(context: FeatureContext) {
-        Base64.getEncoder().wrap(out).use(`in`::transferTo)
-    }
-
-    override fun setOutBinStream(out: OutputStream) {
-        this.out = out
+        Base64.getEncoder().wrap(outBinStream).use(`in`::transferTo)
     }
 
     override fun setInBinStream(`in`: InputStream) {

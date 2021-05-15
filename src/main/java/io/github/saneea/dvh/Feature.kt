@@ -34,7 +34,7 @@ interface Feature {
     interface Out {
         interface Bin {
             interface Stream {
-                fun setOutBinStream(out: OutputStream)
+                var outBinStream: OutputStream
             }
         }
 

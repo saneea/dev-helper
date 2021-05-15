@@ -9,18 +9,14 @@ class ReadFile :
     FileFeature(),
     Feature.Out.Bin.Stream {
 
-    private lateinit var out: OutputStream
+    override lateinit var outBinStream: OutputStream
 
     override val description = "transfer bytes from file to standard output"
 
     override fun handleFile(file: File) {
         file
             .inputStream().buffered()
-            .use(out::transferFrom)
-    }
-
-    override fun setOutBinStream(out: OutputStream) {
-        this.out = out
+            .use(outBinStream::transferFrom)
     }
 }
 
