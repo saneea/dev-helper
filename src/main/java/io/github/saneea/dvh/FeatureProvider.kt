@@ -10,11 +10,13 @@ interface FeatureProvider {
 
     fun featureInfo(context: FeatureContext): FeatureInfo {
         return try {
-            val feature = createFeature(context.featureName)
-            feature!!.context = context
-            FeatureInfo(feature, feature.meta.description.brief)
+            val feature = createFeature(context.featureName, context)
+            FeatureInfo(feature, feature!!.meta.description.brief)
         } catch (e: Exception) {
             FeatureInfo(null, e.toString())
         }
     }
 }
+
+fun FeatureProvider.createFeature(featureName: String, context: FeatureContext) =
+    this.createFeature(featureName).also { it?.context = context }

@@ -3,19 +3,11 @@ package io.github.saneea.dvh
 class FeatureRunner(private val featureProvider: FeatureProvider) {
 
     fun run(context: FeatureContext, featureName: String, args: Array<String>) {
-        val feature = featureProvider.createFeature(featureName)
-            ?: throw IllegalArgumentException("Unknown feature: \"$featureName\"")
-        runFeature(context, feature, featureName, args)
-    }
-
-    private fun runFeature(
-        context: FeatureContext,
-        feature: Feature,
-        featureName: String,
-        args: Array<String>
-    ) {
         val childContext = FeatureContext(context, featureName, args)
-        feature.context = childContext
+
+        val feature = featureProvider.createFeature(featureName, childContext)
+            ?: throw IllegalArgumentException("Unknown feature: \"$featureName\"")
+
         handleFeatureResources(feature, args, childContext).use { feature.run() }
     }
 
