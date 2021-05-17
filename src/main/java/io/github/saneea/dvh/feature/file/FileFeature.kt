@@ -3,7 +3,6 @@ package io.github.saneea.dvh.feature.file
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.File
@@ -20,9 +19,7 @@ abstract class FileFeature :
 
     override val meta get() = Meta(description)
 
-    override fun run() {
-        handleFile(File(commandLine.getOptionValue(FILE_NAME)))
-    }
+    override fun run() = handleFile(File(commandLine.getOptionValue(FILE_NAME)))
 
     override val options: Array<Option>
         get() {
