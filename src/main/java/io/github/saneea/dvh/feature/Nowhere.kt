@@ -13,7 +13,7 @@ class Nowhere :
     override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
 
-    override val meta get() = Meta("read all input data and do nothing")
+    override val meta = Meta("read all input data and do nothing")
 
     override fun run() {
         inBinStream.transferTo(OutputStream.nullOutputStream())

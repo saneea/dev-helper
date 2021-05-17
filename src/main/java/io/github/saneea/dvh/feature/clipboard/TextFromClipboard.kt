@@ -14,7 +14,7 @@ class TextFromClipboard :
     override lateinit var context: FeatureContext
     override lateinit var outTextString: StringConsumer
 
-    override val meta get() = Meta("read text from clipboard")
+    override val meta = Meta("read text from clipboard")
 
     override fun run() {
         val clipboard = Toolkit.getDefaultToolkit().systemClipboard

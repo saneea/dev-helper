@@ -15,7 +15,7 @@ class ToCharArray :
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override val meta get() = Meta("convert input string to char array")
+    override val meta = Meta("convert input string to char array")
 
     override fun run() {
         var charCode: Int

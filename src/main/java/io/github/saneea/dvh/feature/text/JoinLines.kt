@@ -15,7 +15,7 @@ class JoinLines :
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override val meta get() = Meta("join lines to one line")
+    override val meta = Meta("join lines to one line")
 
     override fun run() {
         inTextReader.buffered().use {

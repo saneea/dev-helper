@@ -23,7 +23,7 @@ class XmlToLine :
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override val meta get() = Meta("format XML to line")
+    override val meta = Meta("format XML to line")
 
     override fun run() =
         transform(inTextReader, outTextWriter)

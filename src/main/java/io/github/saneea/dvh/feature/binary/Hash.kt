@@ -24,7 +24,7 @@ class Hash :
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
 
-    override val meta get() = Meta("calc hash (md5, sha-* etc.)")
+    override val meta = Meta("calc hash (md5, sha-* etc.)")
 
     override fun run() {
         val alg = commandLine.getOptionValue(Params.ALGORITHM)

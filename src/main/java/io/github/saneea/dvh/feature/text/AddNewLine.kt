@@ -15,7 +15,7 @@ class AddNewLine :
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 
-    override val meta get() = Meta("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end")
+    override val meta = Meta("add platform-dependent 'newline' sequence (e.g. '\\n', '\\r\\n') at the end")
 
     override fun run() {
         inTextReader.transferTo(outTextWriter)

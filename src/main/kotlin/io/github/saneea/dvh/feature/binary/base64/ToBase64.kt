@@ -16,7 +16,7 @@ class ToBase64 :
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
 
-    override val meta get() = Meta("convert input binary sequence to Base64")
+    override val meta = Meta("convert input binary sequence to Base64")
 
     override fun run() {
         Base64.getEncoder().wrap(outBinStream).use(inBinStream::transferTo)

@@ -16,7 +16,7 @@ class ToGzip :
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
 
-    override val meta get() = Meta("compress to GZIP")
+    override val meta = Meta("compress to GZIP")
 
     override fun run() {
         GZIPOutputStream(outBinStream).use(inBinStream::transferTo)

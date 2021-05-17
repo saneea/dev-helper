@@ -27,7 +27,7 @@ class ToFile :
     override lateinit var errBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 
-    override val meta get() = Meta("save output of external process to file")
+    override val meta = Meta("save output of external process to file")
 
     override fun run() {
         val outFileName = commandLine.getOptionValue(OUTPUT)

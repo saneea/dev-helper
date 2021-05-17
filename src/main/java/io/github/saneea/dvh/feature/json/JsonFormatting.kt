@@ -11,13 +11,13 @@ import java.io.Writer
 class JsonFormatting {
 
     class Pretty : Base() {
-        override val meta get() = Meta("format JSON with indents")
+        override val meta = Meta("format JSON with indents")
 
         override val gsonBuilder: GsonBuilder = GsonBuilder().setPrettyPrinting()
     }
 
     class Line : Base() {
-        override val meta get() = Meta("format JSON to line")
+        override val meta = Meta("format JSON to line")
 
         override val gsonBuilder = GsonBuilder()
     }

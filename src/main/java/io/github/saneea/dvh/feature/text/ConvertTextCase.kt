@@ -16,7 +16,7 @@ class ConvertTextCase {
             Character::toUpperCase
         ) {
 
-        override val meta get() = Meta("convert text to upper case (aBcDe -> ABCDE)")
+        override val meta = Meta("convert text to upper case (aBcDe -> ABCDE)")
     }
 
     class Lower :
@@ -25,7 +25,7 @@ class ConvertTextCase {
             Character::toLowerCase
         ) {
 
-        override val meta get() = Meta("convert text to lower case (aBcDe -> abcde)")
+        override val meta = Meta("convert text to lower case (aBcDe -> abcde)")
     }
 }
 

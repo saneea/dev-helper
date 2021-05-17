@@ -33,7 +33,7 @@ class Trim :
     override lateinit var outTextWriter: Writer
     override lateinit var commandLine: CommandLine
 
-    override val meta get() = Meta("trim leading and/or trailing whitespaces")
+    override val meta = Meta("trim leading and/or trailing whitespaces")
 
     override fun run() {
         val convertFunc = NO_CONVERSION

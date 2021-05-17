@@ -6,7 +6,7 @@ import io.github.saneea.dvh.feature.multi.FeatureCreator
 import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Time : MultiFeatureBase() {
-    override val meta get() = Meta("time utils")
+    override val meta = Meta("time utils")
 
     override fun getFeatureAliases(): Map<String, FeatureCreator> =
         AliasesBuilder()

@@ -6,7 +6,7 @@ import io.github.saneea.dvh.feature.multi.FeaturesCreators
 import io.github.saneea.dvh.feature.multi.MultiFeatureBase
 
 class Proc : MultiFeatureBase() {
-    override val meta get() = Meta("fork process")
+    override val meta = Meta("fork process")
 
     override fun getFeatureAliases(): FeaturesCreators =
         AliasesBuilder()
