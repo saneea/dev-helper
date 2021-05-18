@@ -1,5 +1,5 @@
 # dev-helper
-[![Build Status](https://api.travis-ci.com/saneea/dev-helper.svg?branch=master)](https://travis-ci.com/saneea/dev-helper)
+![Build Status](https://github.com/saneea/dev-helper/actions/workflows/maven.yml/badge.svg)
 
 **dev-helper** is just simple tool for helping developer with daily routines.
 It is written with pure-Java.
