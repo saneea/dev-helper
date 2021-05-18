@@ -2,7 +2,7 @@ package io.github.saneea.dvh
 
 class FeatureRunner(private val featureProvider: FeatureProvider) {
 
-    fun run(context: FeatureContext, featureName: String, args: Array<String>) {
+    fun run(context: FeatureContext, featureName: String, args: List<String>) {
         val childContext = FeatureContext(context, featureName, args)
 
         val feature = featureProvider.createFeature(featureName, childContext)
@@ -13,7 +13,7 @@ class FeatureRunner(private val featureProvider: FeatureProvider) {
 
     private fun handleFeatureResources(
         feature: Feature,
-        args: Array<String>,
+        args: List<String>,
         context: FeatureContext
     ): FeatureResources {
         val featureResources = FeatureResources(feature, args, context)

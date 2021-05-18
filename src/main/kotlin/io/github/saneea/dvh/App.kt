@@ -9,7 +9,7 @@ object App {
     fun main(args: Array<String>) {
         val rootFeature = DvhRootFeature()
         try {
-            rootFeature.context = FeatureContext(null, "dvh", args)
+            rootFeature.context = FeatureContext(null, "dvh", args.toList())
             rootFeature.run()
         } catch (appExitException: AppExitException) {
             exitProcess(appExitException.exitCode)

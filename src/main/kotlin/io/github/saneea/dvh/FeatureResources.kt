@@ -13,7 +13,7 @@ import java.util.*
 
 class FeatureResources(
     private val feature: Feature,
-    private val args: Array<String>,
+    private val args: List<String>,
     private val context: FeatureContext
 ) : AutoCloseable {
 

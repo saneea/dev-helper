@@ -14,7 +14,7 @@ import java.util.*
 typealias PrintHelpFunc = (commandLine: CommandLine?) -> Unit
 
 object Utils {
-    val NO_ARGS = arrayOf<String>()
+    val NO_ARGS = emptyList<String>()
 
     fun toMap(properties: Properties) =
         properties
@@ -32,13 +32,13 @@ object Utils {
         return ret
     }
 
-    fun parseCli(args: Array<String>, cliOptions: Options, feature: Feature, context: FeatureContext) =
+    fun parseCli(args: List<String>, cliOptions: Options, feature: Feature, context: FeatureContext) =
         parseCli(args, cliOptions, DefaultHelpPrinter(cliOptions, feature, context))
 
-    fun parseCli(args: Array<String>, cliOptions: Options, printHelp: PrintHelpFunc): CommandLine {
+    fun parseCli(args: List<String>, cliOptions: Options, printHelp: PrintHelpFunc): CommandLine {
         val commandLineParser: CommandLineParser = DefaultParser()
         val commandLine = try {
-            commandLineParser.parse(cliOptions, args)
+            commandLineParser.parse(cliOptions, args.toTypedArray())
         } catch (e: ParseException) {
             System.err.println(e.localizedMessage)
             printHelp(null)

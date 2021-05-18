@@ -28,14 +28,14 @@ abstract class MultiFeature :
         }
     }
 
-    private fun runChildFeature(context: FeatureContext, args: Array<String>) {
+    private fun runChildFeature(context: FeatureContext, args: List<String>) {
         val featureName = args[0]
         val featureArgs = withoutFeatureName(args)
         val featureRunner = FeatureRunner(featureProvider)
         featureRunner.run(context, featureName, featureArgs)
     }
 
-    private fun runFeatureWithOptions(context: FeatureContext, args: Array<String>) {
+    private fun runFeatureWithOptions(context: FeatureContext, args: List<String>) {
         val cliOptions = Options()
             .addOption(CommonOptions.HELP_OPTION)
             .addOption(
@@ -90,10 +90,10 @@ abstract class MultiFeature :
         const val CATALOG_LIST = "list"
         const val CATALOG_TREE = "tree"
 
-        private fun withoutFeatureName(args: Array<String>) = if (args.isEmpty()) {
+        private fun withoutFeatureName(args: List<String>) = if (args.isEmpty()) {
             args
         } else {
-            args.drop(1).toTypedArray()
+            args.drop(1)
         }
     }
 }
