@@ -87,25 +87,24 @@ class ToFile :
         }
     }
 
-    override val options: Array<Option>
-        get() = arrayOf(
-            Option
-                .builder("c")
-                .longOpt(COMMAND)
-                .hasArg(true)
-                .argName("system command")
-                .required(true)
-                .desc("system command for new process")
-                .build(),
-            Option
-                .builder("o")
-                .longOpt(OUTPUT)
-                .hasArg(true)
-                .argName("file name")
-                .required(true)
-                .desc("output file name")
-                .build()
-        )
+    override val options = listOf(
+        Option
+            .builder("c")
+            .longOpt(COMMAND)
+            .hasArg(true)
+            .argName("system command")
+            .required(true)
+            .desc("system command for new process")
+            .build(),
+        Option
+            .builder("o")
+            .longOpt(OUTPUT)
+            .hasArg(true)
+            .argName("file name")
+            .required(true)
+            .desc("output file name")
+            .build()
+    )
 
     companion object {
         private const val OUTPUT = "output"

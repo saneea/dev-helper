@@ -74,36 +74,35 @@ class Sleep :
         timeUnit.sleep(duration)
     }
 
-    override val options
-        get() = arrayOf(
-            Option
-                .builder(DURATION_SHORT)
-                .longOpt(DURATION)
-                .hasArg(true)
-                .argName("duration")
-                .required(true)
-                .desc("time duration")
-                .type(PatternOptionBuilder.NUMBER_VALUE)
-                .build(),
-            Option
-                .builder(UNITS_SHORT)
-                .longOpt(UNITS)
-                .hasArg(true)
-                .argName(
-                    Units.stream()
-                        .map { u: Units -> u.cli }
-                        .collect(Collectors.joining("|"))
-                )
-                .required(false)
-                .desc(
-                    ("time units, default is '" + Units.DEFAULT.cli + "' (" +
-                            Units.stream()
-                                .map { u: Units -> "${u.cli} - ${u.display}" }
-                                .collect(Collectors.joining(", "))
-                            + ")")
-                )
-                .build()
-        )
+    override val options = listOf(
+        Option
+            .builder(DURATION_SHORT)
+            .longOpt(DURATION)
+            .hasArg(true)
+            .argName("duration")
+            .required(true)
+            .desc("time duration")
+            .type(PatternOptionBuilder.NUMBER_VALUE)
+            .build(),
+        Option
+            .builder(UNITS_SHORT)
+            .longOpt(UNITS)
+            .hasArg(true)
+            .argName(
+                Units.stream()
+                    .map { u: Units -> u.cli }
+                    .collect(Collectors.joining("|"))
+            )
+            .required(false)
+            .desc(
+                ("time units, default is '" + Units.DEFAULT.cli + "' (" +
+                        Units.stream()
+                            .map { u: Units -> "${u.cli} - ${u.display}" }
+                            .collect(Collectors.joining(", "))
+                        + ")")
+            )
+            .build()
+    )
 
     companion object {
         private const val DURATION = "duration"

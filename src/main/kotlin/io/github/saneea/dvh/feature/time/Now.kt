@@ -52,17 +52,16 @@ class Now :
         outTextString(formattedTime)
     }
 
-    override val options: Array<Option>
-        get() = arrayOf(
-            Option
-                .builder(FORMAT_SHORT)
-                .longOpt(FORMAT)
-                .hasArg(true)
-                .argName(formatFactory.availableFormatsString)
-                .required(false)
-                .desc("output time format")
-                .build()
-        )
+    override val options = listOf(
+        Option
+            .builder(FORMAT_SHORT)
+            .longOpt(FORMAT)
+            .hasArg(true)
+            .argName(formatFactory.availableFormatsString)
+            .required(false)
+            .desc("output time format")
+            .build()
+    )
 
     companion object {
         private const val FORMAT = "format"

@@ -29,22 +29,20 @@ class Hash :
         execute(inBinStream, outTextPrintStream, alg)
     }
 
-    override val options get() = Params.createOptions()
+    override val options = Params.createOptions()
 
     object Params {
         const val ALGORITHM = "algorithm"
-        fun createOptions(): Array<Option> {
-            return arrayOf(
-                Option
-                    .builder("a")
-                    .longOpt(ALGORITHM)
-                    .hasArg(true)
-                    .argName("algorithm name")
-                    .required(true)
-                    .desc("hash algorithm (e.g. md5)")
-                    .build()
-            )
-        }
+        fun createOptions() = listOf(
+            Option
+                .builder("a")
+                .longOpt(ALGORITHM)
+                .hasArg(true)
+                .argName("algorithm name")
+                .required(true)
+                .desc("hash algorithm (e.g. md5)")
+                .build()
+        )
     }
 
     companion object {

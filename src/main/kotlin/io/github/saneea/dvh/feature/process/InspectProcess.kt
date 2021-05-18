@@ -37,17 +37,16 @@ class InspectProcess :
         return stat
     }
 
-    override val options
-        get() = arrayOf(
-            Option
-                .builder("c")
-                .longOpt(COMMAND)
-                .hasArg(true)
-                .argName("system command line")
-                .required(true)
-                .desc("e.g. 'dvh --help'")
-                .build()
-        )
+    override val options = listOf(
+        Option
+            .builder("c")
+            .longOpt(COMMAND)
+            .hasArg(true)
+            .argName("system command line")
+            .required(true)
+            .desc("e.g. 'dvh --help'")
+            .build()
+    )
 
     data class ProcessExecutionInfo(
         var exitCode: Int = 0,

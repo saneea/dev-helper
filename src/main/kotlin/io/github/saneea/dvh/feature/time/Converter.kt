@@ -35,11 +35,10 @@ class Converter :
     private fun getFormatFromCLI(cliOptionName: String) =
         formatFactory.createFormat(commandLine.getOptionValue(cliOptionName))
 
-    override val options
-        get() = arrayOf(
-            createFormatCliOption("if", IN_FORMAT, "input time format"),
-            createFormatCliOption("of", OUT_FORMAT, "output time format")
-        )
+    override val options = listOf(
+        createFormatCliOption("if", IN_FORMAT, "input time format"),
+        createFormatCliOption("of", OUT_FORMAT, "output time format")
+    )
 
     private fun createFormatCliOption(shortName: String, longName: String, description: String) =
         Option

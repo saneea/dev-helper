@@ -104,13 +104,10 @@ class ToRandomArt :
         return ret
     }
 
-    override val options: Array<Option>
-        get() {
-            return arrayOf(
-                createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),
-                createSizeOption("y", SIZE_Y, "height", DEFAULT_SIZE_Y)
-            )
-        }
+    override val options = listOf(
+        createSizeOption("x", SIZE_X, "width", DEFAULT_SIZE_X),
+        createSizeOption("y", SIZE_Y, "height", DEFAULT_SIZE_Y)
+    )
 
     private fun createSizeOption(
         shortOptionName: String,

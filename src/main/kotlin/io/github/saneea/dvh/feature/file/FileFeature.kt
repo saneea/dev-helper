@@ -21,19 +21,16 @@ abstract class FileFeature :
 
     override fun run() = handleFile(File(commandLine.getOptionValue(FILE_NAME)))
 
-    override val options: Array<Option>
-        get() {
-            return arrayOf(
-                Option
-                    .builder("f")
-                    .longOpt(FILE_NAME)
-                    .hasArg(true)
-                    .argName("file name")
-                    .required(true)
-                    .desc("path to file")
-                    .build()
-            )
-        }
+    override val options = listOf(
+        Option
+            .builder("f")
+            .longOpt(FILE_NAME)
+            .hasArg(true)
+            .argName("file name")
+            .required(true)
+            .desc("path to file")
+            .build()
+    )
 
     companion object {
         private const val FILE_NAME = "fileName"

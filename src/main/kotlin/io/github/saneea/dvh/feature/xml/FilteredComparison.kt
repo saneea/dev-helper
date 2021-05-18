@@ -42,37 +42,35 @@ class FilteredComparison :
         var LEFT = "left"
         var RIGHT = "right"
 
-        fun createOptions(): Array<Option> {
-            return arrayOf(
-                Option
-                    .builder("ct")
-                    .longOpt(COMPARISON_TOOL)
-                    .hasArg(true)
-                    .argName("system command")
-                    .required(true)
-                    .desc("system command for comparison of just path to extrenal comparison tool")
-                    .build(),
-                Option
-                    .builder("l")
-                    .longOpt(LEFT)
-                    .hasArg(true)
-                    .argName("file path")
-                    .required(true)
-                    .desc("left side file for comparison")
-                    .build(),
-                Option
-                    .builder("r")
-                    .longOpt(RIGHT)
-                    .hasArg(true)
-                    .argName("file path")
-                    .required(true)
-                    .desc("right side file for comparison")
-                    .build()
-            )
-        }
+        fun createOptions() = listOf(
+            Option
+                .builder("ct")
+                .longOpt(COMPARISON_TOOL)
+                .hasArg(true)
+                .argName("system command")
+                .required(true)
+                .desc("system command for comparison of just path to extrenal comparison tool")
+                .build(),
+            Option
+                .builder("l")
+                .longOpt(LEFT)
+                .hasArg(true)
+                .argName("file path")
+                .required(true)
+                .desc("left side file for comparison")
+                .build(),
+            Option
+                .builder("r")
+                .longOpt(RIGHT)
+                .hasArg(true)
+                .argName("file path")
+                .required(true)
+                .desc("right side file for comparison")
+                .build()
+        )
     }
 
-    override val options get() = Params.createOptions()
+    override val options = Params.createOptions()
 
     private fun getFilteredFile(inputFileName: String): String {
         val outputFile = File.createTempFile("filtered", null)

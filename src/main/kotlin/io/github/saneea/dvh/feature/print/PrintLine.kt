@@ -29,23 +29,22 @@ class PrintLine :
         printFunc(text)
     }
 
-    override val options
-        get() = arrayOf(
-            Option
-                .builder("t")
-                .longOpt(TEXT)
-                .hasArg(true)
-                .argName("text for printing")
-                .required(true)
-                .desc("e.g. 'Hello World'")
-                .build(),
-            Option
-                .builder("nnl")
-                .longOpt(NO_NEW_LINE)
-                .required(false)
-                .desc("do not add new line at the end of output")
-                .build()
-        )
+    override val options = listOf(
+        Option
+            .builder("t")
+            .longOpt(TEXT)
+            .hasArg(true)
+            .argName("text for printing")
+            .required(true)
+            .desc("e.g. 'Hello World'")
+            .build(),
+        Option
+            .builder("nnl")
+            .longOpt(NO_NEW_LINE)
+            .required(false)
+            .desc("do not add new line at the end of output")
+            .build()
+    )
 
     companion object {
         private const val TEXT = "text"

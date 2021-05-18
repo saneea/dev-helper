@@ -83,7 +83,7 @@ interface Feature {
         var commandLine: CommandLine
 
         interface Options {
-            val options: Array<Option>
+            val options: List<Option>
         }
 
         interface CommonOptions {
