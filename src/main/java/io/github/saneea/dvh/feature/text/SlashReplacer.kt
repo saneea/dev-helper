@@ -9,6 +9,7 @@ import org.apache.commons.cli.Option
 
 class SlashReplacer :
     Feature,
+    Feature.ContextAware,
     Feature.CLI,
     Feature.CLI.Options,
     Feature.In.Text.String,

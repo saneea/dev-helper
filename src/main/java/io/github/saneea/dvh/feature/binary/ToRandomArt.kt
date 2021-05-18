@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.binary
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.InputStream
@@ -15,7 +14,6 @@ class ToRandomArt :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
-    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine

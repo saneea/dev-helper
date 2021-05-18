@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.xml
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.utils.ReaderFromWriter
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
@@ -35,7 +34,6 @@ class XmlPrettyPrint :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
     override lateinit var commandLine: CommandLine

@@ -11,7 +11,9 @@ import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 
-abstract class MultiFeature : Feature {
+abstract class MultiFeature :
+    Feature,
+    Feature.ContextAware {
 
     override lateinit var context: FeatureContext
     private val out = System.out

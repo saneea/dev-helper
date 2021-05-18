@@ -19,4 +19,6 @@ interface FeatureProvider {
 }
 
 fun FeatureProvider.createFeature(featureName: String, context: FeatureContext) =
-    this.createFeature(featureName).also { it?.context = context }
+    this.createFeature(featureName).also {
+        (it as? Feature.ContextAware)?.context = context
+    }

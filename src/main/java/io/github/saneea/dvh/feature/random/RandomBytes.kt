@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.random
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.OutputStream
@@ -14,7 +13,6 @@ class RandomBytes :
     Feature.CLI.Options,
     Feature.Out.Bin.Stream {
 
-    override lateinit var context: FeatureContext
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 

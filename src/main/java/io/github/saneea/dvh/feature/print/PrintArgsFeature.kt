@@ -7,6 +7,7 @@ import java.io.PrintStream
 
 class PrintArgsFeature :
     Feature,
+    Feature.ContextAware,
     Feature.Out.Text.PrintStream {
 
     override lateinit var context: FeatureContext

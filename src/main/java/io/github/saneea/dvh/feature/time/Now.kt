@@ -12,6 +12,7 @@ import java.time.ZonedDateTime
 
 class Now :
     Feature,
+    Feature.ContextAware,
     Feature.CLI,
     Feature.CLI.Options,
     Feature.Out.Text.String {

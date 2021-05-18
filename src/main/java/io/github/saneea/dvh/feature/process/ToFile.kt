@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.process
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.*
@@ -23,7 +22,6 @@ class ToFile :
         }
     }
 
-    override lateinit var context: FeatureContext
     override lateinit var errBinStream: OutputStream
     override lateinit var commandLine: CommandLine
 

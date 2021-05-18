@@ -3,7 +3,6 @@ package io.github.saneea.dvh.feature.binary
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.InputStream
@@ -16,7 +15,6 @@ class SlowPipe :
     Feature.In.Bin.Stream,
     Feature.Out.Bin.Stream {
 
-    override lateinit var context: FeatureContext
     override lateinit var inBinStream: InputStream
     override lateinit var outBinStream: OutputStream
     override lateinit var commandLine: CommandLine

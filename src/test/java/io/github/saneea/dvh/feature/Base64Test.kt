@@ -38,7 +38,6 @@ class Base64Test {
                 val fromBase64 = FromBase64()
                 fromBase64.inBinStream = inputStream
                 fromBase64.outBinStream = output
-                fromBase64.context = FeatureContext(null, "", arrayOf())
                 fromBase64.run()
                 return output.toByteArray()
             }
@@ -51,7 +50,6 @@ class Base64Test {
                 val toBase64 = ToBase64()
                 toBase64.inBinStream = inputStream
                 toBase64.outBinStream = output
-                toBase64.context = FeatureContext(null, "", arrayOf())
                 toBase64.run()
                 return output.toString(StandardCharsets.UTF_8)
             }

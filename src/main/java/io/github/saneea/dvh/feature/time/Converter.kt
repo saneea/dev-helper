@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.time
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.StringConsumer
 import io.github.saneea.dvh.feature.time.format.FormatFactory
 import org.apache.commons.cli.CommandLine
@@ -18,7 +17,6 @@ class Converter :
     Feature.In.Text.String,
     Feature.Out.Text.String {
 
-    override lateinit var context: FeatureContext
     override lateinit var inTextString: String
     override lateinit var outTextString: StringConsumer
     override lateinit var commandLine: CommandLine

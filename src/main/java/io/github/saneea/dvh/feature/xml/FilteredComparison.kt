@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.xml
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.feature.xml.XmlPrettyPrint.Companion.run
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
@@ -14,7 +13,6 @@ class FilteredComparison :
     Feature.CLI,
     Feature.CLI.Options {
 
-    override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
 
     override val meta = Meta("run external comparison tool for 'pretty printed' xml files")

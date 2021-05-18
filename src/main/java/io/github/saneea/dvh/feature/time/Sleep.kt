@@ -12,6 +12,7 @@ import java.util.stream.Stream
 
 class Sleep :
     Feature,
+    Feature.ContextAware,
     Feature.CLI,
     Feature.CLI.Options {
 

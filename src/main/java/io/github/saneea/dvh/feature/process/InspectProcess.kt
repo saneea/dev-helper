@@ -3,7 +3,6 @@ package io.github.saneea.dvh.feature.process
 import com.google.gson.GsonBuilder
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.PrintStream
@@ -14,7 +13,6 @@ class InspectProcess :
     Feature.CLI.Options,
     Feature.Out.Text.PrintStream {
 
-    override lateinit var context: FeatureContext
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine
 

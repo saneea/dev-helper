@@ -3,7 +3,6 @@ package io.github.saneea.dvh.feature.binary
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.feature.binary.hex.ToHex
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
@@ -19,7 +18,6 @@ class Hash :
     Feature.In.Bin.Stream,
     Feature.Out.Text.PrintStream {
 
-    override lateinit var context: FeatureContext
     override lateinit var commandLine: CommandLine
     override lateinit var inBinStream: InputStream
     override lateinit var outTextPrintStream: PrintStream

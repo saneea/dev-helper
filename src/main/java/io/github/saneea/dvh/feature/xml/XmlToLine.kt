@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.xml
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.helpers.DefaultHandler
@@ -19,7 +18,6 @@ class XmlToLine :
     Feature.In.Text.Reader,
     Feature.Out.Text.Writer {
 
-    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextWriter: Writer
 

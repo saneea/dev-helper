@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.binary.hex
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import java.io.OutputStream
 import java.io.Reader
 
@@ -13,7 +12,6 @@ class FromHex :
     Feature.In.Text.Reader,
     Feature.Out.Bin.Stream {
 
-    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outBinStream: OutputStream
 

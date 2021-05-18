@@ -1,6 +1,5 @@
 package io.github.saneea.dvh.feature
 
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.TESTS_RESOURCES
 import io.github.saneea.dvh.feature.binary.hex.FromHex
 import io.github.saneea.dvh.feature.binary.hex.ToHex
@@ -44,7 +43,6 @@ class HexTest {
                 val feature = FromHex()
                 feature.inTextReader = reader
                 feature.outBinStream = output
-                feature.context = FeatureContext(null, "", arrayOf())
                 feature.run()
                 return output.toByteArray()
             }
@@ -58,7 +56,6 @@ class HexTest {
                 PrintStream(output, false, TEST_CHARSET).use { printStreamOut ->
                     feature.inBinStream = inputStream
                     feature.outTextPrintStream = printStreamOut
-                    feature.context = FeatureContext(null, "", arrayOf())
                     feature.run()
                 }
                 return output.toString(TEST_CHARSET)

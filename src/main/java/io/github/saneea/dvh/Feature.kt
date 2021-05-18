@@ -9,8 +9,6 @@ typealias StringConsumer = (String) -> Unit
 
 interface Feature {
 
-    var context: FeatureContext
-
     val meta: Meta
 
     fun run()
@@ -130,5 +128,9 @@ interface Feature {
                     .build()
             }
         }
+    }
+
+    interface ContextAware {
+        var context: FeatureContext
     }
 }

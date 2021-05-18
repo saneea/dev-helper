@@ -2,7 +2,6 @@ package io.github.saneea.dvh.feature.text
 
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import java.io.PrintStream
@@ -15,7 +14,6 @@ class Split :
     Feature.In.Text.Reader,
     Feature.Out.Text.PrintStream {
 
-    override lateinit var context: FeatureContext
     override lateinit var inTextReader: Reader
     override lateinit var outTextPrintStream: PrintStream
     override lateinit var commandLine: CommandLine

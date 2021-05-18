@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.Meta
-import io.github.saneea.dvh.FeatureContext
 import java.io.Reader
 import java.io.Writer
 
@@ -27,7 +26,6 @@ class JsonFormatting {
         Feature.In.Text.Reader,
         Feature.Out.Text.Writer {
 
-        override lateinit var context: FeatureContext
         override lateinit var inTextReader: Reader
         override lateinit var outTextWriter: Writer
 

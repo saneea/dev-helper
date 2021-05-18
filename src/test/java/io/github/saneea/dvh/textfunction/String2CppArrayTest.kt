@@ -1,6 +1,5 @@
 package io.github.saneea.dvh.textfunction
 
-import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.feature.text.ToCharArray
 import org.junit.Assert
 import org.junit.Test
@@ -24,8 +23,6 @@ class String2CppArrayTest {
         val out = StringWriter()
         toCharArray.outTextWriter = out
 
-        val featureContext = FeatureContext(null, "any", emptyArray())
-        toCharArray.context = featureContext
         toCharArray.run()
         val actual = out.toString()
         Assert.assertEquals(expected, actual)
