@@ -13,14 +13,13 @@ import java.util.*
 
 class FeatureResources(
     private val feature: Feature,
-    private val args: List<String>,
     private val context: FeatureContext
 ) : AutoCloseable {
 
     private val closeables: Deque<AutoCloseable> = ArrayDeque()
 
     val commandLine: CommandLine by lazy {
-        Utils.parseCli(args, cliOptions, feature, context)
+        Utils.parseCli(cliOptions, feature, context)
     }
 
     val outTextPrintStream: PrintStream by lazy {

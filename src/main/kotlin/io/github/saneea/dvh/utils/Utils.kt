@@ -32,8 +32,8 @@ object Utils {
         return ret
     }
 
-    fun parseCli(args: List<String>, cliOptions: Options, feature: Feature, context: FeatureContext) =
-        parseCli(args, cliOptions, DefaultHelpPrinter(cliOptions, feature, context))
+    fun parseCli(cliOptions: Options, feature: Feature, context: FeatureContext) =
+        parseCli(context.args, cliOptions, DefaultHelpPrinter(cliOptions, feature, context))
 
     fun parseCli(args: List<String>, cliOptions: Options, printHelp: PrintHelpFunc): CommandLine {
         val commandLineParser: CommandLineParser = DefaultParser()

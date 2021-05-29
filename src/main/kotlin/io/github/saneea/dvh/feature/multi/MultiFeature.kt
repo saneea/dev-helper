@@ -1,10 +1,7 @@
 package io.github.saneea.dvh.feature.multi
 
-import io.github.saneea.dvh.Feature
+import io.github.saneea.dvh.*
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
-import io.github.saneea.dvh.FeatureContext
-import io.github.saneea.dvh.FeatureProvider
-import io.github.saneea.dvh.runFeature
 import io.github.saneea.dvh.utils.Utils
 import io.github.saneea.dvh.utils.Utils.DefaultHelpPrinter
 import org.apache.commons.cli.CommandLine
@@ -31,7 +28,16 @@ abstract class MultiFeature :
     private fun runChildFeature(context: FeatureContext, args: List<String>) {
         val featureName = args[0]
         val featureArgs = withoutFeatureName(args)
-        runFeature(context, featureProvider, featureName, featureArgs)
+
+        val childContext = FeatureContext(context, featureName, featureArgs)
+
+        val feature = featureProvider.createFeature(featureName, childContext)
+            ?: throw IllegalArgumentException("Unknown feature: \"$featureName\"")
+
+        FeatureResources(feature, childContext).use {
+            feature.injectResources(it)
+            feature.run()
+        }
     }
 
     private fun runFeatureWithOptions(context: FeatureContext, args: List<String>) {
@@ -95,4 +101,33 @@ abstract class MultiFeature :
             args.drop(1)
         }
     }
+}
+
+private fun Feature.injectResources(featureResources: FeatureResources) {
+    (this as? Feature.CLI)
+        ?.commandLine = featureResources.commandLine
+
+    (this as? Feature.Out.Text.PrintStream)
+        ?.outTextPrintStream = featureResources.outTextPrintStream
+
+    (this as? Feature.Out.Text.Writer)
+        ?.outTextWriter = featureResources.outTextWriter
+
+    (this as? Feature.Out.Text.String)
+        ?.outTextString = featureResources.outTextString
+
+    (this as? Feature.Out.Bin.Stream)
+        ?.outBinStream = featureResources.outBinStream
+
+    (this as? Feature.Err.Bin.Stream)
+        ?.errBinStream = featureResources.errBinStream
+
+    (this as? Feature.In.Text.Reader)
+        ?.inTextReader = featureResources.inTextReader
+
+    (this as? Feature.In.Text.String)
+        ?.inTextString = featureResources.inTextString
+
+    (this as? Feature.In.Bin.Stream)
+        ?.inBinStream = featureResources.inBinStream
 }
