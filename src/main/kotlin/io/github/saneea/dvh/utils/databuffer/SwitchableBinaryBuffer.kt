@@ -4,10 +4,12 @@ import java.io.InputStream
 import java.io.OutputStream
 
 class SwitchableBinaryBuffer(
-    private val mainBuffer: BinaryBuffer,
+    mainBuffer: BinaryBuffer,
     private val reservedBuffer: BinaryBuffer,
     private val mainBufferLimit: Long
 ) : BinaryBuffer {
+
+    private var mainBufferRef: BinaryBuffer? = mainBuffer
 
     private var currentBuffer = mainBuffer
 
@@ -17,9 +19,12 @@ class SwitchableBinaryBuffer(
         get() = currentBuffer.inputStream
 
     private fun switchToReservedBuffer() {
-        mainBuffer.inputStream.transferTo(reservedBuffer.outputStream)
-        currentBuffer = reservedBuffer
-        mainBuffer.close()
+        mainBufferRef?.also {
+            it.inputStream.transferTo(reservedBuffer.outputStream)
+            currentBuffer = reservedBuffer
+            it.close()
+        }
+        mainBufferRef = null
     }
 
     override fun close() = currentBuffer.close()
