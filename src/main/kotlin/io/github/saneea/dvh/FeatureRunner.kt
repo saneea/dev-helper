@@ -1,50 +1,42 @@
 package io.github.saneea.dvh
 
-class FeatureRunner(private val featureProvider: FeatureProvider) {
+fun runFeature(context: FeatureContext, featureProvider: FeatureProvider, featureName: String, args: List<String>) {
+    val childContext = FeatureContext(context, featureName, args)
 
-    fun run(context: FeatureContext, featureName: String, args: List<String>) {
-        val childContext = FeatureContext(context, featureName, args)
+    val feature = featureProvider.createFeature(featureName, childContext)
+        ?: throw IllegalArgumentException("Unknown feature: \"$featureName\"")
 
-        val feature = featureProvider.createFeature(featureName, childContext)
-            ?: throw IllegalArgumentException("Unknown feature: \"$featureName\"")
-
-        handleFeatureResources(feature, args, childContext).use { feature.run() }
+    FeatureResources(feature, args, childContext).use {
+        feature.injectResources(it)
+        feature.run()
     }
+}
 
-    private fun handleFeatureResources(
-        feature: Feature,
-        args: List<String>,
-        context: FeatureContext
-    ): FeatureResources {
-        val featureResources = FeatureResources(feature, args, context)
+private fun Feature.injectResources(featureResources: FeatureResources) {
+    (this as? Feature.CLI)
+        ?.commandLine = featureResources.commandLine
 
-        (feature as? Feature.CLI)
-            ?.commandLine = featureResources.commandLine
+    (this as? Feature.Out.Text.PrintStream)
+        ?.outTextPrintStream = featureResources.outTextPrintStream
 
-        (feature as? Feature.Out.Text.PrintStream)
-            ?.outTextPrintStream = featureResources.outTextPrintStream
+    (this as? Feature.Out.Text.Writer)
+        ?.outTextWriter = featureResources.outTextWriter
 
-        (feature as? Feature.Out.Text.Writer)
-            ?.outTextWriter = featureResources.outTextWriter
+    (this as? Feature.Out.Text.String)
+        ?.outTextString = featureResources.outTextString
 
-        (feature as? Feature.Out.Text.String)
-            ?.outTextString = featureResources.outTextString
+    (this as? Feature.Out.Bin.Stream)
+        ?.outBinStream = featureResources.outBinStream
 
-        (feature as? Feature.Out.Bin.Stream)
-            ?.outBinStream = featureResources.outBinStream
+    (this as? Feature.Err.Bin.Stream)
+        ?.errBinStream = featureResources.errBinStream
 
-        (feature as? Feature.Err.Bin.Stream)
-            ?.errBinStream = featureResources.errBinStream
+    (this as? Feature.In.Text.Reader)
+        ?.inTextReader = featureResources.inTextReader
 
-        (feature as? Feature.In.Text.Reader)
-            ?.inTextReader = featureResources.inTextReader
+    (this as? Feature.In.Text.String)
+        ?.inTextString = featureResources.inTextString
 
-        (feature as? Feature.In.Text.String)
-            ?.inTextString = featureResources.inTextString
-
-        (feature as? Feature.In.Bin.Stream)
-            ?.inBinStream = featureResources.inBinStream
-
-        return featureResources
-    }
+    (this as? Feature.In.Bin.Stream)
+        ?.inBinStream = featureResources.inBinStream
 }

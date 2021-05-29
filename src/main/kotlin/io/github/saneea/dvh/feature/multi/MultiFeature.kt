@@ -4,7 +4,7 @@ import io.github.saneea.dvh.Feature
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
 import io.github.saneea.dvh.FeatureContext
 import io.github.saneea.dvh.FeatureProvider
-import io.github.saneea.dvh.FeatureRunner
+import io.github.saneea.dvh.runFeature
 import io.github.saneea.dvh.utils.Utils
 import io.github.saneea.dvh.utils.Utils.DefaultHelpPrinter
 import org.apache.commons.cli.CommandLine
@@ -31,8 +31,7 @@ abstract class MultiFeature :
     private fun runChildFeature(context: FeatureContext, args: List<String>) {
         val featureName = args[0]
         val featureArgs = withoutFeatureName(args)
-        val featureRunner = FeatureRunner(featureProvider)
-        featureRunner.run(context, featureName, featureArgs)
+        runFeature(context, featureProvider, featureName, featureArgs)
     }
 
     private fun runFeatureWithOptions(context: FeatureContext, args: List<String>) {
