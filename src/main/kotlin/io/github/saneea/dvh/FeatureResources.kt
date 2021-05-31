@@ -33,12 +33,21 @@ class FeatureResources(
     }
 
     val outBinStream: OutputStream by lazy {
-        var stream: OutputStream = FileOutputStream(FileDescriptor.out)
-        if (useBufferedStreams()) {
-            stream = BufferedOutputStream(stream)
-        }
-        closeables.add(stream)
-        stream
+        createInternalOutBinStream()
+            .also(closeables::add)
+    }
+
+    private fun createInternalOutBinStream(): OutputStream {
+        val outputFilePath = commandLine.getOptionValue(CommonOptions.OUTPUT_FILE)
+        return if (outputFilePath != null)
+            FileOutputStream(outputFilePath)
+        else
+            FileOutputStream(FileDescriptor.out).let {
+                if (useBufferedStreams())
+                    BufferedOutputStream(it)
+                else
+                    it
+            }
     }
 
     val errBinStream: OutputStream by lazy {
@@ -92,6 +101,21 @@ class FeatureResources(
                 is Feature.Out.Text.Writer ->
                     it.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION)
             }
+
+            when (feature) {
+                is Feature.In.Bin.Stream,
+                is Feature.In.Text.Reader,
+                is Feature.In.Text.String ->
+                    it.addOption(CommonOptions.INPUT_FILE_OPTION)
+            }
+
+            when (feature) {
+                is Feature.Out.Bin.Stream,
+                is Feature.Out.Text.Writer,
+                is Feature.Out.Text.PrintStream,
+                is Feature.Out.Text.String ->
+                    it.addOption(CommonOptions.OUTPUT_FILE_OPTION)
+            }
         }
     }
 
@@ -114,11 +138,16 @@ class FeatureResources(
     }
 
     private fun createInternalInBinStream(): InputStream {
-        var inBinStream: InputStream = FileInputStream(FileDescriptor.`in`)
-        if (useBufferedStreams()) {
-            inBinStream = BufferedInputStream(inBinStream)
-        }
-        return inBinStream
+        val inputFilePath = commandLine.getOptionValue(CommonOptions.INPUT_FILE)
+        return if (inputFilePath != null)
+            FileInputStream(inputFilePath)
+        else
+            FileInputStream(FileDescriptor.`in`).let {
+                if (useBufferedStreams())
+                    BufferedInputStream(it)
+                else
+                    it
+            }
     }
 
     private fun useBufferedStreams() = !commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)

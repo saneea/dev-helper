@@ -91,6 +91,8 @@ interface Feature {
                 const val HELP = "help"
                 const val OUTPUT_ENCODING = "outputEncoding"
                 const val INPUT_ENCODING = "inputEncoding"
+                const val INPUT_FILE = "input"
+                const val OUTPUT_FILE = "output"
                 const val NON_BUFFERED_STREAMS = "nonBufferedStreams"
 
                 val HELP_OPTION: Option = Option
@@ -125,6 +127,24 @@ interface Feature {
                     .hasArg(false)
                     .required(false)
                     .desc("do not use memory buffers for i/o operations")
+                    .build()
+
+                val INPUT_FILE_OPTION: Option = Option
+                    .builder("i")
+                    .longOpt(INPUT_FILE)
+                    .hasArg(true)
+                    .argName("file name")
+                    .required(false)
+                    .desc("input file path")
+                    .build()
+
+                val OUTPUT_FILE_OPTION: Option = Option
+                    .builder("o")
+                    .longOpt(OUTPUT_FILE)
+                    .hasArg(true)
+                    .argName("file name")
+                    .required(false)
+                    .desc("output file path")
                     .build()
             }
         }
