@@ -17,20 +17,28 @@ fun createDefaultBuffer(): BinaryBuffer =
         bufferSize
     )
 
-fun writeOnClose(
-    createTargetStream: () -> OutputStream,
+class WriteOnCloseOutputStream(
+    private val createTargetStream: () -> OutputStream,
     createBuffer: () -> BinaryBuffer = ::createDefaultBuffer
-): OutputStream {
+) : OutputStream() {
+    private val buffer = createBuffer()
 
-    return object : OutputStream() {
+    private var cancelled = false
 
-        val buffer = createBuffer()
+    fun cancel() {
+        cancelled = true
+    }
 
-        override fun write(b: Int) = buffer.outputStream.write(b)
+    override fun write(b: Int) {
+        if (!cancelled) {
+            buffer.outputStream.write(b)
+        }
+    }
 
-        override fun close() {
-            buffer.use { buffer ->
-                buffer.outputStream.close()
+    override fun close() {
+        buffer.use { buffer ->
+            buffer.outputStream.close()
+            if (!cancelled) {
                 createTargetStream().use { targetStream ->
                     buffer.inputStream.use { bufferInputStream ->
                         bufferInputStream.transferTo(targetStream)

@@ -36,7 +36,12 @@ abstract class MultiFeature :
 
         FeatureResources(feature, childContext).use {
             feature.injectResources(it)
-            feature.run()
+            try {
+                feature.run()
+            } catch (e: Exception) {
+                it.onException(e)
+                throw e
+            }
         }
     }
 

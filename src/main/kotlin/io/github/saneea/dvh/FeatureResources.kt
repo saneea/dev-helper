@@ -4,6 +4,7 @@ import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
 import io.github.saneea.dvh.utils.ByteSequenceRecognizer
 import io.github.saneea.dvh.utils.Utils
+import io.github.saneea.dvh.utils.databuffer.WriteOnCloseOutputStream
 import io.github.saneea.dvh.utils.encodingRecognizer
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Options
@@ -17,6 +18,7 @@ class FeatureResources(
 ) : AutoCloseable {
 
     private val closeables: Deque<AutoCloseable> = ArrayDeque()
+    private val exceptionListeners: MutableSet<(Exception) -> Unit> = LinkedHashSet()
 
     val commandLine: CommandLine by lazy {
         Utils.parseCli(cliOptions, feature, context)
@@ -40,7 +42,8 @@ class FeatureResources(
     private fun createInternalOutBinStream(): OutputStream {
         val outputFilePath = commandLine.getOptionValue(CommonOptions.OUTPUT_FILE)
         return if (outputFilePath != null)
-            FileOutputStream(outputFilePath)
+            WriteOnCloseOutputStream({ FileOutputStream(outputFilePath) })
+                .also { exceptionListeners.add { _ -> it.cancel() } }
         else
             FileOutputStream(FileDescriptor.out).let {
                 if (useBufferedStreams())
@@ -169,4 +172,6 @@ class FeatureResources(
             throw onCloseException
         }
     }
+
+    fun onException(e: Exception) = exceptionListeners.forEach { it.invoke(e) }
 }
