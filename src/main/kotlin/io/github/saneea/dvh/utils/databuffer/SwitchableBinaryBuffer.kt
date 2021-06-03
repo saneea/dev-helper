@@ -20,7 +20,10 @@ class SwitchableBinaryBuffer(
 
     private fun switchToReservedBuffer() {
         mainBufferRef?.also {
-            it.inputStream.transferTo(reservedBuffer.outputStream)
+            it.outputStream.close()
+            it.inputStream.use { mainBufferRefInputStream ->
+                mainBufferRefInputStream.transferTo(reservedBuffer.outputStream)
+            }
             currentBuffer = reservedBuffer
             it.close()
         }
@@ -41,6 +44,9 @@ class SwitchableBinaryBuffer(
             bytesCount++
         }
 
+        override fun close() {
+            currentBuffer.outputStream.close()
+        }
     }
 
 }
