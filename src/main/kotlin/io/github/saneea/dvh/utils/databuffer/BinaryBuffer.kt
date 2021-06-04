@@ -25,6 +25,8 @@ class WriteOnCloseOutputStream(
 
     private var cancelled = false
 
+    private var closed = false
+
     fun cancel() {
         cancelled = true
     }
@@ -36,15 +38,18 @@ class WriteOnCloseOutputStream(
     }
 
     override fun close() {
-        buffer.use { buffer ->
-            buffer.outputStream.close()
-            if (!cancelled) {
-                createTargetStream().use { targetStream ->
-                    buffer.inputStream.use { bufferInputStream ->
-                        bufferInputStream.transferTo(targetStream)
+        if (!closed) {
+            buffer.use { buffer ->
+                buffer.outputStream.close()
+                if (!cancelled) {
+                    createTargetStream().use { targetStream ->
+                        buffer.inputStream.use { bufferInputStream ->
+                            bufferInputStream.transferTo(targetStream)
+                        }
                     }
                 }
             }
+            closed = true
         }
     }
 }
