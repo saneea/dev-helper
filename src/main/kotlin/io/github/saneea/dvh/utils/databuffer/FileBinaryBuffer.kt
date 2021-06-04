@@ -17,11 +17,11 @@ class FileBinaryBuffer : BinaryBuffer {
     private val tempFile: Path by tempFileDelegate
 
     override val outputStream: OutputStream by lazy {
-        FileOutputStream(tempFile.toFile())
+        FileOutputStream(tempFile.toFile()).buffered()
     }
 
     override val inputStream: InputStream
-        get() = FileInputStream(tempFile.toFile())
+        get() = FileInputStream(tempFile.toFile()).buffered()
 
     override fun close() {
         if (tempFileDelegate.isInitialized()) {
