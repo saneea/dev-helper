@@ -1,1 +1,1 @@
-dvh proc toFile -o %2 -c "dvh.bat xml format pretty < %1"
+ dvh xml format pretty -i %1 -o %2
