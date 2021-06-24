@@ -1,1 +1,1 @@
- dvh xml format pretty -i %1 -o %2
+dvh xml format pretty -i %1 -o %2
