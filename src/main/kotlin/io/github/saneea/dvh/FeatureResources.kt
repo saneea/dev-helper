@@ -4,6 +4,7 @@ import io.github.saneea.dvh.Feature.CLI
 import io.github.saneea.dvh.Feature.CLI.CommonOptions
 import io.github.saneea.dvh.utils.ByteSequenceRecognizer
 import io.github.saneea.dvh.utils.Utils
+import io.github.saneea.dvh.utils.databuffer.WriteOnCloseOutputStream
 import io.github.saneea.dvh.utils.encodingRecognizer
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Options
@@ -13,14 +14,14 @@ import java.util.*
 
 class FeatureResources(
     private val feature: Feature,
-    private val args: Array<String>,
     private val context: FeatureContext
 ) : AutoCloseable {
 
     private val closeables: Deque<AutoCloseable> = ArrayDeque()
+    private val exceptionListeners: MutableSet<(Exception) -> Unit> = LinkedHashSet()
 
     val commandLine: CommandLine by lazy {
-        Utils.parseCli(args, cliOptions, feature, context)
+        Utils.parseCli(cliOptions, feature, context)
     }
 
     val outTextPrintStream: PrintStream by lazy {
@@ -34,12 +35,22 @@ class FeatureResources(
     }
 
     val outBinStream: OutputStream by lazy {
-        var stream: OutputStream = FileOutputStream(FileDescriptor.out)
-        if (useBufferedStreams()) {
-            stream = BufferedOutputStream(stream)
-        }
-        closeables.add(stream)
-        stream
+        createInternalOutBinStream()
+            .also(closeables::add)
+    }
+
+    private fun createInternalOutBinStream(): OutputStream {
+        val outputFilePath = commandLine.getOptionValue(CommonOptions.OUTPUT_FILE)
+        return if (outputFilePath != null)
+            WriteOnCloseOutputStream({ FileOutputStream(outputFilePath) })
+                .also { exceptionListeners.add { _ -> it.cancel() } }
+        else
+            FileOutputStream(FileDescriptor.out).let {
+                if (useBufferedStreams())
+                    BufferedOutputStream(it)
+                else
+                    it
+            }
     }
 
     val errBinStream: OutputStream by lazy {
@@ -93,6 +104,21 @@ class FeatureResources(
                 is Feature.Out.Text.Writer ->
                     it.addOption(CommonOptions.NON_BUFFERED_STREAMS_OPTION)
             }
+
+            when (feature) {
+                is Feature.In.Bin.Stream,
+                is Feature.In.Text.Reader,
+                is Feature.In.Text.String ->
+                    it.addOption(CommonOptions.INPUT_FILE_OPTION)
+            }
+
+            when (feature) {
+                is Feature.Out.Bin.Stream,
+                is Feature.Out.Text.Writer,
+                is Feature.Out.Text.PrintStream,
+                is Feature.Out.Text.String ->
+                    it.addOption(CommonOptions.OUTPUT_FILE_OPTION)
+            }
         }
     }
 
@@ -115,11 +141,16 @@ class FeatureResources(
     }
 
     private fun createInternalInBinStream(): InputStream {
-        var inBinStream: InputStream = FileInputStream(FileDescriptor.`in`)
-        if (useBufferedStreams()) {
-            inBinStream = BufferedInputStream(inBinStream)
-        }
-        return inBinStream
+        val inputFilePath = commandLine.getOptionValue(CommonOptions.INPUT_FILE)
+        return if (inputFilePath != null)
+            FileInputStream(inputFilePath)
+        else
+            FileInputStream(FileDescriptor.`in`).let {
+                if (useBufferedStreams())
+                    BufferedInputStream(it)
+                else
+                    it
+            }
     }
 
     private fun useBufferedStreams() = !commandLine.hasOption(CommonOptions.NON_BUFFERED_STREAMS)
@@ -141,4 +172,6 @@ class FeatureResources(
             throw onCloseException
         }
     }
+
+    fun onException(e: Exception) = exceptionListeners.forEach { it.invoke(e) }
 }

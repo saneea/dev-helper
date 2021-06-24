@@ -6,7 +6,7 @@ import java.util.stream.Stream
 class FeatureContext(
     private val parent: FeatureContext?,
     val featureName: String,
-    val args: Array<String>
+    val args: List<String>
 ) {
     val featuresChainString: String
         get() = featuresChain.collect(Collectors.joining(" "))
